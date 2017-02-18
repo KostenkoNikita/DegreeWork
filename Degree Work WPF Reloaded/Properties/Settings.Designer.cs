@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Degree_Work_WPF_Reloaded.Properties {
+namespace Degree_Work.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

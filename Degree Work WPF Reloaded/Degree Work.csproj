@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{EB7A6C35-84A4-446A-8B8A-3BFA2F054B77}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Degree_Work_WPF_Reloaded</RootNamespace>
-    <AssemblyName>Degree Work WPF Reloaded</AssemblyName>
+    <RootNamespace>Degree_Work</RootNamespace>
+    <AssemblyName>Degree Work</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,9 +35,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MathCore_2.0">
+      <HintPath>..\..\..\C#\MathCore_2.0\MathCore_2.0\bin\Debug\MathCore_2.0.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot">
+      <HintPath>..\..\..\C#\WPF\Oxxxymiron\OxyPlot.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Wpf">
+      <HintPath>..\..\..\C#\WPF\Oxxxymiron\NET45\OxyPlot.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Xps">
+      <HintPath>..\..\..\C#\WPF\Oxxxymiron\NET45\OxyPlot.Xps.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -58,6 +70,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Hydrodynamics Sources\Conformal Maps\IdentityTransform.cs" />
+    <Compile Include="WindowsReferences.cs" />
+    <Page Include="HalfPlaneWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -66,12 +84,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Extensions.cs" />
+    <Compile Include="HalfPlaneWindow.xaml.cs">
+      <DependentUpon>HalfPlaneWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Hydrodynamics Sources\Conformal Maps\Porebrick.cs" />
+    <Compile Include="Hydrodynamics Sources\HalfPlaneStreamLinesBuilder.cs" />
+    <Compile Include="Hydrodynamics Sources\IConformalMapFunction.cs" />
+    <Compile Include="Hydrodynamics Sources\Potential.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlotWindowModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -98,7 +125,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="favicon.ico" />
+    <Resource Include="Resources\favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\cogwheel1.jpg" />
+    <Resource Include="Resources\cogwheel2.png" />
+    <Resource Include="Resources\cogwheel3.jpg" />
+    <Resource Include="Resources\cogwheel4.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\referIco.png" />
+    <Resource Include="Resources\referIcoChecked.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

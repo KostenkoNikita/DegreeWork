@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Degree_Work_WPF_Reloaded
+namespace Degree_Work
 {
     /// <summary>
     /// Логика взаимодействия для App.xaml
