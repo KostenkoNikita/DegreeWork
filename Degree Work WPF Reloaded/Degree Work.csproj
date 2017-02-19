@@ -52,6 +52,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -71,6 +72,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Hydrodynamics Sources\Conformal Maps\IdentityTransform.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="WindowsReferences.cs" />
     <Page Include="HalfPlaneWindow.xaml">
       <SubType>Designer</SubType>
@@ -128,14 +130,18 @@
     <Resource Include="Resources\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\cogwheel1.jpg" />
-    <Resource Include="Resources\cogwheel2.png" />
-    <Resource Include="Resources\cogwheel3.jpg" />
-    <Resource Include="Resources\cogwheel4.gif" />
+    <Resource Include="Resources\cogwheel.jpg" />
+    <Resource Include="Resources\referIco.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\referIco.png" />
-    <Resource Include="Resources\referIcoChecked.png" />
+    <Resource Include="Resources\exitIco.bmp" />
+    <Resource Include="Resources\exitSelected.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\menuIco.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\saveIco.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

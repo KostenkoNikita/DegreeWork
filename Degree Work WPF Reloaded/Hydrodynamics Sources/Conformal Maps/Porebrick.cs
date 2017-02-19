@@ -14,7 +14,7 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
     {
         public complex this[complex dzeta] => z(dzeta);
 
-        public double h { get; private set; }
+        public double h { get; set; }
 
         public Porebrick(double h)
         {

@@ -1,9 +1,11 @@
 ﻿#pragma warning disable 612
 
 using System;
+using System.IO;
+
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
+using MathCore_2_0;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -16,13 +18,33 @@ namespace Degree_Work
     class PlotWindowModel : INotifyPropertyChanged
     {
         private PlotModel p;
-
+        private ArrowAnnotation arrow;
+        public Annotation Border;
+        PolygonAnnotation BorderPoly => Border as PolygonAnnotation;
+        bool IsMouseClickedInPolygon;
         object locker = new object();
 
         public PlotModel PlotModel
         {
             get { return p; }
             set { p = value; OnPropertyChanged("PlotModel"); }
+        }
+
+        private Axis X_Axis
+        {
+            get { return PlotModel.Axes[0] as Axis; }
+        }
+        private Axis Y_Axis
+        {
+            get { return PlotModel.Axes[1] as Axis; }
+        }
+        public DataPoint GetDataPointCursorPositionOnPlot(ScreenPoint pos)
+        {
+            return OxyPlot.Axes.Axis.InverseTransform(pos, X_Axis, Y_Axis);
+        }
+        public complex GetComplexCursorPositionOnPlot(ScreenPoint pos)
+        {
+            return OxyPlot.Axes.Axis.InverseTransform(pos, X_Axis, Y_Axis).DataPointToComplex();
         }
 
         internal PlotWindowModel(CanonicalDomain domain)
@@ -87,36 +109,134 @@ namespace Degree_Work
             PlotModel.Annotations.Add(an);
         }
 
+        void CreateArrow()
+        {
+            arrow = new ArrowAnnotation()
+            {
+                Color = OxyColors.Black,
+                StrokeThickness = 3,
+                StartPoint = new DataPoint(0,0),
+                EndPoint = new DataPoint(0,0),
+            };
+            PlotModel.Annotations.Add(arrow);
+        }
+
+        void DeleteArrow()
+        {
+            if (arrow != null)
+            {
+                PlotModel.Annotations.Remove(arrow);
+            }
+        }
+
+        public void RedrawArrow(double x_start, double y_start, double x_end, double y_end)
+        {
+            if (IsMouseClickedInPolygon)
+            {
+                DeleteArrow();
+                IsMouseClickedInPolygon = false;
+            }
+            else
+            {
+                if (!HasArrow()) { CreateArrow(); }
+                arrow.StartPoint = new DataPoint(x_start, y_start);
+                arrow.EndPoint = new DataPoint(x_end, y_end);
+            }
+        }
+
+        public void RedrawArrow(DataPoint start, DataPoint end)
+        {
+            if (IsMouseClickedInPolygon)
+            {
+                DeleteArrow();
+                IsMouseClickedInPolygon = false;
+            }
+            else
+            {
+                if (!HasArrow()) { CreateArrow(); }
+                arrow.StartPoint = start;
+                arrow.EndPoint = end;
+            }
+        }
+
+        public void RedrawArrow(complex start, complex end)
+        {
+            if (IsMouseClickedInPolygon)
+            {
+                DeleteArrow();
+                IsMouseClickedInPolygon = false;
+            }
+            else
+            {
+                if (!HasArrow()) { CreateArrow(); }
+                arrow.StartPoint = start.ComplexToDataPoint();
+                arrow.EndPoint = end.ComplexToDataPoint();
+            }
+        }
+
+        public void SavePlotToJPG(string path, int width, int height)
+        {
+            var pngExporter = new OxyPlot.Wpf.PngExporter { Width = width, Height = height, Background = OxyColors.White };
+            var bitmap = pngExporter.ExportToBitmap(PlotModel);
+            bitmap.SaveJPG100(path);
+        }
+
+        public void SavePlotToPNG(string path, int width, int height)
+        {
+            using (FileStream s = new FileStream(path, FileMode.Create))
+            {
+                var pngExporter = new OxyPlot.Wpf.PngExporter { Width = width, Height = height, Background = OxyColors.White };
+                pngExporter.Export(PlotModel, s);
+            }
+        }
+
+        public void SavePlotToBMP(string path, int width, int height)
+        {
+            var pngExporter = new OxyPlot.Wpf.PngExporter { Width = width, Height = height, Background = OxyColors.White };
+            var bitmap = pngExporter.ExportToBitmap(PlotModel);
+            bitmap.GetBitmap().Save(path);
+        }
+
+        bool HasArrow()
+        {
+            foreach (Annotation a in PlotModel.Annotations)
+            {
+                if (a is ArrowAnnotation) { return true; }
+            }
+            return false;
+        }
+
         public void DrawBorder(Hydrodynamics_Sources.Potential w)
         {
             switch (w.f.ToString())
             {
                 case "Porebrick":
                     double h = (w.f as Hydrodynamics_Sources.Conformal_Maps.Porebrick).h;
-                    PolygonAnnotation pp = new PolygonAnnotation();
-                    pp.Fill = OxyColors.Gray;
-                    pp.Points.Add(new DataPoint(-6, 0));
-                    pp.Points.Add(new DataPoint(0, 0));
-                    pp.Points.Add(new DataPoint(0, h));
-                    pp.Points.Add(new DataPoint(6, h));
-                    pp.Points.Add(new DataPoint(6, -1));
-                    pp.Points.Add(new DataPoint(-6, -1));
-                    pp.StrokeThickness = 2;
-                    pp.Stroke = OxyColors.Black;
-                    PlotModel.Annotations.Add(pp);
+                    Border = new PolygonAnnotation();
+                    BorderPoly.Fill = OxyColors.Gray;
+                    BorderPoly.Points.Add(new DataPoint(-6, 0));
+                    BorderPoly.Points.Add(new DataPoint(0, 0));
+                    BorderPoly.Points.Add(new DataPoint(0, h));
+                    BorderPoly.Points.Add(new DataPoint(6, h));
+                    BorderPoly.Points.Add(new DataPoint(6, -1));
+                    BorderPoly.Points.Add(new DataPoint(-6, -1));
+                    BorderPoly.StrokeThickness = 2;
+                    BorderPoly.Stroke = OxyColors.Black;
+                    PlotModel.Annotations.Add(BorderPoly);
                     break;
                 case "IdentityTransform":
-                    PolygonAnnotation pi = new PolygonAnnotation();
-                    pi.Fill = OxyColors.Gray;
-                    pi.Points.Add(new DataPoint(-6, 0));
-                    pi.Points.Add(new DataPoint(6, 0));
-                    pi.Points.Add(new DataPoint(6, -1));
-                    pi.Points.Add(new DataPoint(-6, -1));
-                    pi.StrokeThickness = 2;
-                    pi.Stroke = OxyColors.Black;
-                    PlotModel.Annotations.Add(pi);
+                    Border = new PolygonAnnotation();
+                    BorderPoly.Fill = OxyColors.Gray;
+                    BorderPoly.Points.Add(new DataPoint(-6, 0));
+                    BorderPoly.Points.Add(new DataPoint(6, 0));
+                    BorderPoly.Points.Add(new DataPoint(6, -1));
+                    BorderPoly.Points.Add(new DataPoint(-6, -1));
+                    BorderPoly.StrokeThickness = 2;
+                    BorderPoly.Stroke = OxyColors.Black;
+                    PlotModel.Annotations.Add(BorderPoly);
                     break;
             }
+            Border.MouseDown += (sender, e) => { IsMouseClickedInPolygon = true; };
         }
 
         public void Clear()

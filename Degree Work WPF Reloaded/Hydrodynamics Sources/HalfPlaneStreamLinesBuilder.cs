@@ -19,8 +19,10 @@ namespace Degree_Work.Hydrodynamics_Sources
         List<List<DataPoint>> StreamLinesBase;
         delegate void IniFillAsync(List<DataPoint> Base, double y);
         delegate void TransformationAsync(List<DataPoint> Base, List<DataPoint> Lines);
+        delegate void FullBuildAsync(List<DataPoint> Base, List<DataPoint> Lines, double y);
         IniFillAsync async_base;
         TransformationAsync async_transform;
+        FullBuildAsync async_full;
         List<IAsyncResult> res_list;
         public StreamLinesBuilderHalfPlane(Potential w, PlotWindowModel g, double x_min, double x_max, double y_max, double h_horizontal, double h_vertical)
         {
@@ -35,6 +37,20 @@ namespace Degree_Work.Hydrodynamics_Sources
             StreamLinesBase = new List<List<DataPoint>>();
             InitialBuild();
         }
+        public void ChangeParams(double? x_min, double? x_max, double? y_max, double? h_horizontal, double? h_vertical)
+        {
+            this.x_min = x_min ?? this.x_min;
+            this.x_max = x_max ?? this.x_max;
+            this.y_max = y_max ?? this.y_max;
+            this.h_mrk = h_horizontal ?? this.h_mrk;
+            this.h = h_vertical ?? this.h;
+            FullRebuild();
+        }
+        void InitialBuild()
+        {
+            g.Clear();
+            FindBaseStreamLines();
+        }
         public void Rebuild()
         {
             g.Clear();
@@ -42,10 +58,13 @@ namespace Degree_Work.Hydrodynamics_Sources
             g.DrawBorder(w);
             Transform();
         }
-        void InitialBuild()
+        void FullRebuild()
         {
             g.Clear();
-            FindBaseStreamLines();
+            StreamLines = new List<List<DataPoint>>();
+            StreamLinesBase = new List<List<DataPoint>>();
+            g.DrawBorder(w);
+            FindAllStreamLines();
         }
         void FindBaseStreamLines()
         {
@@ -71,6 +90,19 @@ namespace Degree_Work.Hydrodynamics_Sources
             while (!res_list.IsAllThreadsCompleted()) { }
             res_list = null;
         }
+        void FindAllStreamLines()
+        {
+            async_full = new FullBuildAsync(AsyncFullBuild);
+            res_list = new List<IAsyncResult>();
+            for (double y = h; y <= y_max; y += h)
+            {
+                StreamLines.Add(new List<DataPoint>());
+                StreamLinesBase.Add(new List<DataPoint>());
+                res_list.Add(async_full.BeginInvoke(StreamLinesBase[StreamLinesBase.Count - 1], StreamLines[StreamLines.Count - 1], y, null, null));
+            }
+            while (!res_list.IsAllThreadsCompleted()) { }
+            res_list = null;
+        }
         void AsyncIniFill(List<DataPoint> b, double y)
         {
             for (double x = x_min; x <= x_max; x += h_mrk)
@@ -83,6 +115,15 @@ namespace Degree_Work.Hydrodynamics_Sources
             foreach (DataPoint bp in b)
             {
                 l.Add(w.f.z(bp));
+            }
+            g.DrawCurve(l);
+        }
+        void AsyncFullBuild(List<DataPoint> b, List<DataPoint> l, double y)
+        {
+            for (double x = x_min; x <= x_max; x += h_mrk)
+            {
+                b.Add(new DataPoint(x, y));
+                l.Add(w.f.z(b[b.Count - 1]));
             }
             g.DrawCurve(l);
         }

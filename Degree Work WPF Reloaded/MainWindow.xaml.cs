@@ -37,6 +37,8 @@ namespace Degree_Work
             switch ((sender as TextBlock).Name)
             {
                 case "halfPlaneButton": WindowsReferences.HalfPlainW = new HalfPlane(); WindowsReferences.HalfPlainW.Show(); Hide(); return;
+                case "circleButton": MessageBox.Show("Developer has not added this window yet", "Error", MessageBoxButton.OK, MessageBoxImage.Error); return;
+                case "referenceButton": MessageBox.Show("Developer has not added this window yet", "Error", MessageBoxButton.OK, MessageBoxImage.Error); return;
                 case "exitButton": (Process.GetCurrentProcess()).Kill(); return;
                 default: throw new ArgumentException("undefined TextBlock name");
             }

@@ -6,21 +6,21 @@
         xmlns:local="clr-namespace:Degree_Work"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="300" MaxWidth="300" MaxHeight="500" ScrollViewer.VerticalScrollBarVisibility="Disabled" WindowStyle="None" BorderThickness="2" WindowStartupLocation="CenterScreen" MinHeight="500" MinWidth="300">
-    <Grid ShowGridLines="True" Margin ="10,10,10,10">
+    <Grid Margin ="0,0,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="0.20*"></RowDefinition>
+            <RowDefinition Height="0.25*"></RowDefinition>
+            <RowDefinition Height="0.25*"></RowDefinition>
+            <RowDefinition Height="0.15*"></RowDefinition>
+            <RowDefinition Height="0.15*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TextBlock x:Name="MenuText" Grid.Column="0" Grid.Row="0" Text="Меню" TextAlignment="Justify"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" FontFamily="Times New Roman" TextDecorations="Underline" ToolTip="Kostenko Nikita ©  2017, Oles Honchar Dnipropetrovsk National University, Faculty of Mechanics and Mathematics" />
-        <TextBlock x:Name="halfPlaneButton" Grid.Column="0" Grid.Row="1" Text="    Обтекание&#x0d;полуплоскости" TextAlignment="Justify"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="34" FontFamily="Times New Roman" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" MouseDown="TextBlock_MouseDown" Cursor="ScrollE"/>
-        <TextBlock x:Name="circleButton" Grid.Column="0" Grid.Row="2" Text=" Обтекание&#x0d;окружности" TextAlignment="Justify"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="34" FontFamily="Times New Roman" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" MouseDown="TextBlock_MouseDown" Cursor="ScrollE"/>
-        <TextBlock x:Name="referenceButton" Grid.Column="0" Grid.Row="3" Text="Справка" TextAlignment="Justify"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" FontFamily="Times New Roman" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" MouseDown="TextBlock_MouseDown" Cursor="Help"/>
-        <TextBlock x:Name="exitButton" Grid.Column="0" Grid.Row="4" Text="Выход" TextAlignment="Justify"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" FontFamily="Times New Roman" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" MouseDown="TextBlock_MouseDown"/>
+        <TextBlock x:Name="halfPlaneButton" Grid.Column="0" Grid.Row="1" Text="Обтекание&#x0d;полуплоскости" TextAlignment="Center"  HorizontalAlignment="Stretch"  VerticalAlignment="Center"  FontSize="34" FontFamily="Times New Roman" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" MouseDown="TextBlock_MouseDown" Cursor="ScrollE"/>
+        <TextBlock x:Name="circleButton" Grid.Column="0" Grid.Row="2" Text="Обтекание&#x0d;окружности" TextAlignment="Center"  HorizontalAlignment="Stretch"  VerticalAlignment="Center"  FontSize="34" FontFamily="Times New Roman" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" MouseDown="TextBlock_MouseDown" Cursor="ScrollE"/>
+        <TextBlock x:Name="referenceButton" Grid.Column="0" Grid.Row="3" Text="Справка" TextAlignment="Center"  HorizontalAlignment="Stretch"  VerticalAlignment="Center"  FontSize="40" FontFamily="Times New Roman" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" MouseDown="TextBlock_MouseDown" Cursor="Help"/>
+        <TextBlock x:Name="exitButton" Grid.Column="0" Grid.Row="4" Text="Выход" TextAlignment="Center"  HorizontalAlignment="Stretch"  VerticalAlignment="Center" FontSize="40" FontFamily="Times New Roman" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" MouseDown="TextBlock_MouseDown"/>
     </Grid>
 </Window>
