@@ -14,6 +14,7 @@ namespace Degree_Work
         public static OxyColor BorderStrokeColor { get; set; }
         public static double BorderStrokeThickness { get; set; }
         public static double LineStrokeThickness { get; set; }
+        public static double ArrowStokeThickness { get; set; }
         public static UInt16 Precision
         {
             get
@@ -57,7 +58,8 @@ namespace Degree_Work
             BorderFillColor = OxyColors.Gray;
             BorderStrokeColor = OxyColors.Black;
             BorderStrokeThickness = 1;
-            LineStrokeThickness = 2;
+            LineStrokeThickness = 3;
+            ArrowStokeThickness = 3;
         }
 
     }

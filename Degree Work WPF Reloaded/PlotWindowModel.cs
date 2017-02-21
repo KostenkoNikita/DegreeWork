@@ -86,7 +86,6 @@ namespace Degree_Work
             lock (locker)
             {
                 LineSeries ls = new LineSeries();
-                ls.CanTrackerInterpolatePoints = true;
                 ls.Smooth = true;
                 ls.Color = Settings.LineColor;
                 ls.StrokeThickness = Settings.LineStrokeThickness;
@@ -100,7 +99,7 @@ namespace Degree_Work
             arrow = new ArrowAnnotation()
             {
                 Color = Settings.ArrowColor,
-                StrokeThickness = 3,
+                StrokeThickness = Settings.ArrowStokeThickness,
                 StartPoint = new DataPoint(0,0),
                 EndPoint = new DataPoint(0,0),
             };

@@ -161,7 +161,8 @@ namespace Degree_Work
         {
             if (sender is Viewbox)
             {
-                return;
+                //in case "cogwheel"
+                SettingsWindow settingswin = new SettingsWindow(); settingswin.Show(); return;
             }
             else
             {
