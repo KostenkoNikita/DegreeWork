@@ -33,7 +33,6 @@ namespace Degree_Work
             formatList.SelectionChanged += FormatList_SelectionChanged;
             formatList.SelectedIndex = 0;
             path = pathTextBox.Text = Directory.GetCurrentDirectory() + @"\Saved Plots\";
-            if (!Directory.Exists(path)) { Directory.CreateDirectory(path); }
             pathTextBox.TextChanged += (sender, e) => { path = pathTextBox.Text; };
         }
 
@@ -79,31 +78,19 @@ namespace Degree_Work
             else
             {
                 string name;
+                if (!path.EndsWith(@"\")) { path += @"\"; }
+                if (!Directory.Exists(path)) { Directory.CreateDirectory(path); }
                 Deactivated -= OnWindowDeactivated;
                 try
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
-                    switch (format)
-                    {
-                        case PicFormat.BMP:
-                            name = $"Plot[{DateTime.Now.ToString().Replace(':', '.').Replace(" ", " Time=")}].bmp";
-                            viewModel.SavePlotToBMP(path + name, width, height);
-                            break;
-                        case PicFormat.PNG:
-                            name = $"Plot[{DateTime.Now.ToString().Replace(':', '.').Replace(" "," Time=")}].png";
-                            viewModel.SavePlotToPNG(path + name, width, height);
-                            break;
-                        case PicFormat.JPG:
-                            name = $"Plot[{DateTime.Now.ToString().Replace(':', '.').Replace(" ", " Time=")}].jpg";
-                            viewModel.SavePlotToJPG(path + name, width, height);
-                            break;
-                    }
+                    viewModel.GetType().InvokeMember($"SavePlotTo{format.ToString()}", System.Reflection.BindingFlags.InvokeMethod, null, viewModel, new object[] { path + $"Plot[{DateTime.Now.ToString().Replace(':', '.').Replace(" ", " Time=")}].{format.ToString().ToLower()}", width, height });
                     Mouse.OverrideCursor = null;
                     doneImage.Source = Settings.OKIcoSource;
                     doneImage.MouseEnter -= ico_MouseEnter;
                     doneImage.MouseLeave -= ico_MouseLeave;
                 }
-                catch
+                catch(Exception ex)
                 {
                     MessageBox.Show("Возможно, Вы некорректно указали путь.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     Mouse.OverrideCursor = null;

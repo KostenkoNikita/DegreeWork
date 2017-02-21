@@ -31,7 +31,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Viewbox x:Name="cogwheelContainer" Grid.Row="0" Margin="13,13,13,13" MouseDown="ico_MouseDown">
+            <Viewbox x:Name="cogwheelContainer" Grid.Row="0" Margin="18,18,18,18" MouseDown="ico_MouseDown">
                 <Image Source="Resources\cogwheel.jpg" x:Name="cogwheelImage" RenderTransformOrigin=".5,.5">
                     <Image.RenderTransform>
                         <RotateTransform x:Name="AnimatedRotateTransform" Angle="0" />

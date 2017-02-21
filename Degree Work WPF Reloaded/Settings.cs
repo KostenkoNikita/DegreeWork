@@ -52,6 +52,12 @@ namespace Degree_Work
             saveIcoSource = new BitmapImage(new Uri(@"Resources/saveIco3.png", UriKind.Relative));
             saveIcoSelectedSource = new BitmapImage(new Uri(@"Resources/saveIco3Selected.png", UriKind.Relative));
             OKIcoSource = new BitmapImage(new Uri(@"Resources/okayIcon.png", UriKind.Relative));
+            LineColor = OxyColors.Blue;
+            ArrowColor = OxyColors.Black;
+            BorderFillColor = OxyColors.Gray;
+            BorderStrokeColor = OxyColors.Black;
+            BorderStrokeThickness = 1;
+            LineStrokeThickness = 2;
         }
 
     }

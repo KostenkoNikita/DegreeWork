@@ -88,32 +88,18 @@ namespace Degree_Work
                 LineSeries ls = new LineSeries();
                 ls.CanTrackerInterpolatePoints = true;
                 ls.Smooth = true;
-                ls.Color = OxyColors.Blue;
-                ls.StrokeThickness = 2;
+                ls.Color = Settings.LineColor;
+                ls.StrokeThickness = Settings.LineStrokeThickness;
                 foreach (DataPoint p in l) { ls.Points.Add(p); }
                 PlotModel.Series.Add(ls);
             }
-        }
-
-        public void DrawCircle(double _X, double _Y, double _R, double _StrokeThickness = 2)
-        {
-            var an = new EllipseAnnotation()
-            {
-                X = _X,
-                Y = _Y,
-                Width = 2 * _R,
-                Height = 2 * _R,
-                Fill = OxyColors.Gray,
-                StrokeThickness = _StrokeThickness,
-            };
-            PlotModel.Annotations.Add(an);
         }
 
         void CreateArrow()
         {
             arrow = new ArrowAnnotation()
             {
-                Color = OxyColors.Black,
+                Color = Settings.ArrowColor,
                 StrokeThickness = 3,
                 StartPoint = new DataPoint(0,0),
                 EndPoint = new DataPoint(0,0),
@@ -213,26 +199,26 @@ namespace Degree_Work
                 case "Porebrick":
                     double h = (w.f as Hydrodynamics_Sources.Conformal_Maps.Porebrick).h;
                     Border = new PolygonAnnotation();
-                    BorderPoly.Fill = OxyColors.Gray;
+                    BorderPoly.Fill = Settings.BorderFillColor;
                     BorderPoly.Points.Add(new DataPoint(-6, 0));
                     BorderPoly.Points.Add(new DataPoint(0, 0));
                     BorderPoly.Points.Add(new DataPoint(0, h));
                     BorderPoly.Points.Add(new DataPoint(6, h));
                     BorderPoly.Points.Add(new DataPoint(6, -1));
                     BorderPoly.Points.Add(new DataPoint(-6, -1));
-                    BorderPoly.StrokeThickness = 2;
-                    BorderPoly.Stroke = OxyColors.Black;
+                    BorderPoly.StrokeThickness = Settings.BorderStrokeThickness;
+                    BorderPoly.Stroke = Settings.BorderStrokeColor;
                     PlotModel.Annotations.Add(BorderPoly);
                     break;
                 case "IdentityTransform":
                     Border = new PolygonAnnotation();
-                    BorderPoly.Fill = OxyColors.Gray;
+                    BorderPoly.Fill = Settings.BorderFillColor;
                     BorderPoly.Points.Add(new DataPoint(-6, 0));
                     BorderPoly.Points.Add(new DataPoint(6, 0));
                     BorderPoly.Points.Add(new DataPoint(6, -1));
                     BorderPoly.Points.Add(new DataPoint(-6, -1));
-                    BorderPoly.StrokeThickness = 2;
-                    BorderPoly.Stroke = OxyColors.Black;
+                    BorderPoly.StrokeThickness = Settings.BorderStrokeThickness;
+                    BorderPoly.Stroke = Settings.BorderStrokeColor;
                     PlotModel.Annotations.Add(BorderPoly);
                     break;
             }
