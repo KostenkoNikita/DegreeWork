@@ -57,8 +57,8 @@
             <Viewbox x:Name="referContainer" Grid.Row="1" Margin="7,7,7,7">
                 <Image  x:Name="referImage" Source="Resources\referIco.png" MouseEnter="ico_MouseEnter" MouseLeave="ico_MouseLeave" MouseDown="ico_MouseDown"/>
             </Viewbox>
-            <Viewbox x:Name="saveContainer" Grid.Row="2" Margin="13,13,13,13">
-                <Image  x:Name="saveImage" Source="Resources\saveIco.png" MouseEnter="ico_MouseEnter" MouseLeave="ico_MouseLeave" MouseDown="ico_MouseDown"/>
+            <Viewbox x:Name="saveContainer" Grid.Row="2" Margin="9,9,9,9">
+                <Image  x:Name="saveImage" Source="Resources\saveIco2.png" MouseEnter="ico_MouseEnter" MouseLeave="ico_MouseLeave" MouseDown="ico_MouseDown"/>
             </Viewbox>
             <Viewbox x:Name="menuContainer" Grid.Row="3" Margin="13,13,13,13">
                 <Image  x:Name="menuImage" Source="Resources\menuIco.png" MouseEnter="ico_MouseEnter" MouseLeave="ico_MouseLeave" MouseDown="ico_MouseDown"/>

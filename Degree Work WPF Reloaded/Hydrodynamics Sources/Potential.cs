@@ -125,5 +125,9 @@ namespace Degree_Work.Hydrodynamics_Sources
         {
             return _V_inf * exp(-i * this._alpha) - (_R * _R * _V_inf * exp(i * this._alpha)) / (dzeta * dzeta) + this._G / (2 * pi * i * dzeta);
         }
+        public override string ToString()
+        {
+            return $"V={_V_inf},alpha={_alpha},R={_R},G={_G}";
+        }
     }
 }

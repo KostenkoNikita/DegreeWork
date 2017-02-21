@@ -140,7 +140,7 @@ namespace Degree_Work
             switch ((sender as Image).Name)
             {
                 case "referImage": referContainer.Margin = new Thickness(3,3,3,3); return;
-                case "saveImage": saveContainer.Margin = new Thickness(7,7,7,7); return;
+                case "saveImage": saveContainer.Margin = new Thickness(4,4,4,4); return;
                 case "menuImage": menuContainer.Margin = new Thickness(7,7,7,7); return;
                 case "exitImage": exitImage.Source = Settings.exitIcoSelectedSource; return;
             }
@@ -151,7 +151,7 @@ namespace Degree_Work
             switch ((sender as Image).Name)
             {
                 case "referImage": referContainer.Margin = new Thickness(7,7,7,7); return;
-                case "saveImage": saveContainer.Margin = new Thickness(13,13,13,13); return;
+                case "saveImage": saveContainer.Margin = new Thickness(9,9,9,9); return;
                 case "menuImage": menuContainer.Margin = new Thickness(13,13,13,13); return;
                 case "exitImage": exitImage.Source = Settings.exitIcoSource; return;
             }
@@ -168,7 +168,7 @@ namespace Degree_Work
                 switch ((sender as Image).Name)
                 {
                     case "referImage": return;
-                    case "saveImage": return;
+                    case "saveImage": SaveWindow sw = new SaveWindow(viewModel); sw.Show(); return;
                     case "menuImage": WindowsReferences.MainW.Show(); Close(); return;
                     case "exitImage": Process.GetCurrentProcess().Kill(); return;
                 }

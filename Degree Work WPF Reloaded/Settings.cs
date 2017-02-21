@@ -41,11 +41,17 @@ namespace Degree_Work
         }
         internal static ImageSource exitIcoSource;
         internal static ImageSource exitIcoSelectedSource;
+        internal static ImageSource saveIcoSource;
+        internal static ImageSource saveIcoSelectedSource;
+        internal static ImageSource OKIcoSource;
 
         static Settings()
         {
             exitIcoSource = new BitmapImage(new Uri(@"Resources/exitIco.bmp", UriKind.Relative));
             exitIcoSelectedSource = new BitmapImage(new Uri(@"Resources/exitSelected.bmp", UriKind.Relative));
+            saveIcoSource = new BitmapImage(new Uri(@"Resources/saveIco3.png", UriKind.Relative));
+            saveIcoSelectedSource = new BitmapImage(new Uri(@"Resources/saveIco3Selected.png", UriKind.Relative));
+            OKIcoSource = new BitmapImage(new Uri(@"Resources/okayIcon.png", UriKind.Relative));
         }
 
     }
