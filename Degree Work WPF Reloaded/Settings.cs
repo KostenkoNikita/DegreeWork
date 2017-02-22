@@ -8,13 +8,8 @@ namespace Degree_Work
 {
     static class Settings
     {
-        public static OxyColor LineColor { get; set; }
-        public static OxyColor ArrowColor { get; set; }
-        public static OxyColor BorderFillColor { get; set; }
-        public static OxyColor BorderStrokeColor { get; set; }
-        public static double BorderStrokeThickness { get; set; }
-        public static double LineStrokeThickness { get; set; }
-        public static double ArrowStokeThickness { get; set; }
+        public static StreamLinesPlotGeomParams PlotGeomParams;
+        public static StreamLinesPlotVisualParams PlotVisualParams;
         public static UInt16 Precision
         {
             get
@@ -53,13 +48,17 @@ namespace Degree_Work
             saveIcoSource = new BitmapImage(new Uri(@"Resources/saveIco3.png", UriKind.Relative));
             saveIcoSelectedSource = new BitmapImage(new Uri(@"Resources/saveIco3Selected.png", UriKind.Relative));
             OKIcoSource = new BitmapImage(new Uri(@"Resources/okayIcon.png", UriKind.Relative));
-            LineColor = OxyColors.Blue;
-            ArrowColor = OxyColors.Black;
-            BorderFillColor = OxyColors.Gray;
-            BorderStrokeColor = OxyColors.Black;
-            BorderStrokeThickness = 1;
-            LineStrokeThickness = 3;
-            ArrowStokeThickness = 3;
+            PlotGeomParams = new StreamLinesPlotGeomParams() { hVertical = 0.5, MRKh = 0.3, XMax = 20, XMin = -20, YMax = 20, YMin = -20 };
+            PlotVisualParams = new StreamLinesPlotVisualParams()
+            {
+                LineColor = OxyColors.Blue,
+                ArrowColor = OxyColors.Black,
+                BorderFillColor = OxyColors.Gray,
+                BorderStrokeColor = OxyColors.Black,
+                BorderStrokeThickness = 1,
+                LineStrokeThickness = 3,
+                ArrowStokeThickness = 3
+            };
         }
 
     }

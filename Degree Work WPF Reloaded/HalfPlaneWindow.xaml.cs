@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Diagnostics;
@@ -11,7 +12,7 @@ namespace Degree_Work
     /// <summary>
     /// Логика взаимодействия для HalfPlane.xaml
     /// </summary>
-    public partial class HalfPlane : Window
+    public partial class HalfPlane : Window, IStreamLinesPlotWindow
     {
         complex CursorPosition, V;
         private PlotWindowModel viewModel;
@@ -33,7 +34,7 @@ namespace Degree_Work
             DataContext = viewModel;
             InitializeComponent();
             w = new Hydrodynamics_Sources.Potential(1, 0, 0, 0, new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform());
-            s = new Hydrodynamics_Sources.StreamLinesBuilderHalfPlane(w, viewModel, -20, 20, 20, 0.3, 0.5);
+            s = new Hydrodynamics_Sources.StreamLinesBuilderHalfPlane(w, viewModel, Settings.PlotGeomParams.XMin,Settings.PlotGeomParams.XMax,Settings.PlotGeomParams.YMax,Settings.PlotGeomParams.MRKh,Settings.PlotGeomParams.hVertical);
             mapsList.SelectionChanged += MapsList_SelectionChanged;
             mapsList.Items.Add("Тождественное\nотображение");
             mapsList.Items.Add("Поребрик");
@@ -162,7 +163,7 @@ namespace Degree_Work
             if (sender is Viewbox)
             {
                 //in case "cogwheel"
-                SettingsWindow settingswin = new SettingsWindow(); settingswin.Show(); return;
+                SettingsWindow settingswin = new SettingsWindow(this); settingswin.Show(); return;
             }
             else
             {
@@ -200,6 +201,18 @@ namespace Degree_Work
                     return (CursorPosition.Re <= 0 && CursorPosition.Im<0) || (CursorPosition.Re > 0 && CursorPosition.Im < (w.f as Hydrodynamics_Sources.Conformal_Maps.Porebrick).h);
                 default: return true;
             }
+        }
+
+        public void OnPlotGeomParamsChanged()
+        {
+            s?.ChangeParams(Settings.PlotGeomParams.XMin, Settings.PlotGeomParams.XMax, Settings.PlotGeomParams.YMax, Settings.PlotGeomParams.MRKh, Settings.PlotGeomParams.hVertical);
+            PlotRefresh();
+        }
+
+        public void OnPlotVisualParamsChanged()
+        {
+            viewModel.ReassignVisualParams();
+            PlotRefresh();
         }
     }
 }

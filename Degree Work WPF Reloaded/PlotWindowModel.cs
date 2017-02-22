@@ -87,10 +87,40 @@ namespace Degree_Work
             {
                 LineSeries ls = new LineSeries();
                 ls.Smooth = true;
-                ls.Color = Settings.LineColor;
-                ls.StrokeThickness = Settings.LineStrokeThickness;
+                ls.Color = Settings.PlotVisualParams.LineColor;
+                ls.StrokeThickness = Settings.PlotVisualParams.LineStrokeThickness;
                 foreach (DataPoint p in l) { ls.Points.Add(p); }
                 PlotModel.Series.Add(ls);
+            }
+        }
+
+        public void ReassignVisualParams()
+        {
+            lock (locker)
+            {
+                LineSeries ls;
+                for (int i = 0; i < p.Series.Count - 1; i++)
+                {
+                    ls = p.Series[i] as LineSeries;
+                    if (ls != null)
+                    {
+                        ls.Color = Settings.PlotVisualParams.LineColor;
+                        ls.StrokeThickness = Settings.PlotVisualParams.LineStrokeThickness;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                BorderPoly.Fill = Settings.PlotVisualParams.BorderFillColor;
+                BorderPoly.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                BorderPoly.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                if (arrow != null)
+                {
+                    arrow.StrokeThickness = Settings.PlotVisualParams.ArrowStokeThickness;
+                    arrow.Color = Settings.PlotVisualParams.ArrowColor;
+                }
+                else { return; }
             }
         }
 
@@ -98,12 +128,13 @@ namespace Degree_Work
         {
             arrow = new ArrowAnnotation()
             {
-                Color = Settings.ArrowColor,
-                StrokeThickness = Settings.ArrowStokeThickness,
+                Color = Settings.PlotVisualParams.ArrowColor,
+                StrokeThickness = Settings.PlotVisualParams.ArrowStokeThickness,
                 StartPoint = new DataPoint(0,0),
                 EndPoint = new DataPoint(0,0),
             };
             PlotModel.Annotations.Add(arrow);
+            
         }
 
         void DeleteArrow()
@@ -198,26 +229,26 @@ namespace Degree_Work
                 case "Porebrick":
                     double h = (w.f as Hydrodynamics_Sources.Conformal_Maps.Porebrick).h;
                     Border = new PolygonAnnotation();
-                    BorderPoly.Fill = Settings.BorderFillColor;
+                    BorderPoly.Fill = Settings.PlotVisualParams.BorderFillColor;
                     BorderPoly.Points.Add(new DataPoint(-6, 0));
                     BorderPoly.Points.Add(new DataPoint(0, 0));
                     BorderPoly.Points.Add(new DataPoint(0, h));
                     BorderPoly.Points.Add(new DataPoint(6, h));
                     BorderPoly.Points.Add(new DataPoint(6, -1));
                     BorderPoly.Points.Add(new DataPoint(-6, -1));
-                    BorderPoly.StrokeThickness = Settings.BorderStrokeThickness;
-                    BorderPoly.Stroke = Settings.BorderStrokeColor;
+                    BorderPoly.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                    BorderPoly.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
                     PlotModel.Annotations.Add(BorderPoly);
                     break;
                 case "IdentityTransform":
                     Border = new PolygonAnnotation();
-                    BorderPoly.Fill = Settings.BorderFillColor;
+                    BorderPoly.Fill = Settings.PlotVisualParams.BorderFillColor;
                     BorderPoly.Points.Add(new DataPoint(-6, 0));
                     BorderPoly.Points.Add(new DataPoint(6, 0));
                     BorderPoly.Points.Add(new DataPoint(6, -1));
                     BorderPoly.Points.Add(new DataPoint(-6, -1));
-                    BorderPoly.StrokeThickness = Settings.BorderStrokeThickness;
-                    BorderPoly.Stroke = Settings.BorderStrokeColor;
+                    BorderPoly.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                    BorderPoly.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
                     PlotModel.Annotations.Add(BorderPoly);
                     break;
             }
