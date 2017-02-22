@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MathCore_2_0;
 using OxyPlot;
+using OxyPlot.Series;
 using static MathCore_2_0.math;
 using static MathCore_2_0.complex;
 
@@ -9,6 +10,7 @@ namespace Degree_Work.Hydrodynamics_Sources
 {
     class StreamLinesBuilderHalfPlane
     {
+
         double x_min, x_max, y_max;
         double h;//расстояние между линиями тока в начале отсчета по вертикальной оси
         double h_mrk;

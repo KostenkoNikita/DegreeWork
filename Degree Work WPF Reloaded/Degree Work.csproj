@@ -37,6 +37,9 @@
   <PropertyGroup>
     <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MathCore_2.0">
       <HintPath>..\..\..\C#\MathCore_2.0\MathCore_2.0\bin\Debug\MathCore_2.0.dll</HintPath>
@@ -168,6 +171,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\okayIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\discardIco.png" />
+    <Resource Include="Resources\okayIcon2.png" />
+    <Resource Include="Resources\undoIco.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

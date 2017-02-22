@@ -7,9 +7,9 @@ namespace Degree_Work
     {
         internal double XMin, XMax, YMin, YMax, MRKh, hVertical;
 
-        public StreamLinesPlotVisualParams Clone()
+        public StreamLinesPlotGeomParams Clone()
         {
-            return (StreamLinesPlotVisualParams)MemberwiseClone();
+            return (StreamLinesPlotGeomParams)MemberwiseClone();
         }
     }
     public class StreamLinesPlotVisualParams

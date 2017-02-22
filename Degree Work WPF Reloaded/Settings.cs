@@ -10,6 +10,8 @@ namespace Degree_Work
     {
         public static StreamLinesPlotGeomParams PlotGeomParams;
         public static StreamLinesPlotVisualParams PlotVisualParams;
+        public static readonly StreamLinesPlotGeomParams PlotGeomParamsConstant;
+        public static readonly StreamLinesPlotVisualParams PlotVisualParamsConstant;
         public static UInt16 Precision
         {
             get
@@ -59,6 +61,8 @@ namespace Degree_Work
                 LineStrokeThickness = 3,
                 ArrowStokeThickness = 3
             };
+            PlotGeomParamsConstant = PlotGeomParams.Clone();
+            PlotVisualParamsConstant = PlotVisualParams.Clone();
         }
 
     }

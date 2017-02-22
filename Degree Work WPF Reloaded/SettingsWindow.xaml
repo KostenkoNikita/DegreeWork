@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Degree_Work"
         mc:Ignorable="d"
-        Title="SettingsWindow" Height="600" Width="400">
+        Title="Настройки" Height="600" Width="400" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.2*"></RowDefinition>
@@ -152,6 +152,17 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
+            <Viewbox x:Name="undoContainer" Margin="6,6,6,6">
+                <Image x:Name ="undoImage"  Source="Resources\undoIco.png" MouseEnter="ico_MouseEnter" MouseLeave="ico_MouseLeave" MouseDown="ico_MouseDown" RenderTransformOrigin=".5,.5"/>
+            </Viewbox>
+
+            <Viewbox x:Name="discardContainer" Grid.Column="1" Margin="7,7,7,7">
+                <Image x:Name ="discardImage"  Source="Resources\discardIco.png" MouseEnter="ico_MouseEnter" MouseLeave="ico_MouseLeave" MouseDown="ico_MouseDown"/>
+            </Viewbox>
+
+            <Viewbox x:Name="okContainer" Grid.Column="2" Margin="4,4,4,4">
+                <Image x:Name ="okImage"  Source="Resources\okayIcon2.png" MouseEnter="ico_MouseEnter" MouseLeave="ico_MouseLeave" MouseDown="ico_MouseDown"/>
+            </Viewbox>
 
             <Border Grid.Row="0" Grid.Column="0" BorderThickness="1" BorderBrush="Black" />
             <Border Grid.Row="0" Grid.Column="1" BorderThickness="1" BorderBrush="Black" />

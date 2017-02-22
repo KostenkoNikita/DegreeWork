@@ -92,6 +92,7 @@ namespace Degree_Work
                 foreach (DataPoint p in l) { ls.Points.Add(p); }
                 PlotModel.Series.Add(ls);
             }
+
         }
 
         public void ReassignVisualParams()
@@ -99,13 +100,13 @@ namespace Degree_Work
             lock (locker)
             {
                 LineSeries ls;
-                for (int i = 0; i < p.Series.Count - 1; i++)
+                for (int i = 0; i < p.Series.Count; i++)
                 {
                     ls = p.Series[i] as LineSeries;
                     if (ls != null)
                     {
-                        ls.Color = Settings.PlotVisualParams.LineColor;
                         ls.StrokeThickness = Settings.PlotVisualParams.LineStrokeThickness;
+                        ls.Color = Settings.PlotVisualParams.LineColor;
                     }
                     else
                     {
@@ -117,8 +118,8 @@ namespace Degree_Work
                 BorderPoly.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
                 if (arrow != null)
                 {
-                    arrow.StrokeThickness = Settings.PlotVisualParams.ArrowStokeThickness;
                     arrow.Color = Settings.PlotVisualParams.ArrowColor;
+                    arrow.StrokeThickness = Settings.PlotVisualParams.ArrowStokeThickness;
                 }
                 else { return; }
             }

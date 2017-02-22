@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Interop;
+using System.Runtime.InteropServices;
 using OxyPlot;
 
 namespace Degree_Work
@@ -20,25 +14,37 @@ namespace Degree_Work
     /// </summary>
     public partial class SettingsWindow : Window
     {
+        //Hide close button
+        private const int GWL_STYLE = -16;
+        private const int WS_SYSMENU = 0x80000;
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern int GetWindowLong(System.IntPtr hWnd, int nIndex);
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(System.IntPtr hWnd, int nIndex, int dwNewLong);
+
         enum ColorTarget { Line, Vector, BorderFill, BorderStroke }
         enum ThicknessTarget { Line, Vector, BorderStroke }
         ColorTarget selectedColorTarget;
         ThicknessTarget selectedThicknessTarget;
+        StreamLinesPlotGeomParams tmpGeom;
+        StreamLinesPlotVisualParams tmpVisual;
         IStreamLinesPlotWindow w;
-        delegate void VisualParamsChangedAsyncDelegate();
-        delegate void GeomParamsChangedAsyncDelegate();
-        VisualParamsChangedAsyncDelegate d;
-        GeomParamsChangedAsyncDelegate g;
-        IAsyncResult res;
-
         byte R, G, B;
-        double thickness;
 
         public SettingsWindow(IStreamLinesPlotWindow _w)
         {
+            tmpGeom = Settings.PlotGeomParams.Clone();
+            tmpVisual = Settings.PlotVisualParams.Clone();
+            //Hide close button
+            Loaded += (sender, e) =>
+            {
+                var hwnd = new WindowInteropHelper(this).Handle;
+                SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
+            };
             InitializeComponent();
+            Deactivated += (sender, e) => { Close(); };
+            FillRectangle();
             w = _w;
-            d = new VisualParamsChangedAsyncDelegate(w.OnPlotVisualParamsChanged);
             targetList.SelectionChanged += TargetList_SelectionChanged;
             targetList.SelectedIndex = 0;
             ThicknessSlider.ValueChanged += ThicknessSlider_ValueChanged;
@@ -73,11 +79,10 @@ namespace Degree_Work
             selectedThicknessTarget = (ThicknessTarget)targetThicknessList.SelectedIndex;
             switch (selectedThicknessTarget)
             {
-                case ThicknessTarget.Line: thickness = Settings.PlotVisualParams.LineStrokeThickness; break;
-                case ThicknessTarget.Vector: thickness = Settings.PlotVisualParams.ArrowStokeThickness; break;
-                case ThicknessTarget.BorderStroke: thickness = Settings.PlotVisualParams.BorderStrokeThickness; break;
+                case ThicknessTarget.Line: ThicknessSlider.Value = Settings.PlotVisualParams.LineStrokeThickness; break;
+                case ThicknessTarget.Vector: ThicknessSlider.Value = Settings.PlotVisualParams.ArrowStokeThickness; break;
+                case ThicknessTarget.BorderStroke: ThicknessSlider.Value = Settings.PlotVisualParams.BorderStrokeThickness; break;
             }
-            SetThicknessSliderValue();
             RSlider.Focus();
         }
 
@@ -102,14 +107,9 @@ namespace Degree_Work
             BSlider.Value = B;
         }
 
-        private void SetThicknessSliderValue()
-        {
-            ThicknessSlider.Value = thickness;
-        }
-
         private void FillRectangle()
         {
-            ColorRect.Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+            ColorRect.Fill = new SolidColorBrush(Color.FromRgb(R,G,B));
         }
 
         private void AssignColorValue()
@@ -123,16 +123,6 @@ namespace Degree_Work
             }
         }
 
-        private void AssignThicknessValue()
-        {
-            switch (selectedThicknessTarget)
-            {
-                case ThicknessTarget.Line: Settings.PlotVisualParams.LineStrokeThickness = thickness; break;
-                case ThicknessTarget.Vector: Settings.PlotVisualParams.ArrowStokeThickness  = thickness; break;
-                case ThicknessTarget.BorderStroke: Settings.PlotVisualParams.BorderStrokeThickness = thickness; break;
-            }
-        }
-
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             switch ((sender as Slider).Name)
@@ -141,17 +131,21 @@ namespace Degree_Work
                 case "GSlider": G = (byte)GSlider.Value; break;
                 case "BSlider": B = (byte)BSlider.Value; break;
             }
-            FillRectangle();
             AssignColorValue();
-            res = d.BeginInvoke(null, null);
+            FillRectangle();
+            w.OnPlotVisualParamsChanged();
         }
 
         private void ThicknessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            thickness = ThicknessSlider.Value;
-            ThicknessOutputTextBlock.Text = thickness.ToString(Settings.Format);
-            AssignThicknessValue();
-            res = d.BeginInvoke(null, null);
+            switch (selectedThicknessTarget)
+            {
+                case ThicknessTarget.Line: Settings.PlotVisualParams.LineStrokeThickness = ThicknessSlider.Value; break;
+                case ThicknessTarget.Vector: Settings.PlotVisualParams.ArrowStokeThickness = ThicknessSlider.Value; break;
+                case ThicknessTarget.BorderStroke: Settings.PlotVisualParams.BorderStrokeThickness = ThicknessSlider.Value; break;
+            }
+            ThicknessOutputTextBlock.Text = ThicknessSlider.Value.ToString(Settings.Format);
+            w.OnPlotVisualParamsChanged();
         }
 
         private void PlotParamsSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -165,11 +159,107 @@ namespace Degree_Work
             w.OnPlotGeomParamsChanged();
         }
 
+        private void ico_MouseEnter(object sender, MouseEventArgs e)
+        {
+            switch ((sender as Image).Name)
+            {
+                case "undoImage": undoImage.RenderTransform = new RotateTransform(-45); break;
+                case "discardImage": discardContainer.Margin = new Thickness(4,4,4,4); break;
+                case "okImage": okContainer.Margin = new Thickness(1, 1, 1, 1);  break;
+            }
+        }
 
+        private void ico_MouseLeave(object sender, MouseEventArgs e)
+        {
+            switch ((sender as Image).Name)
+            {
+                case "undoImage": undoImage.RenderTransform = new RotateTransform(0); break;
+                case "discardImage": discardContainer.Margin = new Thickness(7,7,7,7); break;
+                case "okImage": okContainer.Margin = new Thickness(4,4,4,4); break;
+            }
+        }
 
+        private void ico_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            switch ((sender as Image).Name)
+            {
+                case "undoImage":
+                    Settings.PlotGeomParams = Settings.PlotGeomParamsConstant.Clone();
+                    Settings.PlotVisualParams = Settings.PlotVisualParamsConstant.Clone();
+                    SynchronizeSlidersValuesWithSettings();
+                    break;
+                case "discardImage":
+                    Settings.PlotGeomParams = tmpGeom.Clone();
+                    Settings.PlotVisualParams = tmpVisual.Clone();
+                    SynchronizeSlidersValuesWithSettings();
+                    break;
+                case "okImage": Close(); return;
+            }
+        }
 
+        private void SynchronizeSlidersValuesWithSettings()
+        {
+            targetList.SelectionChanged -= TargetList_SelectionChanged;
+            targetThicknessList.SelectionChanged -= TargetThicknessList_SelectionChanged;
+            targetList.SelectedIndex = 0;
+            targetThicknessList.SelectedIndex = 0;
 
+            RSlider.ValueChanged -= Slider_ValueChanged;
+            GSlider.ValueChanged -= Slider_ValueChanged;
+            BSlider.ValueChanged -= Slider_ValueChanged;
+            RSlider.Value = R = Settings.PlotVisualParams.LineColor.R;
+            GSlider.Value = G = Settings.PlotVisualParams.LineColor.G;
+            BSlider.Value = B = Settings.PlotVisualParams.LineColor.B;
+            FillRectangle();
 
+            ThicknessSlider.ValueChanged -= ThicknessSlider_ValueChanged;
+            ThicknessSlider.Value = Settings.PlotVisualParams.LineStrokeThickness;
+            ThicknessOutputTextBlock.Text = ThicknessSlider.Value.ToString(Settings.Format);
+
+            hVertSlider.ValueChanged -= PlotParamsSlider_ValueChanged;
+            hHorSlider.ValueChanged -= PlotParamsSlider_ValueChanged;
+            xMaxSlider.ValueChanged -= PlotParamsSlider_ValueChanged;
+            xMinSlider.ValueChanged -= PlotParamsSlider_ValueChanged;
+            yMaxSlider.ValueChanged -= PlotParamsSlider_ValueChanged;
+            yMinSlider.ValueChanged -= PlotParamsSlider_ValueChanged;
+
+            hVertSlider.Value = Settings.PlotGeomParams.hVertical;
+            hHorSlider.Value = Settings.PlotGeomParams.MRKh;
+            xMaxSlider.Value = Settings.PlotGeomParams.XMax;
+            xMinSlider.Value = Settings.PlotGeomParams.XMin;
+            yMaxSlider.Value = Settings.PlotGeomParams.YMax;
+
+            hVertOutputTextBlock.Text = hVertSlider.Value.ToString(Settings.Format);
+            hHorOutputTextBlock.Text = hHorSlider.Value.ToString(Settings.Format);
+            xMaxOutputTextBlock.Text = xMaxSlider.Value.ToString(Settings.Format);
+            xMinOutputTextBlock.Text = xMinSlider.Value.ToString(Settings.Format);
+            yMaxOutputTextBlock.Text = yMaxSlider.Value.ToString(Settings.Format);
+            yMinOutputTextBlock.Text = yMinSlider.Value.ToString(Settings.Format);
+
+            targetList.SelectionChanged += TargetList_SelectionChanged;
+            targetThicknessList.SelectionChanged += TargetThicknessList_SelectionChanged;
+            RSlider.ValueChanged += Slider_ValueChanged;
+            GSlider.ValueChanged += Slider_ValueChanged;
+            BSlider.ValueChanged += Slider_ValueChanged;
+            ThicknessSlider.ValueChanged += ThicknessSlider_ValueChanged;
+            hVertSlider.ValueChanged += PlotParamsSlider_ValueChanged;
+            hHorSlider.ValueChanged += PlotParamsSlider_ValueChanged;
+            xMaxSlider.ValueChanged += PlotParamsSlider_ValueChanged;
+            xMinSlider.ValueChanged += PlotParamsSlider_ValueChanged;
+            yMaxSlider.ValueChanged += PlotParamsSlider_ValueChanged;
+            if (w is HalfPlane)
+            {
+                yMinSlider.Value = yMinSlider.Maximum = 0; yMinSlider.IsEnabled = false;
+            }
+            else
+            {
+                yMinSlider.Value = Settings.PlotGeomParams.YMin; yMinSlider.ValueChanged += PlotParamsSlider_ValueChanged;
+            }
+            w.OnPlotGeomParamsChanged();
+            w.OnPlotVisualParamsChanged();
+
+        }
 
     }
+
 }
