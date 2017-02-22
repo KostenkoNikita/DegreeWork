@@ -14,8 +14,15 @@
             <RowDefinition Height="0.2*"></RowDefinition>
             <RowDefinition Height="0.2*"></RowDefinition>
             <RowDefinition Height="0.2*"></RowDefinition>
-            <RowDefinition Height="0.6*"></RowDefinition>
-            <RowDefinition Height="0.7*"></RowDefinition>
+            <RowDefinition Height="0.15*"></RowDefinition>
+            <RowDefinition Height="0.15*"></RowDefinition>
+            <RowDefinition Height="0.15*"></RowDefinition>
+            <RowDefinition Height="0.15*"></RowDefinition>
+            <RowDefinition Height="0.15*"></RowDefinition>
+            <RowDefinition Height="0.15*"></RowDefinition>
+
+            <RowDefinition Height="0.2*"></RowDefinition>
+            
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -91,14 +98,72 @@
             <Border Grid.Row="0" Grid.Column="1" BorderThickness="1" BorderBrush="Black" />
         </Grid>
 
+        <TextBlock Text="Настройка параметров изображения линий тока" Grid.Row="5" Margin="1,1,1,1" TextAlignment="Center" VerticalAlignment="Center"  FontSize="16" TextDecorations="Underline"/>
 
-        <Viewbox x:Name="okContainer" Grid.Row="7" Margin="7,2,0,2">
-            <Image x:Name ="okImage"  Source="Resources\okayIcon.png" MouseEnter="ico_MouseEnter" MouseLeave="ico_MouseLeave" MouseDown="ico_MouseDown"/>
-        </Viewbox>
+        <Grid Grid.Row="6" Grid.RowSpan="6">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.7*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Расстояние между&#x0d;линиями тока:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" TextAlignment="Center"/>
+            <Slider x:Name="hVertSlider" Grid.Row="0" Grid.Column="1" Maximum="5" Minimum="0.1" VerticalAlignment="Center" Margin="10,0,10,0" SmallChange="0.1" LargeChange="1"/>
+            <TextBlock x:Name="hVertOutputTextBlock" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13"/>
+
+            <TextBlock Text="Расстояние между&#x0d;точками линии тока:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" TextAlignment="Center"/>
+            <Slider x:Name="hHorSlider" Grid.Row="1" Grid.Column="1" Maximum="0.7" Minimum="0.01" VerticalAlignment="Center" Margin="10,0,10,0" SmallChange="0.05" LargeChange="0.1"/>
+            <TextBlock x:Name="hHorOutputTextBlock" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13"/>
+
+            <TextBlock Text="Минимальное X:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" TextAlignment="Center"/>
+            <Slider x:Name="xMinSlider" Grid.Row="2" Grid.Column="1" Maximum="-10" Minimum="-400" VerticalAlignment="Center" Margin="10,0,10,0" SmallChange="1" LargeChange="10"/>
+            <TextBlock x:Name="xMinOutputTextBlock" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13"/>
+
+            <TextBlock Text="Максимальное X:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" TextAlignment="Center"/>
+            <Slider x:Name="xMaxSlider" Grid.Row="3" Grid.Column="1" Maximum="400" Minimum="10" VerticalAlignment="Center" Margin="10,0,10,0" SmallChange="1" LargeChange="10"/>
+            <TextBlock x:Name="xMaxOutputTextBlock" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13"/>
+
+            <TextBlock Text="Минимальное Y:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" TextAlignment="Center"/>
+            <Slider x:Name="yMinSlider" Grid.Row="4" Grid.Column="1" Maximum="-10" Minimum="-400" VerticalAlignment="Center" Margin="10,0,10,0" SmallChange="1" LargeChange="10"/>
+            <TextBlock x:Name="yMinOutputTextBlock" Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13"/>
+
+            <TextBlock Text="Максимальное Y:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" TextAlignment="Center"/>
+            <Slider x:Name="yMaxSlider" Grid.Row="5" Grid.Column="1" Maximum="400" Minimum="10" VerticalAlignment="Center" Margin="10,0,10,0" SmallChange="1" LargeChange="10"/>
+            <TextBlock x:Name="yMaxOutputTextBlock" Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13"/>
+
+        </Grid>
+
+
+        <Grid Grid.Row="12">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+
+            <Border Grid.Row="0" Grid.Column="0" BorderThickness="1" BorderBrush="Black" />
+            <Border Grid.Row="0" Grid.Column="1" BorderThickness="1" BorderBrush="Black" />
+            <Border Grid.Row="0" Grid.Column="2" BorderThickness="1" BorderBrush="Black" />
+        </Grid>
 
         <Border Grid.Row="0" BorderThickness="1" BorderBrush="Black" />
         <Border Grid.Row="1" Grid.RowSpan="2" BorderThickness="1" BorderBrush="Black" />
         <Border Grid.Row="3" Grid.RowSpan="1" BorderThickness="1" BorderBrush="Black" />
-
+        <Border Grid.Row="5" Grid.RowSpan="1" BorderThickness="1" BorderBrush="Black" />
+        <Border Grid.Row="6" Grid.RowSpan="6" BorderThickness="1" BorderBrush="Black" />
+        
+        <Border Grid.Row="12" Grid.RowSpan="1" BorderThickness="1" BorderBrush="Black" />
     </Grid>
 </Window>

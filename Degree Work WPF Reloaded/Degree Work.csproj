@@ -72,6 +72,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Hydrodynamics Sources\Conformal Maps\IdentityTransform.cs" />
+    <Compile Include="IStreamLinesPlotWindow.cs" />
     <Compile Include="SaveWindow.xaml.cs">
       <DependentUpon>SaveWindow.xaml</DependentUpon>
     </Compile>
@@ -79,6 +80,7 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StreamLinesPlotParams.cs" />
     <Compile Include="WindowsReferences.cs" />
     <Page Include="HalfPlaneWindow.xaml">
       <SubType>Designer</SubType>
