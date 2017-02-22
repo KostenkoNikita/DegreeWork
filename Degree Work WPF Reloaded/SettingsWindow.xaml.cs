@@ -26,7 +26,9 @@ namespace Degree_Work
         ThicknessTarget selectedThicknessTarget;
         IStreamLinesPlotWindow w;
         delegate void VisualParamsChangedAsyncDelegate();
+        delegate void GeomParamsChangedAsyncDelegate();
         VisualParamsChangedAsyncDelegate d;
+        GeomParamsChangedAsyncDelegate g;
         IAsyncResult res;
 
         byte R, G, B;
