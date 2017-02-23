@@ -16,6 +16,10 @@ namespace Degree_Work
         {
             return new DataPoint(c.Re, c.Im);
         }
+        public static double Abs(this DataPoint p)
+        {
+            return Math.Sqrt(p.X * p.X + p.Y * p.Y);
+        }
         public static complex DataPointToComplex(this DataPoint p)
         {
             return new complex(p.X, p.Y);

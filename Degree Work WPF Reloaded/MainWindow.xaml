@@ -5,22 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Degree_Work"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="300" MaxWidth="300" MaxHeight="500" ScrollViewer.VerticalScrollBarVisibility="Disabled" WindowStyle="None" BorderThickness="2" WindowStartupLocation="CenterScreen" MinHeight="500" MinWidth="300">
+        Title="MainWindow" Height="600" Width="900" MinHeight="600" MinWidth="900" ScrollViewer.VerticalScrollBarVisibility="Disabled" WindowStyle="None" BorderThickness="2" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid Margin ="0,0,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.20*"></RowDefinition>
-            <RowDefinition Height="0.25*"></RowDefinition>
-            <RowDefinition Height="0.25*"></RowDefinition>
-            <RowDefinition Height="0.15*"></RowDefinition>
-            <RowDefinition Height="0.15*"></RowDefinition>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="0.4*"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="MenuText" Grid.Column="0" Grid.Row="0" Text="Меню" TextAlignment="Justify"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" FontFamily="Times New Roman" TextDecorations="Underline" ToolTip="Kostenko Nikita ©  2017, Oles Honchar Dnipropetrovsk National University, Faculty of Mechanics and Mathematics" />
-        <TextBlock x:Name="halfPlaneButton" Grid.Column="0" Grid.Row="1" Text="Обтекание&#x0d;полуплоскости" TextAlignment="Center"  HorizontalAlignment="Stretch"  VerticalAlignment="Center"  FontSize="34" FontFamily="Times New Roman" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" MouseDown="TextBlock_MouseDown" Cursor="ScrollE"/>
-        <TextBlock x:Name="circleButton" Grid.Column="0" Grid.Row="2" Text="Обтекание&#x0d;окружности" TextAlignment="Center"  HorizontalAlignment="Stretch"  VerticalAlignment="Center"  FontSize="34" FontFamily="Times New Roman" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" MouseDown="TextBlock_MouseDown" Cursor="ScrollE"/>
-        <TextBlock x:Name="referenceButton" Grid.Column="0" Grid.Row="3" Text="Справка" TextAlignment="Center"  HorizontalAlignment="Stretch"  VerticalAlignment="Center"  FontSize="40" FontFamily="Times New Roman" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" MouseDown="TextBlock_MouseDown" Cursor="Help"/>
-        <TextBlock x:Name="exitButton" Grid.Column="0" Grid.Row="4" Text="Выход" TextAlignment="Center"  HorizontalAlignment="Stretch"  VerticalAlignment="Center" FontSize="40" FontFamily="Times New Roman" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" MouseDown="TextBlock_MouseDown"/>
+
+        <Grid Margin ="0,0,0,0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.15*"/>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.2*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Меню" Grid.Row="0" Margin="1,1,1,1" TextAlignment="Center" VerticalAlignment="Center"  FontSize="60"/>
+            
+            <Viewbox x:Name="halfplaneContainer" Margin="1,10,1,10" Grid.Row="1">
+                <Image x:Name ="halfplaneImage"  Source="Resources\menuPicHalfPlane.png" MouseEnter="Icon_MouseEnter" MouseLeave="Icon_MouseLeave" MouseDown="Icon_MouseDown"/>
+            </Viewbox>
+            <Viewbox x:Name="zoneContainer" Margin="1,10,1,10" Grid.Row="2">
+                <Image x:Name ="zoneImage"  Source="Resources\menuPicZone.png" MouseEnter="Icon_MouseEnter" MouseLeave="Icon_MouseLeave" MouseDown="Icon_MouseDown"/>
+            </Viewbox>
+            <Viewbox x:Name="circleContainer" Margin="1,10,1,10" Grid.Row="3">
+                <Image x:Name ="circleImage"  Source="Resources\menuPicCircle.png" MouseEnter="Icon_MouseEnter" MouseLeave="Icon_MouseLeave" MouseDown="Icon_MouseDown"/>
+            </Viewbox>
+            <Viewbox x:Name="exitContainer" Margin="6,6,6,6" Grid.Row="4">
+                <Image x:Name ="exitImage"  Source="Resources\exitIco.bmp" MouseEnter="Icon_MouseEnter" MouseLeave="Icon_MouseLeave" MouseDown="Icon_MouseDown"/>
+            </Viewbox>
+
+
+
+
+
+            <Border Grid.Row="0" BorderThickness="1" BorderBrush="Black"/>
+            <Border Grid.Row="1" Grid.RowSpan="3" BorderThickness="1" BorderBrush="Black"/>
+            <Border Grid.Row="4" BorderThickness="1" BorderBrush="Black"/>
+
+        </Grid>
+
     </Grid>
 </Window>

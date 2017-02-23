@@ -55,15 +55,21 @@ namespace Degree_Work
             hHorSlider.Value = Settings.PlotGeomParams.MRKh; hHorSlider.ValueChanged += PlotParamsSlider_ValueChanged;
             xMaxSlider.Value = Settings.PlotGeomParams.XMax; xMaxSlider.ValueChanged += PlotParamsSlider_ValueChanged;
             xMinSlider.Value = Settings.PlotGeomParams.XMin; xMinSlider.ValueChanged += PlotParamsSlider_ValueChanged;
-            yMaxSlider.Value = Settings.PlotGeomParams.YMax; yMaxSlider.ValueChanged += PlotParamsSlider_ValueChanged;
 
             if (w is HalfPlane)
             {
                 yMinSlider.Value = yMinSlider.Maximum = 0; yMinSlider.IsEnabled = false;
+                yMaxSlider.Value = Settings.PlotGeomParams.YMax; yMaxSlider.ValueChanged += PlotParamsSlider_ValueChanged;
+            }
+            else if (w is ZoneWindow)
+            {
+                yMinSlider.Value = yMinSlider.Maximum = -Math.PI; yMinSlider.IsEnabled = false;
+                yMaxSlider.Value = yMaxSlider.Minimum = Math.PI; yMaxSlider.IsEnabled = false;
             }
             else
             {
                 yMinSlider.Value = Settings.PlotGeomParams.YMin; yMinSlider.ValueChanged += PlotParamsSlider_ValueChanged;
+                yMaxSlider.Value = Settings.PlotGeomParams.YMax; yMaxSlider.ValueChanged += PlotParamsSlider_ValueChanged;
             }
 
             hVertOutputTextBlock.Text = hVertSlider.Value.ToString(Settings.Format);
@@ -250,10 +256,17 @@ namespace Degree_Work
             if (w is HalfPlane)
             {
                 yMinSlider.Value = yMinSlider.Maximum = 0; yMinSlider.IsEnabled = false;
+                yMaxSlider.Value = Settings.PlotGeomParams.YMax; yMaxSlider.ValueChanged += PlotParamsSlider_ValueChanged;
+            }
+            else if (w is ZoneWindow)
+            {
+                yMinSlider.Value = yMinSlider.Maximum = -Math.PI; yMinSlider.IsEnabled = false;
+                yMaxSlider.Value = yMaxSlider.Minimum = Math.PI; yMaxSlider.IsEnabled = false;
             }
             else
             {
                 yMinSlider.Value = Settings.PlotGeomParams.YMin; yMinSlider.ValueChanged += PlotParamsSlider_ValueChanged;
+                yMaxSlider.Value = Settings.PlotGeomParams.YMax; yMaxSlider.ValueChanged += PlotParamsSlider_ValueChanged;
             }
             w.OnPlotGeomParamsChanged();
             w.OnPlotVisualParamsChanged();

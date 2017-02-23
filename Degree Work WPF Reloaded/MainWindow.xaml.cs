@@ -20,26 +20,38 @@ namespace Degree_Work
             WindowsReferences.MainW = this;
         }
 
-        private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
+        private void Icon_MouseEnter(object sender, MouseEventArgs e)
         {
-            (sender as TextBlock).Foreground = Brushes.Red;
-            (sender as TextBlock).FontSize += textBlockExpansionCoefficient;
-        }
-
-        private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
-        {
-            (sender as TextBlock).Foreground = Brushes.Black;
-            (sender as TextBlock).FontSize -= textBlockExpansionCoefficient;
-        }
-
-        private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            switch ((sender as TextBlock).Name)
+            switch ((sender as Image).Name)
             {
-                case "halfPlaneButton": WindowsReferences.HalfPlainW = new HalfPlane(); WindowsReferences.HalfPlainW.Show(); Hide(); return;
-                case "circleButton": MessageBox.Show("Developer has not added this window yet", "Error", MessageBoxButton.OK, MessageBoxImage.Error); return;
-                case "referenceButton": MessageBox.Show("Developer has not added this window yet", "Error", MessageBoxButton.OK, MessageBoxImage.Error); return;
-                case "exitButton": (Process.GetCurrentProcess()).Kill(); return;
+                case "halfplaneImage": halfplaneContainer.Margin = new Thickness(0, 5, 0, 5); return;
+                case "zoneImage": zoneContainer.Margin = new Thickness(0, 5, 0, 5); return;
+                case "circleImage": circleContainer.Margin = new Thickness(0, 5, 0, 5); return;
+                case "exitImage": exitImage.Source = Settings.exitIcoSelectedSource; return;
+                default: throw new ArgumentException("undefined TextBlock name");
+            }
+        }
+
+        private void Icon_MouseLeave(object sender, MouseEventArgs e)
+        {
+            switch ((sender as Image).Name)
+            {
+                case "halfplaneImage": halfplaneContainer.Margin = new Thickness(1, 10, 1, 10); return;
+                case "zoneImage": zoneContainer.Margin = new Thickness(1, 10, 1, 10); return;
+                case "circleImage": circleContainer.Margin = new Thickness(1, 10, 1, 10); return;
+                case "exitImage": exitImage.Source = Settings.exitIcoSource; return;
+                default: throw new ArgumentException("undefined TextBlock name");
+            }
+        }
+
+        private void Icon_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            switch ((sender as Image).Name)
+            {
+                case "halfplaneImage": WindowsReferences.HalfPlainW = new HalfPlane(); WindowsReferences.HalfPlainW.Show(); Hide(); return;
+                case "zoneImage": WindowsReferences.ZoneW = new ZoneWindow(); WindowsReferences.ZoneW.Show(); Hide(); return;
+                case "circleImage": MessageBox.Show("Developer has not added this window yet", "Error", MessageBoxButton.OK, MessageBoxImage.Error); return;
+                case "exitImage": (Process.GetCurrentProcess()).Kill(); return;
                 default: throw new ArgumentException("undefined TextBlock name");
             }
         }

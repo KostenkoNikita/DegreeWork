@@ -75,6 +75,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Hydrodynamics Sources\Conformal Maps\IdentityTransform.cs" />
+    <Compile Include="Hydrodynamics Sources\Conformal Maps\Rays.cs" />
+    <Compile Include="Hydrodynamics Sources\StreamLinesBuilder.cs" />
     <Compile Include="IStreamLinesPlotWindow.cs" />
     <Compile Include="SaveWindow.xaml.cs">
       <DependentUpon>SaveWindow.xaml</DependentUpon>
@@ -85,6 +87,9 @@
     </Compile>
     <Compile Include="StreamLinesPlotParams.cs" />
     <Compile Include="WindowsReferences.cs" />
+    <Compile Include="ZoneWindow.xaml.cs">
+      <DependentUpon>ZoneWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="HalfPlaneWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -114,6 +119,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ZoneWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -176,6 +185,13 @@
     <Resource Include="Resources\discardIco.png" />
     <Resource Include="Resources\okayIcon2.png" />
     <Resource Include="Resources\undoIco.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\menuPicHalfPlane.png" />
+    <Resource Include="Resources\menuPicZone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\menuPicCircle.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

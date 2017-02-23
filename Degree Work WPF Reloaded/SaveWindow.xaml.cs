@@ -13,14 +13,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace Degree_Work
 {
     partial class SaveWindow : Window
     {
         enum PicFormat { PNG, BMP, JPG };
         PlotWindowModel viewModel;
-        int width, height;
+        int width;
+        int height => (int)(width / WidthDividedOnHeight);
         PicFormat format;
+        double WidthDividedOnHeight;
         string path;
 
         internal SaveWindow(PlotWindowModel vm)
@@ -28,8 +31,9 @@ namespace Degree_Work
             InitializeComponent();
             viewModel = vm;
             Deactivated += OnWindowDeactivated;
+            WidthDividedOnHeight = (vm.PlotModel.Width) / (vm.PlotModel.Height);
             widthSlider.Minimum = widthSlider.Value = vm.PlotModel.Width;
-            heightSlider.Minimum = heightSlider.Value = vm.PlotModel.Height;
+            heightSlider.Minimum = heightSlider.Value = vm.PlotModel.Height;           
             formatList.SelectionChanged += FormatList_SelectionChanged;
             formatList.SelectedIndex = 0;
             path = pathTextBox.Text = Directory.GetCurrentDirectory() + @"\Saved Plots\";
@@ -38,11 +42,7 @@ namespace Degree_Work
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            switch ((sender as Slider).Name)
-            {
-                case "widthSlider": width = (int)widthSlider.Value; WidthOutput(); return;
-                case "heightSlider": height = (int)heightSlider.Value; HeightOutput(); return;
-            }
+            width = (int)widthSlider.Value; WidthOutput(); HeightOutput();
         }
 
         private void FormatList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -60,6 +60,7 @@ namespace Degree_Work
         private void HeightOutput()
         {
             heightOutputTextBlock.Text = $"{height} px.";
+            heightSlider.Value = height;
         }
 
         private void ico_MouseEnter(object sender, MouseEventArgs e)
@@ -77,7 +78,6 @@ namespace Degree_Work
             if (doneImage.Source == Settings.OKIcoSource) { Close(); }
             else
             {
-                string name;
                 if (!path.EndsWith(@"\")) { path += @"\"; }
                 if (!Directory.Exists(path)) { Directory.CreateDirectory(path); }
                 Deactivated -= OnWindowDeactivated;
@@ -93,10 +93,10 @@ namespace Degree_Work
                 catch(Exception ex)
                 {
                     MessageBox.Show("Возможно, Вы некорректно указали путь.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                    Mouse.OverrideCursor = null;
                 }
                 finally
                 {
+                    Mouse.OverrideCursor = null;
                     Deactivated += OnWindowDeactivated;
                     viewModel.PlotModel.InvalidatePlot(true);
                 }

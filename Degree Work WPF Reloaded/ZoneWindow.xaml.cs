@@ -10,9 +10,9 @@ using MathCore_2_0;
 namespace Degree_Work
 {
     /// <summary>
-    /// Логика взаимодействия для HalfPlane.xaml
+    /// Логика взаимодействия для ZoneWindow.xaml
     /// </summary>
-    public partial class HalfPlane : Window, IStreamLinesPlotWindow
+    public partial class ZoneWindow : Window, IStreamLinesPlotWindow
     {
         complex CursorPosition, V;
         private PlotWindowModel viewModel;
@@ -27,19 +27,18 @@ namespace Degree_Work
                 default: return null;
             }
         }
-
-        public HalfPlane()
+        public ZoneWindow()
         {
-            viewModel = new PlotWindowModel(CanonicalDomain.HalfPlane);
+            viewModel = new PlotWindowModel(CanonicalDomain.Zone);
             DataContext = viewModel;
             InitializeComponent();
-            Settings.PlotGeomParams.hVertical = 0.5;
-            Settings.PlotGeomParamsConstant.hVertical = 0.5;
+            Settings.PlotGeomParams.hVertical = 2 * Math.PI / 16.0;
+            Settings.PlotGeomParamsConstant.hVertical = Settings.PlotGeomParams.hVertical;
             w = new Hydrodynamics_Sources.Potential(1, 0, 0, 0, new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform());
-            s = new Hydrodynamics_Sources.StreamLinesBuilderHalfPlaneAndZone(w, viewModel, CanonicalDomain.HalfPlane);
+            s = new Hydrodynamics_Sources.StreamLinesBuilderHalfPlaneAndZone(w, viewModel, CanonicalDomain.Zone);
             mapsList.SelectionChanged += MapsList_SelectionChanged;
             mapsList.Items.Add("Тождественное\nотображение");
-            mapsList.Items.Add("Поребрик");
+            mapsList.Items.Add("Плоскость с двумя\nотброшенными лучами");
             mapsList.SelectedIndex = 0;
             viewModel.PlotModel.MouseMove += PlotModel_MouseMove;
             viewModel.PlotModel.MouseDown += PlotModel_MouseDown;
@@ -49,9 +48,9 @@ namespace Degree_Work
 
         private void PlotModel_MouseDown(object sender, OxyMouseDownEventArgs e)
         {
-            if (e.ChangedButton.ToString()=="Left")
+            if (e.ChangedButton.ToString() == "Left")
             {
-                viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.abs, V, CanonicalDomain.HalfPlane);
+                viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.abs, V, CanonicalDomain.Zone);
                 PlotRefresh();
             }
         }
@@ -60,7 +59,10 @@ namespace Degree_Work
         {
             CursorPosition = viewModel.GetComplexCursorPositionOnPlot(e.Position);
             V = w.V_physical_plane(CursorPosition);
-
+            if (w.f is Hydrodynamics_Sources.Conformal_Maps.EjectedRays && CursorPosition.Re < 0)
+            {
+                V = -V;
+            }
             if (complex.IsNaN(V) || IsCursorInBorder())
             {
                 ClearTextBoxes();
@@ -81,13 +83,11 @@ namespace Degree_Work
             {
                 case 0: w.f = new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform(); break;
                 case 1:
-                    w.f = new Hydrodynamics_Sources.Conformal_Maps.Porebrick(1);
+                    w.f = new Hydrodynamics_Sources.Conformal_Maps.EjectedRays(1, 0.5);
                     break;
             }
-            Mouse.OverrideCursor = Cursors.Wait;
             ChangeParamsConfiguration();
             s.Rebuild();
-            Mouse.OverrideCursor = null;
             PlotRefresh();
         }
 
@@ -95,6 +95,7 @@ namespace Degree_Work
         {
             paramBox1.TextChanged -= paramBox1_TextChanged;
             paramBox2.TextChanged -= paramBox2_TextChanged;
+            angleSlider.ValueChanged -= angleSlider_ValueChanged;
             switch (mapsList.SelectedIndex)
             {
                 case 0:
@@ -104,15 +105,22 @@ namespace Degree_Work
                     paramBox2.Visibility = Visibility.Hidden;
                     param1.Visibility = Visibility.Hidden;
                     param2.Visibility = Visibility.Hidden;
+                    angleSlider.Visibility = Visibility.Hidden;
                     break;
                 case 1:
                     paramBox1.Text = "1";
                     paramBox1.Visibility = Visibility.Visible;
-                    paramBox2.Text = String.Empty;
-                    paramBox2.Visibility = Visibility.Hidden;
+                    paramBox2.Text = "90";
+                    paramBox2.Visibility = Visibility.Visible;
                     param1.Visibility = Visibility.Visible;
-                    param2.Visibility = Visibility.Hidden;
+                    param2.Visibility = Visibility.Visible;
+                    angleSlider.Visibility = Visibility.Visible;
+                    angleSlider.Minimum = 0;
+                    angleSlider.Maximum = 180;
+                    angleSlider.Value = 90;
                     paramBox1.TextChanged += paramBox1_TextChanged;
+                    paramBox2.TextChanged += paramBox2_TextChanged;
+                    angleSlider.ValueChanged += angleSlider_ValueChanged;
                     break;
             }
         }
@@ -124,13 +132,13 @@ namespace Degree_Work
 
         private void paramBox1_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (w.f is Hydrodynamics_Sources.Conformal_Maps.Porebrick)
+            if (w.f is Hydrodynamics_Sources.Conformal_Maps.EjectedRays)
             {
                 try
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(1));
-                    if (tmp > 0) { (w.f as Hydrodynamics_Sources.Conformal_Maps.Porebrick).h = tmp; s.Rebuild(); PlotRefresh(); }
+                    if (tmp > 0 && tmp<180) { (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedRays).l = tmp; s.Rebuild(); PlotRefresh(); }
                     else { throw new FormatException(); }
                 }
                 catch
@@ -146,16 +154,43 @@ namespace Degree_Work
 
         private void paramBox2_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //code will be added with new conformal maps
+            if (w.f is Hydrodynamics_Sources.Conformal_Maps.EjectedRays)
+            {
+                try
+                {
+                    Mouse.OverrideCursor = Cursors.Wait;
+                    double tmp = Convert.ToDouble(TemporaryString(2));
+                    if (tmp >= 0 && tmp <= 180) { (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedRays).a = tmp / 180.0; s.Rebuild(); PlotRefresh(); }
+                    else { throw new FormatException(); }
+                }
+                catch
+                {
+                    return;
+                }
+                finally
+                {
+                    Mouse.OverrideCursor = null;
+                }
+            }
+        }
+
+        private void angleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            switch (w.f.ToString())
+            {
+                case "EjectedRays":
+                    paramBox2.Text = angleSlider.Value.ToString(Settings.Format);
+                    break;
+            }
         }
 
         private void ico_MouseEnter(object sender, MouseEventArgs e)
         {
             switch ((sender as Image).Name)
             {
-                case "referImage": referContainer.Margin = new Thickness(3,3,3,3); return;
-                case "saveImage": saveContainer.Margin = new Thickness(4,4,4,4); return;
-                case "menuImage": menuContainer.Margin = new Thickness(7,7,7,7); return;
+                case "referImage": referContainer.Margin = new Thickness(3, 3, 3, 3); return;
+                case "saveImage": saveContainer.Margin = new Thickness(4, 4, 4, 4); return;
+                case "menuImage": menuContainer.Margin = new Thickness(7, 7, 7, 7); return;
                 case "exitImage": exitImage.Source = Settings.exitIcoSelectedSource; return;
             }
         }
@@ -164,9 +199,9 @@ namespace Degree_Work
         {
             switch ((sender as Image).Name)
             {
-                case "referImage": referContainer.Margin = new Thickness(7,7,7,7); return;
-                case "saveImage": saveContainer.Margin = new Thickness(9,9,9,9); return;
-                case "menuImage": menuContainer.Margin = new Thickness(13,13,13,13); return;
+                case "referImage": referContainer.Margin = new Thickness(7, 7, 7, 7); return;
+                case "saveImage": saveContainer.Margin = new Thickness(9, 9, 9, 9); return;
+                case "menuImage": menuContainer.Margin = new Thickness(13, 13, 13, 13); return;
                 case "exitImage": exitImage.Source = Settings.exitIcoSource; return;
             }
         }
@@ -200,30 +235,26 @@ namespace Degree_Work
 
         private bool IsCursorInBorder()
         {
-            if (CursorPosition.Re < -5 || CursorPosition.Re > 5 || CursorPosition.Im>5) { return true; }
+            if (CursorPosition.Re < -5 || CursorPosition.Re > 5 || CursorPosition.Im > 5) { return true; }
             switch (w.f.ToString())
             {
                 case "IdentityTransform":
-                    return CursorPosition.Im < 0;
-                case "Porebrick":
-                    return (CursorPosition.Re <= 0 && CursorPosition.Im<0) || (CursorPosition.Re > 0 && CursorPosition.Im < (w.f as Hydrodynamics_Sources.Conformal_Maps.Porebrick).h);
+                    return CursorPosition.Im < -Math.PI || CursorPosition.Im > Math.PI;
+                case "EjectedRays":
+                    return false;
                 default: return true;
             }
         }
 
         public void OnPlotGeomParamsChanged()
         {
-            Mouse.OverrideCursor = Cursors.Wait;
             s?.ChangeParams(Settings.PlotGeomParams.XMin, Settings.PlotGeomParams.XMax, Settings.PlotGeomParams.YMax, Settings.PlotGeomParams.MRKh, Settings.PlotGeomParams.hVertical);
-            Mouse.OverrideCursor = null;
             PlotRefresh();
         }
 
         public void OnPlotVisualParamsChanged()
         {
-            Mouse.OverrideCursor = Cursors.Wait;
             viewModel.ReassignVisualParams();
-            Mouse.OverrideCursor = null;
             PlotRefresh();
         }
     }
