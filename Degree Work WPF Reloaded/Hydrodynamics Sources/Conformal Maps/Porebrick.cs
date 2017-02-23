@@ -12,7 +12,7 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
 {
     class Porebrick : IConformalMapFunction
     {
-        public complex this[complex dzeta] => z(dzeta);
+        public DataPoint this[DataPoint dzeta] => z(dzeta);
 
         public double h { get; set; }
 

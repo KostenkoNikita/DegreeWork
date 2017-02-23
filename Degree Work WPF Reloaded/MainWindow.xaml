@@ -27,7 +27,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Меню" Grid.Row="0" Margin="1,1,1,1" TextAlignment="Center" VerticalAlignment="Center"  FontSize="60"/>
-            
+
             <Viewbox x:Name="halfplaneContainer" Margin="1,10,1,10" Grid.Row="1">
                 <Image x:Name ="halfplaneImage"  Source="Resources\menuPicHalfPlane.png" MouseEnter="Icon_MouseEnter" MouseLeave="Icon_MouseLeave" MouseDown="Icon_MouseDown"/>
             </Viewbox>

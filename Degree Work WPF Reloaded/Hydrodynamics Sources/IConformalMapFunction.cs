@@ -5,7 +5,7 @@ namespace Degree_Work.Hydrodynamics_Sources
 {
     interface IConformalMapFunction
     {
-        complex this[complex dzeta] { get; }
+        DataPoint this[DataPoint dzeta] { get; }
         complex z(complex dzeta);
         complex dz_ddzeta(complex dzeta);
         complex dzeta(complex Z);

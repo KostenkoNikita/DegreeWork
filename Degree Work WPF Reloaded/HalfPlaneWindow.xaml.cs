@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Diagnostics;
@@ -40,6 +39,8 @@ namespace Degree_Work
             mapsList.SelectionChanged += MapsList_SelectionChanged;
             mapsList.Items.Add("Тождественное\nотображение");
             mapsList.Items.Add("Поребрик");
+            mapsList.Items.Add("Полуплоскость с\nвыброшенным отрезком");
+            mapsList.Items.Add("Номер 81");
             mapsList.SelectedIndex = 0;
             viewModel.PlotModel.MouseMove += PlotModel_MouseMove;
             viewModel.PlotModel.MouseDown += PlotModel_MouseDown;
@@ -60,7 +61,6 @@ namespace Degree_Work
         {
             CursorPosition = viewModel.GetComplexCursorPositionOnPlot(e.Position);
             V = w.V_physical_plane(CursorPosition);
-
             if (complex.IsNaN(V) || IsCursorInBorder())
             {
                 ClearTextBoxes();
@@ -83,6 +83,12 @@ namespace Degree_Work
                 case 1:
                     w.f = new Hydrodynamics_Sources.Conformal_Maps.Porebrick(1);
                     break;
+                case 2:
+                    w.f = new Hydrodynamics_Sources.Conformal_Maps.EjectedSegment(0, 1);
+                    break;
+                case 3:
+                    w.f = new Hydrodynamics_Sources.Conformal_Maps.Number81(1);
+                    break;
             }
             Mouse.OverrideCursor = Cursors.Wait;
             ChangeParamsConfiguration();
@@ -103,7 +109,9 @@ namespace Degree_Work
                     paramBox2.Text = String.Empty;
                     paramBox2.Visibility = Visibility.Hidden;
                     param1.Visibility = Visibility.Hidden;
+                    param1.Text = string.Empty;
                     param2.Visibility = Visibility.Hidden;
+                    param2.Text = string.Empty;
                     break;
                 case 1:
                     paramBox1.Text = "1";
@@ -111,7 +119,32 @@ namespace Degree_Work
                     paramBox2.Text = String.Empty;
                     paramBox2.Visibility = Visibility.Hidden;
                     param1.Visibility = Visibility.Visible;
+                    param1.Text = "h =";
                     param2.Visibility = Visibility.Hidden;
+                    param2.Text = string.Empty;
+                    paramBox1.TextChanged += paramBox1_TextChanged;
+                    break;
+                case 2:
+                    paramBox1.Text = "0";
+                    paramBox1.Visibility = Visibility.Visible;
+                    paramBox2.Text = "1";
+                    paramBox2.Visibility = Visibility.Visible;
+                    param1.Visibility = Visibility.Visible;
+                    param1.Text = "X =";
+                    param2.Visibility = Visibility.Visible;
+                    param2.Text = "h =";
+                    paramBox1.TextChanged += paramBox1_TextChanged;
+                    paramBox2.TextChanged += paramBox2_TextChanged;
+                    break;
+                case 3:
+                    paramBox1.Text = "1";
+                    paramBox1.Visibility = Visibility.Visible;
+                    paramBox2.Text = String.Empty;
+                    paramBox2.Visibility = Visibility.Hidden;
+                    param1.Visibility = Visibility.Visible;
+                    param1.Text = "h =";
+                    param2.Visibility = Visibility.Hidden;
+                    param2.Text = string.Empty;
                     paramBox1.TextChanged += paramBox1_TextChanged;
                     break;
             }
@@ -142,11 +175,62 @@ namespace Degree_Work
                     Mouse.OverrideCursor = null;
                 }
             }
+            else if (w.f is Hydrodynamics_Sources.Conformal_Maps.EjectedSegment)
+            {
+                try
+                {
+                    Mouse.OverrideCursor = Cursors.Wait;
+                    double tmp = Convert.ToDouble(TemporaryString(1));
+                    (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedSegment).X = tmp; s.Rebuild(); PlotRefresh(); 
+                }
+                catch
+                {
+                    return;
+                }
+                finally
+                {
+                    Mouse.OverrideCursor = null;
+                }
+            }
+            else if (w.f is Hydrodynamics_Sources.Conformal_Maps.Number81)
+            {
+                try
+                {
+                    Mouse.OverrideCursor = Cursors.Wait;
+                    double tmp = Convert.ToDouble(TemporaryString(1));
+                    (w.f as Hydrodynamics_Sources.Conformal_Maps.Number81).h = tmp; s.Rebuild(); PlotRefresh();
+                }
+                catch
+                {
+                    return;
+                }
+                finally
+                {
+                    Mouse.OverrideCursor = null;
+                }
+            }
         }
 
         private void paramBox2_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //code will be added with new conformal maps
+            if (w.f is Hydrodynamics_Sources.Conformal_Maps.EjectedSegment)
+            {
+                try
+                {
+                    Mouse.OverrideCursor = Cursors.Wait;
+                    double tmp = Convert.ToDouble(TemporaryString(2));
+                    if (tmp > 0) { (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedSegment).Y = tmp; s.Rebuild(); PlotRefresh(); }
+                    else { throw new FormatException(); }
+                }
+                catch
+                {
+                    return;
+                }
+                finally
+                {
+                    Mouse.OverrideCursor = null;
+                }
+            }
         }
 
         private void ico_MouseEnter(object sender, MouseEventArgs e)
@@ -207,6 +291,10 @@ namespace Degree_Work
                     return CursorPosition.Im < 0;
                 case "Porebrick":
                     return (CursorPosition.Re <= 0 && CursorPosition.Im<0) || (CursorPosition.Re > 0 && CursorPosition.Im < (w.f as Hydrodynamics_Sources.Conformal_Maps.Porebrick).h);
+                case "EjectedSegment":
+                    return CursorPosition.Im < 0;
+                case "Number81":
+                    return CursorPosition.Im < 0 && CursorPosition.Re < 0;
                 default: return true;
             }
         }

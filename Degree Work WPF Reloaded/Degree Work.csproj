@@ -65,16 +65,19 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Hydrodynamics Sources\CircleSreamLinesBuilder.cs" />
+    <Compile Include="Hydrodynamics Sources\Conformal Maps\EjectedSegment.cs" />
     <Compile Include="Hydrodynamics Sources\Conformal Maps\IdentityTransform.cs" />
+    <Compile Include="Hydrodynamics Sources\Conformal Maps\Number81.cs" />
     <Compile Include="Hydrodynamics Sources\Conformal Maps\Rays.cs" />
     <Compile Include="Hydrodynamics Sources\StreamLinesBuilder.cs" />
     <Compile Include="IStreamLinesPlotWindow.cs" />

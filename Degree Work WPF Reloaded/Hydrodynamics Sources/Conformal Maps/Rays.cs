@@ -7,7 +7,7 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
 {
     public class EjectedRays : Hydrodynamics_Sources.IConformalMapFunction
     {
-        public complex this[complex dzeta] { get { return z(dzeta); } }
+        public DataPoint this[DataPoint dzeta] { get { return z(dzeta); } }
         
         public double l { get; set; }
 

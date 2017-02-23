@@ -23,6 +23,7 @@ namespace Degree_Work
         private TextAnnotation arrowText;
         public Annotation BorderBottom;
         PolygonAnnotation BorderPolyBottom => BorderBottom as PolygonAnnotation;
+        EllipseAnnotation EllipseBorder => BorderBottom as EllipseAnnotation;
         //BorderTop будет присутствовать только в том случае, если
         //вспомогательная плоскость имеет вид полосы
         public Annotation BorderTop;
@@ -176,12 +177,16 @@ namespace Degree_Work
             }
         }
 
-        public void RedrawArrow(double x_start, double y_start, double x_end, double y_end, CanonicalDomain domain)
+        public void RedrawArrow(double x_start, double y_start, double x_end, double y_end, complex V, CanonicalDomain domain)
         {
             if (IsMouseClickedInPolygon)
             {
                 DeleteArrow();
                 IsMouseClickedInPolygon = false;
+            }
+            else if (complex.IsNaN(V))
+            {
+                DeleteArrow(); return;
             }
             else
             {
@@ -193,12 +198,16 @@ namespace Degree_Work
             }
         }
 
-        public void RedrawArrow(DataPoint start, DataPoint end, CanonicalDomain domain)
+        public void RedrawArrow(DataPoint start, DataPoint end, complex V, CanonicalDomain domain)
         {
             if (IsMouseClickedInPolygon)
             {
                 DeleteArrow();
                 IsMouseClickedInPolygon = false;
+            }
+            else if (complex.IsNaN(V))
+            {
+                DeleteArrow(); return;
             }
             else
             {
@@ -217,14 +226,18 @@ namespace Degree_Work
                 DeleteArrow();
                 IsMouseClickedInPolygon = false;
             }
+            else if (complex.IsNaN(V))
+            {
+                DeleteArrow(); return;
+            }
             else
             {
                 if (!HasArrow()) { CreateArrow(); }
                 arrow.StartPoint = start.ComplexToDataPoint();
                 arrow.EndPoint = end.ComplexToDataPoint();
                 arrowText.Text = $"X: {start.Re.ToString(Settings.Format)}; Y: {start.Im.ToString(Settings.Format)};".Replace(',', '.') +
-                    $"\nVx: {V.Re.ToString(Settings.Format)}; Vy: {V.Im.ToString(Settings.Format)};".Replace(',','.');
-                arrowText.TextPosition = (start- (domain == CanonicalDomain.HalfPlane ? 0.6 : 1.2) * complex.i).ComplexToDataPoint();
+                    $"\nVx: {V.Re.ToString(Settings.Format)}; Vy: {V.Im.ToString(Settings.Format)};".Replace(',', '.');
+                arrowText.TextPosition = (start - (domain == CanonicalDomain.HalfPlane ? 0.6 : 1.2) * complex.i).ComplexToDataPoint();
             }
         }
 
@@ -292,6 +305,36 @@ namespace Degree_Work
                             BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
                             PlotModel.Annotations.Add(BorderPolyBottom);
                             break;
+                        case "EjectedSegment":
+                            Hydrodynamics_Sources.Conformal_Maps.EjectedSegment tmp = s.W.f as Hydrodynamics_Sources.Conformal_Maps.EjectedSegment;
+                            BorderBottom = new PolygonAnnotation();
+                            BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
+                            BorderPolyBottom.Points.Add(new DataPoint(-6, 0));
+                            BorderPolyBottom.Points.Add(new DataPoint(tmp.X - PolygonLineHalfWidth, 0));
+                            BorderPolyBottom.Points.Add(new DataPoint(tmp.X - PolygonLineHalfWidth, tmp.Y));
+                            BorderPolyBottom.Points.Add(new DataPoint(tmp.X + PolygonLineHalfWidth, tmp.Y));
+                            BorderPolyBottom.Points.Add(new DataPoint(tmp.X + PolygonLineHalfWidth, 0));
+                            BorderPolyBottom.Points.Add(new DataPoint(6, 0));
+                            BorderPolyBottom.Points.Add(new DataPoint(6, -1));
+                            BorderPolyBottom.Points.Add(new DataPoint(-6, -1));
+                            BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                            BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                            PlotModel.Annotations.Add(BorderPolyBottom);
+                            break;
+                        case "Number81":
+                            Hydrodynamics_Sources.Conformal_Maps.Number81 n = s.W.f as Hydrodynamics_Sources.Conformal_Maps.Number81;
+                            BorderBottom = new PolygonAnnotation();
+                            BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
+                            BorderPolyBottom.Points.Add(new DataPoint(-6, 0));
+                            BorderPolyBottom.Points.Add(new DataPoint(- PolygonLineHalfWidth, 0));
+                            BorderPolyBottom.Points.Add(new DataPoint(- PolygonLineHalfWidth, n.h));
+                            BorderPolyBottom.Points.Add(new DataPoint(PolygonLineHalfWidth, n.h));
+                            BorderPolyBottom.Points.Add(new DataPoint(PolygonLineHalfWidth, -1));
+                            BorderPolyBottom.Points.Add(new DataPoint(-6, -1));
+                            BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                            BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                            PlotModel.Annotations.Add(BorderPolyBottom);
+                            break;
                     }
                     BorderBottom.MouseDown += (sender, e) => { IsMouseClickedInPolygon = true; };
                     break;
@@ -344,6 +387,11 @@ namespace Degree_Work
                     BorderTop.MouseDown += (sender, e) => { IsMouseClickedInPolygon = true; };
                     break;
             }
+        }
+
+        public void DrawStagnationPoints(complex r, complex l)
+        {
+            throw new NotImplementedException();
         }
 
         public void Clear()
