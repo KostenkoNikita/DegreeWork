@@ -74,10 +74,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CircleWindow.xaml.cs">
+      <DependentUpon>CircleWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Hydrodynamics Sources\CircleSreamLinesBuilder.cs" />
+    <Compile Include="Hydrodynamics Sources\CircularStreamLinesBuilder.cs" />
     <Compile Include="Hydrodynamics Sources\Conformal Maps\EjectedSegment.cs" />
     <Compile Include="Hydrodynamics Sources\Conformal Maps\IdentityTransform.cs" />
     <Compile Include="Hydrodynamics Sources\Conformal Maps\Number81.cs" />
+    <Compile Include="Hydrodynamics Sources\Conformal Maps\Plate.cs" />
     <Compile Include="Hydrodynamics Sources\Conformal Maps\Rays.cs" />
     <Compile Include="Hydrodynamics Sources\StreamLinesBuilder.cs" />
     <Compile Include="IStreamLinesPlotWindow.cs" />
@@ -93,6 +98,10 @@
     <Compile Include="ZoneWindow.xaml.cs">
       <DependentUpon>ZoneWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="CircleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="HalfPlaneWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

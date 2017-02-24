@@ -18,6 +18,7 @@ namespace Degree_Work
     class PlotWindowModel : INotifyPropertyChanged
     {
         private const double PolygonLineHalfWidth = 0.02;
+        private const double StagnationPointsRadius = 0.05;
         private PlotModel p;
         private ArrowAnnotation arrow;
         private TextAnnotation arrowText;
@@ -126,14 +127,23 @@ namespace Degree_Work
                         continue;
                     }
                 }
-                BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
-                BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
-                BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
-                if (BorderPolyTop != null)
+                if (BorderPolyBottom != null)
                 {
-                    BorderPolyTop.Fill = Settings.PlotVisualParams.BorderFillColor;
-                    BorderPolyTop.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
-                    BorderPolyTop.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                    BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
+                    BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                    BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                    if (BorderPolyTop != null)
+                    {
+                        BorderPolyTop.Fill = Settings.PlotVisualParams.BorderFillColor;
+                        BorderPolyTop.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                        BorderPolyTop.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                    }
+                }
+                else
+                {
+                    EllipseBorder.Fill = Settings.PlotVisualParams.BorderFillColor;
+                    EllipseBorder.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                    EllipseBorder.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
                 }
                 if (arrow != null)
                 {
@@ -386,12 +396,44 @@ namespace Degree_Work
                     BorderBottom.MouseDown += (sender, e) => { IsMouseClickedInPolygon = true; };
                     BorderTop.MouseDown += (sender, e) => { IsMouseClickedInPolygon = true; };
                     break;
+                case CanonicalDomain.Circular:
+                    switch (s.W.f.ToString())
+                    {
+                        case "IdentityTransform":
+                            BorderBottom = new EllipseAnnotation();
+                            EllipseBorder.Fill = Settings.PlotVisualParams.BorderFillColor;
+                            EllipseBorder.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                            EllipseBorder.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                            EllipseBorder.X = 0;
+                            EllipseBorder.Y = 0;
+                            EllipseBorder.Width = s.W.R * 2.0;
+                            EllipseBorder.Height = s.W.R * 2.0;
+                            PlotModel.Annotations.Add(EllipseBorder);
+                            break;
+                        case "Plate":
+                            BorderBottom = new PolygonAnnotation();
+                            BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
+                            BorderPolyBottom.Points.Add(new DataPoint(-s.W.R, PolygonLineHalfWidth));
+                            BorderPolyBottom.Points.Add(new DataPoint(s.W.R, PolygonLineHalfWidth));
+                            BorderPolyBottom.Points.Add(new DataPoint(s.W.R, -PolygonLineHalfWidth));
+                            BorderPolyBottom.Points.Add(new DataPoint(-s.W.R, -PolygonLineHalfWidth));
+                            BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                            BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                            PlotModel.Annotations.Add(BorderPolyBottom);
+                            break;
+                    }
+                    BorderBottom.MouseDown += (sender, e) => { IsMouseClickedInPolygon = true; };
+                    break;
             }
         }
 
         public void DrawStagnationPoints(complex r, complex l)
         {
-            throw new NotImplementedException();
+            EllipseAnnotation rsp, lsp;
+            rsp = new EllipseAnnotation() { X = r.Re, Y = r.Im, Width = 2*StagnationPointsRadius, Height = 2*StagnationPointsRadius, Stroke = OxyColors.Black, StrokeThickness=1, Fill = OxyColors.Red };
+            lsp = new EllipseAnnotation() { X = l.Re, Y = l.Im, Width = 2 * StagnationPointsRadius, Height = 2 * StagnationPointsRadius, Stroke = OxyColors.Black, StrokeThickness = 1, Fill = OxyColors.Red };
+            PlotModel.Annotations.Add(rsp);
+            PlotModel.Annotations.Add(lsp);
         }
 
         public void Clear()

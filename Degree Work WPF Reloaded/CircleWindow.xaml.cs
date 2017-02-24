@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Diagnostics;
@@ -10,35 +9,36 @@ using MathCore_2_0;
 namespace Degree_Work
 {
     /// <summary>
-    /// Логика взаимодействия для ZoneWindow.xaml
+    /// Логика взаимодействия для CircleWindow.xaml
     /// </summary>
-    public partial class ZoneWindow : Window, IStreamLinesPlotWindow
+    public partial class CircleWindow : Window, IStreamLinesPlotWindow
     {
         complex CursorPosition, V;
         private PlotWindowModel viewModel;
         Hydrodynamics_Sources.Potential w;
         Hydrodynamics_Sources.StreamLinesBuilder s;
+
         private string TemporaryString(int num)
         {
             switch (num)
             {
                 case 1: return paramBox1.Text.Trim(' ').Replace('.', ',');
-                case 2: return paramBox2.Text.Trim(' ').Replace('.', ',');
                 default: return null;
             }
         }
-        public ZoneWindow()
+
+        public CircleWindow()
         {
-            viewModel = new PlotWindowModel(CanonicalDomain.Zone);
+            viewModel = new PlotWindowModel(CanonicalDomain.Circular);
             DataContext = viewModel;
             InitializeComponent();
-            Settings.PlotGeomParams.hVertical = 2 * Math.PI / 16.0;
-            Settings.PlotGeomParamsConstant.hVertical = Settings.PlotGeomParams.hVertical;
-            w = new Hydrodynamics_Sources.Potential(1, 0, 0, 0, new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform());
-            s = new Hydrodynamics_Sources.StreamLinesBuilderHalfPlaneAndZone(w, viewModel, CanonicalDomain.Zone);
+            Settings.PlotGeomParams.hVertical = 0.5;
+            Settings.PlotGeomParamsConstant.hVertical = 0.5;
+            w = new Hydrodynamics_Sources.Potential(1, 0, 1, 0, new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform());
+            s = new Hydrodynamics_Sources.StreamLinesBuilderCircle(w, viewModel);
             mapsList.SelectionChanged += MapsList_SelectionChanged;
-            mapsList.Items.Add("Тождественное\nотображение");
-            mapsList.Items.Add("Плоскость с двумя\nотброшенными лучами");
+            mapsList.Items.Add("Тождественное отображение");
+            mapsList.Items.Add("Обтекание пластины");
             mapsList.SelectedIndex = 0;
             viewModel.PlotModel.MouseMove += PlotModel_MouseMove;
             viewModel.PlotModel.MouseDown += PlotModel_MouseDown;
@@ -50,7 +50,7 @@ namespace Degree_Work
         {
             if (e.ChangedButton.ToString() == "Left")
             {
-                viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.abs, V, CanonicalDomain.Zone);
+                viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.abs, V, CanonicalDomain.Circular);
                 PlotRefresh();
             }
         }
@@ -59,10 +59,6 @@ namespace Degree_Work
         {
             CursorPosition = viewModel.GetComplexCursorPositionOnPlot(e.Position);
             V = w.V_physical_plane(CursorPosition);
-            if (w.f is Hydrodynamics_Sources.Conformal_Maps.EjectedRays && CursorPosition.Re < 0)
-            {
-                V = -V;
-            }
             if (complex.IsNaN(V) || IsCursorInBorder())
             {
                 ClearTextBoxes();
@@ -82,44 +78,37 @@ namespace Degree_Work
             switch (mapsList.SelectedIndex)
             {
                 case 0: w.f = new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform(); break;
-                case 1:
-                    w.f = new Hydrodynamics_Sources.Conformal_Maps.EjectedRays(1, 0.5);
-                    break;
+                case 1: w.f = new Hydrodynamics_Sources.Conformal_Maps.Plate(); break;
             }
+            Mouse.OverrideCursor = Cursors.Wait;
             ChangeParamsConfiguration();
             s.Rebuild();
+            Mouse.OverrideCursor = null;
             PlotRefresh();
         }
 
         private void ChangeParamsConfiguration()
         {
             paramBox1.TextChanged -= paramBox1_TextChanged;
-            paramBox2.TextChanged -= paramBox2_TextChanged;
             angleSlider.ValueChanged -= angleSlider_ValueChanged;
             switch (mapsList.SelectedIndex)
             {
                 case 0:
-                    paramBox1.Text = String.Empty;
-                    paramBox1.Visibility = Visibility.Hidden;
-                    paramBox2.Text = String.Empty;
-                    paramBox2.Visibility = Visibility.Hidden;
-                    param1.Visibility = Visibility.Hidden;
-                    param2.Visibility = Visibility.Hidden;
-                    angleSlider.Visibility = Visibility.Hidden;
+                    paramBox1.Text = w.AlphaDegrees.ToString();
+                    paramBox1.Visibility = Visibility.Visible;
+                    param1.Visibility = Visibility.Visible;
+                    param1.Text = "α =";
+                    angleSlider.Visibility = Visibility.Visible;
+                    paramBox1.TextChanged += paramBox1_TextChanged;
+                    angleSlider.ValueChanged += angleSlider_ValueChanged;
                     break;
                 case 1:
-                    paramBox1.Text = "1";
+                    paramBox1.Text = w.AlphaDegrees.ToString();
                     paramBox1.Visibility = Visibility.Visible;
-                    paramBox2.Text = "90";
-                    paramBox2.Visibility = Visibility.Visible;
                     param1.Visibility = Visibility.Visible;
-                    param2.Visibility = Visibility.Visible;
+                    param1.Text = "α =";
                     angleSlider.Visibility = Visibility.Visible;
-                    angleSlider.Minimum = 0;
-                    angleSlider.Maximum = 180;
-                    angleSlider.Value = 90;
                     paramBox1.TextChanged += paramBox1_TextChanged;
-                    paramBox2.TextChanged += paramBox2_TextChanged;
                     angleSlider.ValueChanged += angleSlider_ValueChanged;
                     break;
             }
@@ -130,15 +119,28 @@ namespace Degree_Work
             plot.InvalidatePlot(true);
         }
 
+        private void angleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            switch (w.f.ToString())
+            {
+                case "IdentityTransform":
+                    paramBox1.Text = angleSlider.Value.ToString(Settings.Format);
+                    break;
+                case "Plate":
+                    paramBox1.Text = angleSlider.Value.ToString(Settings.Format);
+                    break;
+            }
+        }
+
         private void paramBox1_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (w.f is Hydrodynamics_Sources.Conformal_Maps.EjectedRays)
+            if (w.f is Hydrodynamics_Sources.Conformal_Maps.IdentityTransform || w.f is Hydrodynamics_Sources.Conformal_Maps.Plate)
             {
                 try
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(1));
-                    if (tmp > 0 && tmp<180) { (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedRays).l = tmp; s.Rebuild(); PlotRefresh(); }
+                    if (tmp >=-90 && tmp<=90) { w.AlphaDegrees = tmp; s.Rebuild(); PlotRefresh(); }
                     else { throw new FormatException(); }
                 }
                 catch
@@ -154,34 +156,7 @@ namespace Degree_Work
 
         private void paramBox2_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (w.f is Hydrodynamics_Sources.Conformal_Maps.EjectedRays)
-            {
-                try
-                {
-                    Mouse.OverrideCursor = Cursors.Wait;
-                    double tmp = Convert.ToDouble(TemporaryString(2));
-                    if (tmp >= 0 && tmp <= 180) { (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedRays).a = tmp / 180.0; s.Rebuild(); PlotRefresh(); }
-                    else { throw new FormatException(); }
-                }
-                catch
-                {
-                    return;
-                }
-                finally
-                {
-                    Mouse.OverrideCursor = null;
-                }
-            }
-        }
 
-        private void angleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            switch (w.f.ToString())
-            {
-                case "EjectedRays":
-                    paramBox2.Text = angleSlider.Value.ToString(Settings.Format);
-                    break;
-            }
         }
 
         private void ico_MouseEnter(object sender, MouseEventArgs e)
@@ -239,8 +214,8 @@ namespace Degree_Work
             switch (w.f.ToString())
             {
                 case "IdentityTransform":
-                    return CursorPosition.Im < -Math.PI || CursorPosition.Im > Math.PI;
-                case "EjectedRays":
+                    return CursorPosition.abs < w.R;
+                case "Plate":
                     return false;
                 default: return true;
             }
@@ -248,13 +223,17 @@ namespace Degree_Work
 
         public void OnPlotGeomParamsChanged()
         {
+            Mouse.OverrideCursor = Cursors.Wait;
             s?.ChangeParams(Settings.PlotGeomParams.XMin, Settings.PlotGeomParams.XMax, Settings.PlotGeomParams.YMax, Settings.PlotGeomParams.MRKh, Settings.PlotGeomParams.hVertical);
+            Mouse.OverrideCursor = null;
             PlotRefresh();
         }
 
         public void OnPlotVisualParamsChanged()
         {
+            Mouse.OverrideCursor = Cursors.Wait;
             viewModel.ReassignVisualParams();
+            Mouse.OverrideCursor = null;
             PlotRefresh();
         }
     }

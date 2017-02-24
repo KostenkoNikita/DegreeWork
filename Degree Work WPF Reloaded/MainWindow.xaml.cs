@@ -50,7 +50,7 @@ namespace Degree_Work
             {
                 case "halfplaneImage": WindowsReferences.HalfPlainW = new HalfPlane(); WindowsReferences.HalfPlainW.Show(); Hide(); return;
                 case "zoneImage": WindowsReferences.ZoneW = new ZoneWindow(); WindowsReferences.ZoneW.Show(); Hide(); return;
-                case "circleImage": MessageBox.Show("Developer has not added this window yet", "Error", MessageBoxButton.OK, MessageBoxImage.Error); return;
+                case "circleImage": WindowsReferences.CircleW = new CircleWindow(); WindowsReferences.CircleW.Show(); Hide(); return;
                 case "exitImage": (Process.GetCurrentProcess()).Kill(); return;
                 default: throw new ArgumentException("undefined TextBlock name");
             }

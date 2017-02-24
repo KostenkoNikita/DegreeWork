@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MathCore_2_0;
 using OxyPlot;
-using OxyPlot.Series;
-using static MathCore_2_0.math;
-using static MathCore_2_0.complex;
 
 namespace Degree_Work.Hydrodynamics_Sources
 {
@@ -16,7 +12,7 @@ namespace Degree_Work.Hydrodynamics_Sources
         IniFillAsync async_base;
         TransformationAsync async_transform;
         FullBuildAsync async_full;
-        List<IAsyncResult> res_list;
+
         public StreamLinesBuilderHalfPlaneAndZone(Potential w, PlotWindowModel g, CanonicalDomain domain)
         {
             this.w = w;
@@ -42,7 +38,7 @@ namespace Degree_Work.Hydrodynamics_Sources
             StreamLinesBase = new List<List<DataPoint>>();
             InitialBuild();
         }
-        public void ChangeParams(double? x_min, double? x_max, double? y_max, double? h_horizontal, double? h_vertical)
+        public override void ChangeParams(double? x_min, double? x_max, double? y_max, double? h_horizontal, double? h_vertical)
         {
             this.x_min = x_min ?? this.x_min;
             this.x_max = x_max ?? this.x_max;
@@ -51,17 +47,18 @@ namespace Degree_Work.Hydrodynamics_Sources
             this.h = h_vertical ?? this.h;
             FullRebuild();
         }
-        void InitialBuild()
-        {
-            g.Clear();
-            FindBaseStreamLines();
-        }
-        public void Rebuild()
+        public override void Rebuild()
         {
             g.Clear();
             StreamLines = new List<List<DataPoint>>();
             g.DrawBorder(this);
             Transform();
+        }
+
+        void InitialBuild()
+        {
+            g.Clear();
+            FindBaseStreamLines();
         }
         void FullRebuild()
         {

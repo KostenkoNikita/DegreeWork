@@ -16,7 +16,7 @@ namespace Degree_Work
         complex CursorPosition, V;
         private PlotWindowModel viewModel;
         Hydrodynamics_Sources.Potential w;
-        Hydrodynamics_Sources.StreamLinesBuilderHalfPlaneAndZone s;
+        Hydrodynamics_Sources.StreamLinesBuilder s;
         private string TemporaryString(int num)
         {
             switch (num)
