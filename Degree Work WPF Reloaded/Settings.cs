@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using MathCore_2_0;
 using OxyPlot;
 
 
@@ -12,31 +13,8 @@ namespace Degree_Work
         public static StreamLinesPlotVisualParams PlotVisualParams;
         public static readonly StreamLinesPlotGeomParams PlotGeomParamsConstant;
         public static readonly StreamLinesPlotVisualParams PlotVisualParamsConstant;
-        public static UInt16 Precision
-        {
-            get
-            {
-                return _precision;
-            }
-            set
-            {
-                _precision = value;
-                Format = "0.";
-                for (int i = 1; i <= _precision; i++)
-                {
-                    Format += "#";
-                }
-            }
-        }
-        public static string Format = "0.####"; 
-        static UInt16 _precision = 4;
-        static double precisionf
-        {
-            get
-            {
-                return Math.Pow(10, -_precision);
-            }
-        }
+        public static ushort Precision { get { return precision.decimals; } set { precision.decimals = value; } }
+        public static string Format => precision.format;
         internal static ImageSource exitIcoSource;
         internal static ImageSource exitIcoSelectedSource;
         internal static ImageSource saveIcoSource;

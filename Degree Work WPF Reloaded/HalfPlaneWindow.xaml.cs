@@ -35,12 +35,13 @@ namespace Degree_Work
             Settings.PlotGeomParams.hVertical = 0.5;
             Settings.PlotGeomParamsConstant.hVertical = 0.5;
             w = new Hydrodynamics_Sources.Potential(1, 0, 0, 0, new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform());
-            s = new Hydrodynamics_Sources.StreamLinesBuilderHalfPlaneAndZone(w, viewModel, CanonicalDomain.HalfPlane);
+            s = new Hydrodynamics_Sources.HalfPlaneAndZoneStreamLinesBuilder(w, viewModel, CanonicalDomain.HalfPlane);
             mapsList.SelectionChanged += MapsList_SelectionChanged;
             mapsList.Items.Add("Тождественное\nотображение");
             mapsList.Items.Add("Поребрик");
             mapsList.Items.Add("Полуплоскость с\nвыброшенным отрезком");
             mapsList.Items.Add("Номер 81");
+            mapsList.Items.Add("Номер 79");
             mapsList.SelectedIndex = 0;
             viewModel.PlotModel.MouseMove += PlotModel_MouseMove;
             viewModel.PlotModel.MouseDown += PlotModel_MouseDown;
@@ -77,22 +78,36 @@ namespace Degree_Work
 
         private void MapsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            Mouse.OverrideCursor = Cursors.Wait;
             switch (mapsList.SelectedIndex)
             {
-                case 0: w.f = new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform(); break;
+                case 0:
+                    w.f = new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform();
+                    s.Rebuild();
+                    break;
                 case 1:
                     w.f = new Hydrodynamics_Sources.Conformal_Maps.Porebrick(1);
+                    s.Rebuild();
                     break;
                 case 2:
                     w.f = new Hydrodynamics_Sources.Conformal_Maps.EjectedSegment(0, 1);
+                    s.Rebuild();
                     break;
                 case 3:
                     w.f = new Hydrodynamics_Sources.Conformal_Maps.Number81(1);
+                    s.Rebuild();
+                    break;
+                case 4:
+                    w.f = new Hydrodynamics_Sources.Conformal_Maps.Number79(1);
+                    Settings.PlotGeomParams.XMax = 65;
+                    Settings.PlotGeomParams.XMin = -20;
+                    Settings.PlotGeomParams.YMax = 70;
+                    Settings.PlotGeomParams.MRKh = 0.1;
+                    Settings.PlotGeomParams.hVertical = 0.3;
+                    s.ChangeParams(Settings.PlotGeomParams.XMin, Settings.PlotGeomParams.XMax, Settings.PlotGeomParams.YMax, Settings.PlotGeomParams.MRKh, Settings.PlotGeomParams.hVertical);
                     break;
             }
-            Mouse.OverrideCursor = Cursors.Wait;
             ChangeParamsConfiguration();
-            s.Rebuild();
             Mouse.OverrideCursor = null;
             PlotRefresh();
         }
@@ -137,6 +152,17 @@ namespace Degree_Work
                     paramBox2.TextChanged += paramBox2_TextChanged;
                     break;
                 case 3:
+                    paramBox1.Text = "1";
+                    paramBox1.Visibility = Visibility.Visible;
+                    paramBox2.Text = String.Empty;
+                    paramBox2.Visibility = Visibility.Hidden;
+                    param1.Visibility = Visibility.Visible;
+                    param1.Text = "h =";
+                    param2.Visibility = Visibility.Hidden;
+                    param2.Text = string.Empty;
+                    paramBox1.TextChanged += paramBox1_TextChanged;
+                    break;
+                case 4:
                     paramBox1.Text = "1";
                     paramBox1.Visibility = Visibility.Visible;
                     paramBox2.Text = String.Empty;
@@ -199,6 +225,23 @@ namespace Degree_Work
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(1));
                     (w.f as Hydrodynamics_Sources.Conformal_Maps.Number81).h = tmp; s.Rebuild(); PlotRefresh();
+                }
+                catch
+                {
+                    return;
+                }
+                finally
+                {
+                    Mouse.OverrideCursor = null;
+                }
+            }
+            else if (w.f is Hydrodynamics_Sources.Conformal_Maps.Number79)
+            {
+                try
+                {
+                    Mouse.OverrideCursor = Cursors.Wait;
+                    double tmp = Convert.ToDouble(TemporaryString(1));
+                    (w.f as Hydrodynamics_Sources.Conformal_Maps.Number79).h = tmp; s.Rebuild(); PlotRefresh();
                 }
                 catch
                 {
@@ -295,6 +338,8 @@ namespace Degree_Work
                     return CursorPosition.Im < 0;
                 case "Number81":
                     return CursorPosition.Im < 0 && CursorPosition.Re < 0;
+                case "Number79":
+                    return (CursorPosition.Re<0 && CursorPosition.Im>((Hydrodynamics_Sources.Conformal_Maps.Number79)w.f).h+1) || (CursorPosition.Re > 0 && (CursorPosition.Im > ((Hydrodynamics_Sources.Conformal_Maps.Number79)w.f).h + 1 || CursorPosition.Im < 1));
                 default: return true;
             }
         }

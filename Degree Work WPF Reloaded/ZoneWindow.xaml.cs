@@ -35,7 +35,7 @@ namespace Degree_Work
             Settings.PlotGeomParams.hVertical = 2 * Math.PI / 16.0;
             Settings.PlotGeomParamsConstant.hVertical = Settings.PlotGeomParams.hVertical;
             w = new Hydrodynamics_Sources.Potential(1, 0, 0, 0, new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform());
-            s = new Hydrodynamics_Sources.StreamLinesBuilderHalfPlaneAndZone(w, viewModel, CanonicalDomain.Zone);
+            s = new Hydrodynamics_Sources.HalfPlaneAndZoneStreamLinesBuilder(w, viewModel, CanonicalDomain.Zone);
             mapsList.SelectionChanged += MapsList_SelectionChanged;
             mapsList.Items.Add("Тождественное\nотображение");
             mapsList.Items.Add("Плоскость с двумя\nотброшенными лучами");

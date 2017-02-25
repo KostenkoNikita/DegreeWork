@@ -4,7 +4,7 @@ using OxyPlot;
 
 namespace Degree_Work.Hydrodynamics_Sources
 {
-    class StreamLinesBuilderHalfPlaneAndZone : StreamLinesBuilder
+    class HalfPlaneAndZoneStreamLinesBuilder : StreamLinesBuilder
     {
         delegate void IniFillAsync(List<DataPoint> Base, double y);
         delegate void TransformationAsync(List<DataPoint> Base, List<DataPoint> Lines);
@@ -13,29 +13,8 @@ namespace Degree_Work.Hydrodynamics_Sources
         TransformationAsync async_transform;
         FullBuildAsync async_full;
 
-        public StreamLinesBuilderHalfPlaneAndZone(Potential w, PlotWindowModel g, CanonicalDomain domain)
+        public HalfPlaneAndZoneStreamLinesBuilder(Potential w, PlotWindowModel g, CanonicalDomain domain) : base(w,g,domain)
         {
-            this.w = w;
-            function = this.w.f;
-            this.g = g;
-            this.x_min = Settings.PlotGeomParams.XMin;
-            this.x_max = Settings.PlotGeomParams.XMax;
-            this.domain = domain;
-            switch (domain)
-            {
-                case CanonicalDomain.HalfPlane:
-                    y_max = Settings.PlotGeomParams.YMax;
-                    y_min = 0;
-                    break;
-                case CanonicalDomain.Zone:
-                    y_max = Math.PI;
-                    y_min = -Math.PI;
-                    break;
-                default: throw new ArgumentException();
-            }
-            h_mrk = Settings.PlotGeomParams.MRKh;
-            h = Settings.PlotGeomParams.hVertical;
-            StreamLinesBase = new List<List<DataPoint>>();
             InitialBuild();
         }
         public override void ChangeParams(double? x_min, double? x_max, double? y_max, double? h_horizontal, double? h_vertical)

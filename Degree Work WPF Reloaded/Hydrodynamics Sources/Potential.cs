@@ -1,5 +1,6 @@
 ﻿#pragma warning disable 169
 #pragma warning disable 168
+//#define HELP_FOR_GROUP_LEADER
 
 using System;
 using MathCore_2_0;
@@ -130,4 +131,61 @@ namespace Degree_Work.Hydrodynamics_Sources
             return $"V={_V_inf},alpha={_alpha},R={_R},G={_G}";
         }
     }
+
+#if HELP_FOR_GROUP_LEADER
+    class PotentialHelp
+    {
+        public complex this[complex dzeta] { get { return W(dzeta); } }
+
+        public double V0, Omega, a;
+        IConformalMapFunction _f;
+
+        complex tmp;
+        public PotentialHelp(double V0, double Omega, double a)
+        {
+            this.V0 = V0;
+            this.Omega = Omega;
+            this.a = a;
+            _f = new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform();
+        }
+        public double phi(complex z)
+        {
+            return this[z].Re;
+        }
+        public double psi(complex z)
+        {
+            return this[z].Im;
+        }
+        public complex V(complex dzeta)
+        {
+            return dW_ddzeta(dzeta).conjugate;
+        }
+        public complex V_physical_plane(complex z)
+        {
+            return new complex();
+        }
+        public double V_ksi(complex dzeta)
+        {
+            return dW_ddzeta(dzeta).conjugate.Re;
+        }
+        public double V_eta(complex dzeta)
+        {
+            return dW_ddzeta(dzeta).conjugate.Im;
+        }
+        public complex W(complex dzeta)
+        {
+            return -(1.0 / pi) * (V0 * ((dzeta - 1) * ln(dzeta - a) - (dzeta + a) * ln(dzeta + a) + 2 * a)
+                + (Omega / 4.0) * (2 * (dzeta - a) * (dzeta + a) * (ln(dzeta - a) - ln(dzeta + a)) + 3 * a * a - 4 * a * dzeta)
+                + 2 * Omega * a * dzeta);
+        }
+        public complex dW_ddzeta(complex dzeta)
+        {
+            return -(V0 * (ln(dzeta - a) - ln(dzeta + a)) + Omega * (0.2e1 * (dzeta + a) * (ln(dzeta - a) - ln(dzeta + a)) + 0.2e1 * (dzeta - a) * (ln(dzeta - a) - ln(dzeta + a)) + 0.2e1 * (dzeta - a) * (dzeta + a) * (0.1e1 / (dzeta - a) - 0.1e1 / (dzeta + a))) / 0.4e1) / Math.PI;
+        }
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+    }
+#endif
 }

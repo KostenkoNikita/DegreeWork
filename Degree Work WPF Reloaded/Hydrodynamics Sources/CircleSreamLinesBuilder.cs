@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define HELP_FOR_GROUP_LEADER
+
+using System;
 using System.Collections.Generic;
 using MathCore_2_0;
 using static MathCore_2_0.complex;
@@ -7,7 +9,7 @@ using OxyPlot;
 
 namespace Degree_Work.Hydrodynamics_Sources
 {
-    class StreamLinesBuilderCircle : CircularStreamLinesBuilder
+    class CircleStreamLinesBuilder : StreamLinesBuilderCircle
     {
         delegate void IniFillAsync(List<DataPoint> BasePlus, List<DataPoint> ListMinus, double y);
         delegate void TransformationAsync(List<DataPoint> Base, List<DataPoint> Lines, complex angleMult);
@@ -16,18 +18,8 @@ namespace Degree_Work.Hydrodynamics_Sources
         TransformationAsync async_transform;
         FullBuildAsync async_full;
 
-        public StreamLinesBuilderCircle(Potential w, PlotWindowModel g)
+        public CircleStreamLinesBuilder(Potential w, PlotWindowModel g) : base(w,g,CanonicalDomain.Circular)
         {
-            this.w = w;
-            this.g = g;
-            h = Settings.PlotGeomParams.hVertical;
-            h_mrk = Settings.PlotGeomParams.MRKh;
-            x_min = Settings.PlotGeomParams.XMin;
-            x_max = Settings.PlotGeomParams.XMax;
-            y_min = Settings.PlotGeomParams.YMin;
-            y_max = Settings.PlotGeomParams.YMax;
-            domain = CanonicalDomain.Circular;
-            function = this.w.f;
             InitialBuild();
         }
         public override void ChangeParams(double? x_min, double? x_max, double? y_max, double? h_horizontal, double? h_vertical)
@@ -195,4 +187,154 @@ namespace Degree_Work.Hydrodynamics_Sources
             g.DrawCurve(lm);
         }
     }
+
+#if HELP_FOR_GROUP_LEADER
+    class StreamLinesBuilderForGroupLeader : StreamLinesBuilder
+    {
+        delegate void IniFillAsync(List<DataPoint> Base, double x);
+        delegate void TransformationAsync(List<DataPoint> Base, List<DataPoint> Lines);
+        delegate void FullBuildAsync(List<DataPoint> Base, List<DataPoint> Lines, double x);
+        IniFillAsync async_base;
+        TransformationAsync async_transform;
+        FullBuildAsync async_full;
+        PotentialHelp w;
+
+        public StreamLinesBuilderForGroupLeader(PotentialHelp w, PlotWindowModel g)
+        {
+            this.w = w;
+            function = new Conformal_Maps.IdentityTransform();
+            this.g = g;
+            this.x_min = -w.a;
+            this.x_max = w.a;
+            y_max = Settings.PlotGeomParams.YMax;
+            y_min = 0;
+            h_mrk = Settings.PlotGeomParams.MRKh;
+            h = Settings.PlotGeomParams.hVertical;
+            StreamLinesBase = new List<List<DataPoint>>();
+            InitialBuild();
+        }
+        public override void ChangeParams(double? x_min, double? x_max, double? y_max, double? h_horizontal, double? h_vertical)
+        {
+            this.x_min = -w.a;
+            this.x_max = w.a;
+            this.y_max = y_max ?? this.y_max;
+            this.h_mrk = h_horizontal ?? this.h_mrk;
+            this.h = h_vertical ?? this.h;
+            FullRebuild();
+        }
+        public override void Rebuild()
+        {
+            g.Clear();
+            StreamLines = new List<List<DataPoint>>();
+            //g.DrawBorder(this);
+            Transform();
+        }
+
+        void InitialBuild()
+        {
+            g.Clear();
+            FindBaseStreamLines();
+        }
+        void FullRebuild()
+        {
+            g.Clear();
+            StreamLines = new List<List<DataPoint>>();
+            StreamLinesBase = new List<List<DataPoint>>();
+            //g.DrawBorder(this);
+            FindAllStreamLines();
+        }
+        void FindBaseStreamLines()
+        {
+            async_base = new IniFillAsync(AsyncIniFill);
+            res_list = new List<IAsyncResult>();
+            for (double x = x_min + h; x <= x_max - h; x += h)
+            {
+                StreamLinesBase.Add(new List<DataPoint>());
+                res_list.Add(async_base.BeginInvoke(StreamLinesBase[StreamLinesBase.Count - 1], x, null, null));
+            }
+            while (!res_list.IsAllThreadsCompleted()) { }
+            res_list = null;
+        }
+        void Transform()
+        {
+            async_transform = new TransformationAsync(AsyncTransform);
+            res_list = new List<IAsyncResult>();
+            foreach (List<DataPoint> sllb in StreamLinesBase)
+            {
+                StreamLines.Add(new List<DataPoint>());
+                res_list.Add(async_transform.BeginInvoke(sllb, StreamLines[StreamLines.Count - 1], null, null));
+            }
+            while (!res_list.IsAllThreadsCompleted()) { }
+            res_list = null;
+        }
+        void FindAllStreamLines()
+        {
+            async_full = new FullBuildAsync(AsyncFullBuild);
+            res_list = new List<IAsyncResult>();
+            for (double y = y_min + h; y <= y_max - h; y += h)
+            {
+                StreamLines.Add(new List<DataPoint>());
+                StreamLinesBase.Add(new List<DataPoint>());
+                res_list.Add(async_full.BeginInvoke(StreamLinesBase[StreamLinesBase.Count - 1], StreamLines[StreamLines.Count - 1], y, null, null));
+            }
+            while (!res_list.IsAllThreadsCompleted()) { }
+            res_list = null;
+        }
+
+        double f(double X, double Y) => w.V_ksi(new complex(X, Y)) / w.V_eta(new complex(X, Y));
+
+        void AsyncIniFill(List<DataPoint> b, double x)
+        {
+            double y, x_new, y_new, k1, k2, k3, k4;
+            x_new = x;
+            y_new = y_min;
+            b.Add(new DataPoint(x_new, y_new));
+            while (y_new < y_max)
+            {
+                x = x_new;
+                y = y_new;
+                k1 = f(x, y);
+                k2 = f(x + (h_mrk * k1) / 2, y + h_mrk / 2);
+                k3 = f(x + (h_mrk * k2) / 2, y + h_mrk / 2);
+                k4 = f(x + (h_mrk * k3), y + h_mrk);
+                y_new = y + h_mrk;
+                x_new = x + (h_mrk / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
+                b.Add(new DataPoint(x_new, y_new));
+            }
+        }
+        void AsyncTransform(List<DataPoint> b, List<DataPoint> l)
+        {
+            DataPoint tmp;
+            foreach (DataPoint bp in b)
+            {
+                tmp = function.z(bp);
+                if (tmp.Abs() < 20) { l.Add(tmp); }
+            }
+            g.DrawCurve(l);
+        }
+        void AsyncFullBuild(List<DataPoint> b, List<DataPoint> l, double x)
+        {
+            double y, x_new, y_new, k1, k2, k3, k4;
+            x_new = x;
+            y_new = y_min;
+            b.Add(new DataPoint(x_new, y_new));
+            l.Add(function.z(b[b.Count - 1]));
+            while (y_new < y_max)
+            {
+                x = x_new;
+                y = y_new;
+                k1 = f(x, y);
+                k2 = f(x + (h_mrk * k1) / 2, y + h_mrk / 2);
+                k3 = f(x + (h_mrk * k2) / 2, y + h_mrk / 2);
+                k4 = f(x + (h_mrk * k3), y + h_mrk);
+                y_new = y + h_mrk;
+                x_new = x + (h_mrk / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
+                b.Add(new DataPoint(x_new, y_new));
+                l.Add(function.z(b[b.Count - 1]));
+            }
+        }
+
+    }
+#endif
+
 }

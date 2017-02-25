@@ -5,7 +5,7 @@ using OxyPlot;
 
 namespace Degree_Work.Hydrodynamics_Sources
 {
-    abstract class CircularStreamLinesBuilder : StreamLinesBuilder
+    abstract class StreamLinesBuilderCircle : StreamLinesBuilder
     {
         protected List<DataPoint> LeftSpecialStreamLine;
         protected List<DataPoint> RightSpecialStreamLine;
@@ -51,6 +51,9 @@ namespace Degree_Work.Hydrodynamics_Sources
             double[,] resultMatrix = Multiply(RotationMatrix(alpha), ReflectionMatrix());
             resultMatrix = Multiply(resultMatrix, RotationMatrix(-1 * alpha));
             return Multiply(z, resultMatrix);
+        }
+        protected StreamLinesBuilderCircle(Potential w, PlotWindowModel g, CanonicalDomain domain) : base(w,g,domain)
+        {
         }
     }
 }

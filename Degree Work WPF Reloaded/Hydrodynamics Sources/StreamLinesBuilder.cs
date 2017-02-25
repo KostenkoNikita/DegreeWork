@@ -20,5 +20,37 @@ namespace Degree_Work.Hydrodynamics_Sources
         public virtual void Rebuild() { }
         public virtual void ChangeParams(double? x_min, double? x_max, double? y_max, double? h_horizontal, double? h_vertical) { }
         protected List<IAsyncResult> res_list;
+        protected StreamLinesBuilder(Potential w, PlotWindowModel g, CanonicalDomain domain)
+        {
+            this.w = w;
+            function = this.w.f;
+            this.g = g;
+            this.domain = domain;
+            switch (domain)
+            {
+                case CanonicalDomain.HalfPlane:
+                    x_min = Settings.PlotGeomParams.XMin;
+                    x_max = Settings.PlotGeomParams.XMax;
+                    y_max = Settings.PlotGeomParams.YMax;
+                    y_min = 0;
+                    break;
+                case CanonicalDomain.Zone:
+                    x_min = Settings.PlotGeomParams.XMin;
+                    x_max = Settings.PlotGeomParams.XMax;
+                    y_max = Math.PI;
+                    y_min = -Math.PI;
+                    break;
+                case CanonicalDomain.Circular:
+                    x_min = Settings.PlotGeomParams.XMin;
+                    x_max = Settings.PlotGeomParams.XMax;
+                    y_max = Settings.PlotGeomParams.YMax;
+                    y_min = 0;
+                    break;
+                default: throw new ArgumentException();
+            }
+            h_mrk = Settings.PlotGeomParams.MRKh;
+            h = Settings.PlotGeomParams.hVertical;
+            StreamLinesBase = new List<List<DataPoint>>();
+        }
     }
 }

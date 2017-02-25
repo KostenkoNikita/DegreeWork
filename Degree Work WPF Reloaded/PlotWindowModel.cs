@@ -1,4 +1,5 @@
 ﻿#pragma warning disable 612
+//#define HELP_FOR_GROUP_LEADER
 
 using System;
 using System.IO;
@@ -85,11 +86,19 @@ namespace Degree_Work
                     PlotModel.Axes.Add(YAxis);
                     break;
                 case CanonicalDomain.Circular:
+#if !HELP_FOR_GROUP_LEADER
                     XAxis = new LinearAxis(AxisPosition.Bottom, -5, 5, "X") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "X", AbsoluteMaximum = 5, AbsoluteMinimum = -5, Font = "Times New Roman", FontSize = 15 };
                     PlotModel.Axes.Add(XAxis);
                     YAxis = new LinearAxis(AxisPosition.Left, -5, 5, "Y") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Y", AbsoluteMaximum = 5, AbsoluteMinimum = -5, Font = "Times New Roman", FontSize = 15 };
                     PlotModel.Axes.Add(YAxis);
                     break;
+#else
+                    XAxis = new LinearAxis(AxisPosition.Bottom, -1.5, 1.5, "X") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "X", AbsoluteMaximum = 5, AbsoluteMinimum = -5, Font = "Times New Roman", FontSize = 15 };
+                    PlotModel.Axes.Add(XAxis);
+                    YAxis = new LinearAxis(AxisPosition.Left, -0.1, 1, "Y") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Y", AbsoluteMaximum = 5, AbsoluteMinimum = -5, Font = "Times New Roman", FontSize = 15 };
+                    PlotModel.Axes.Add(YAxis);
+                    break;
+#endif
             }
         }
 
@@ -187,48 +196,6 @@ namespace Degree_Work
             }
         }
 
-        public void RedrawArrow(double x_start, double y_start, double x_end, double y_end, complex V, CanonicalDomain domain)
-        {
-            if (IsMouseClickedInPolygon)
-            {
-                DeleteArrow();
-                IsMouseClickedInPolygon = false;
-            }
-            else if (complex.IsNaN(V))
-            {
-                DeleteArrow(); return;
-            }
-            else
-            {
-                if (!HasArrow()) { CreateArrow(); }
-                arrow.StartPoint = new DataPoint(x_start, y_start);
-                arrow.EndPoint = new DataPoint(x_end, y_end);
-                arrowText.Text = "Vector";
-                arrowText.TextPosition = new DataPoint(x_start, y_start - (domain==CanonicalDomain.HalfPlane? 0.6 : 1.2));
-            }
-        }
-
-        public void RedrawArrow(DataPoint start, DataPoint end, complex V, CanonicalDomain domain)
-        {
-            if (IsMouseClickedInPolygon)
-            {
-                DeleteArrow();
-                IsMouseClickedInPolygon = false;
-            }
-            else if (complex.IsNaN(V))
-            {
-                DeleteArrow(); return;
-            }
-            else
-            {
-                if (!HasArrow()) { CreateArrow(); }
-                arrow.StartPoint = start;
-                arrow.EndPoint = end;
-                arrowText.Text = "Vector";
-                arrowText.TextPosition = new DataPoint(start.X, start.Y- (domain == CanonicalDomain.HalfPlane ? 0.6 : 1.2));
-            }
-        }
-
         public void RedrawArrow(complex start, complex end, complex V, CanonicalDomain domain)
         {
             if (IsMouseClickedInPolygon)
@@ -247,7 +214,7 @@ namespace Degree_Work
                 arrow.EndPoint = end.ComplexToDataPoint();
                 arrowText.Text = $"X: {start.Re.ToString(Settings.Format)}; Y: {start.Im.ToString(Settings.Format)};".Replace(',', '.') +
                     $"\nVx: {V.Re.ToString(Settings.Format)}; Vy: {V.Im.ToString(Settings.Format)};".Replace(',', '.');
-                arrowText.TextPosition = (start - (domain == CanonicalDomain.HalfPlane ? 0.6 : 1.2) * complex.i).ComplexToDataPoint();
+                arrowText.TextPosition = (start + (V.Im>=0? -1: 0.2)*(domain == CanonicalDomain.HalfPlane ? 0.6 : 1.2) * complex.i).ComplexToDataPoint();
             }
         }
 
@@ -341,6 +308,22 @@ namespace Degree_Work
                             BorderPolyBottom.Points.Add(new DataPoint(PolygonLineHalfWidth, n.h));
                             BorderPolyBottom.Points.Add(new DataPoint(PolygonLineHalfWidth, -1));
                             BorderPolyBottom.Points.Add(new DataPoint(-6, -1));
+                            BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                            BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                            PlotModel.Annotations.Add(BorderPolyBottom);
+                            break;
+                        case "Number79":
+                            Hydrodynamics_Sources.Conformal_Maps.Number79 nn = s.W.f as Hydrodynamics_Sources.Conformal_Maps.Number79;
+                            BorderBottom = new PolygonAnnotation();
+                            BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
+                            BorderPolyBottom.Points.Add(new DataPoint(-6, nn.h+1));
+                            BorderPolyBottom.Points.Add(new DataPoint(-6,nn.h+6));
+                            BorderPolyBottom.Points.Add(new DataPoint(6,nn.h+6));
+                            BorderPolyBottom.Points.Add(new DataPoint(6,-1));
+                            BorderPolyBottom.Points.Add(new DataPoint(0, -1));
+                            BorderPolyBottom.Points.Add(new DataPoint(0,1));
+                            BorderPolyBottom.Points.Add(new DataPoint(6,1));
+                            BorderPolyBottom.Points.Add(new DataPoint(6, nn.h+1));
                             BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
                             BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
                             PlotModel.Annotations.Add(BorderPolyBottom);

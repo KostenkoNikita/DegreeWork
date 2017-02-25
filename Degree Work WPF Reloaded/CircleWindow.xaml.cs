@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define HELP_FOR_GROUP_LEADER
+
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Diagnostics;
@@ -16,6 +18,9 @@ namespace Degree_Work
         complex CursorPosition, V;
         private PlotWindowModel viewModel;
         Hydrodynamics_Sources.Potential w;
+#if HELP_FOR_GROUP_LEADER
+        Hydrodynamics_Sources.PotentialHelp wHelp;
+#endif
         Hydrodynamics_Sources.StreamLinesBuilder s;
 
         private string TemporaryString(int num)
@@ -35,10 +40,13 @@ namespace Degree_Work
             Settings.PlotGeomParams.hVertical = 0.5;
             Settings.PlotGeomParamsConstant.hVertical = 0.5;
             w = new Hydrodynamics_Sources.Potential(1, 0, 1, 0, new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform());
-            s = new Hydrodynamics_Sources.StreamLinesBuilderCircle(w, viewModel);
+            s = new Hydrodynamics_Sources.CircleStreamLinesBuilder(w, viewModel);
             mapsList.SelectionChanged += MapsList_SelectionChanged;
             mapsList.Items.Add("Тождественное отображение");
             mapsList.Items.Add("Обтекание пластины");
+#if HELP_FOR_GROUP_LEADER
+            mapsList.Items.Add("Help");
+#endif
             mapsList.SelectedIndex = 0;
             viewModel.PlotModel.MouseMove += PlotModel_MouseMove;
             viewModel.PlotModel.MouseDown += PlotModel_MouseDown;
@@ -48,15 +56,18 @@ namespace Degree_Work
 
         private void PlotModel_MouseDown(object sender, OxyMouseDownEventArgs e)
         {
+#if !HELP_FOR_GROUP_LEADER
             if (e.ChangedButton.ToString() == "Left")
             {
                 viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.abs, V, CanonicalDomain.Circular);
                 PlotRefresh();
             }
+#endif
         }
 
         private void PlotModel_MouseMove(object sender, OxyMouseEventArgs e)
         {
+#if !HELP_FOR_GROUP_LEADER
             CursorPosition = viewModel.GetComplexCursorPositionOnPlot(e.Position);
             V = w.V_physical_plane(CursorPosition);
             if (complex.IsNaN(V) || IsCursorInBorder())
@@ -71,6 +82,7 @@ namespace Degree_Work
                 VxTextBox.Text = V.Re.ToString(Settings.Format);
                 VyTextBox.Text = V.Im.ToString(Settings.Format);
             }
+#endif
         }
 
         private void MapsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -79,6 +91,9 @@ namespace Degree_Work
             {
                 case 0: w.f = new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform(); break;
                 case 1: w.f = new Hydrodynamics_Sources.Conformal_Maps.Plate(); break;
+#if HELP_FOR_GROUP_LEADER
+                case 2: Settings.PlotGeomParams.MRKh = 0.01; Settings.PlotGeomParams.hVertical = 0.05; wHelp = new Hydrodynamics_Sources.PotentialHelp(1, 1, 1); s = new Hydrodynamics_Sources.StreamLinesBuilderForGroupLeader(wHelp,viewModel); break;
+#endif
             }
             Mouse.OverrideCursor = Cursors.Wait;
             ChangeParamsConfiguration();
@@ -111,6 +126,18 @@ namespace Degree_Work
                     paramBox1.TextChanged += paramBox1_TextChanged;
                     angleSlider.ValueChanged += angleSlider_ValueChanged;
                     break;
+#if HELP_FOR_GROUP_LEADER
+                case 2:
+                    paramBox1.Text = string.Empty;
+                    paramBox1.Visibility = Visibility.Hidden;
+                    param1.Visibility = Visibility.Hidden;
+                    param1.Text = string.Empty ;
+                    angleSlider.Visibility = Visibility.Hidden;
+                    paramBox1.TextChanged -= paramBox1_TextChanged;
+                    angleSlider.ValueChanged -= angleSlider_ValueChanged;
+                    break;
+#endif
+
             }
         }
 
