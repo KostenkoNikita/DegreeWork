@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define HELP_FOR_GROUP_LEADER
+using System;
 using System.Collections.Generic;
 using MathCore_2_0;
 using OxyPlot;
@@ -52,8 +53,10 @@ namespace Degree_Work.Hydrodynamics_Sources
             resultMatrix = Multiply(resultMatrix, RotationMatrix(-1 * alpha));
             return Multiply(z, resultMatrix);
         }
+#if !HELP_FOR_GROUP_LEADER
         protected StreamLinesBuilderCircle(Potential w, PlotWindowModel g, CanonicalDomain domain) : base(w,g,domain)
         {
         }
+#endif
     }
 }

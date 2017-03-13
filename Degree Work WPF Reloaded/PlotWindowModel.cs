@@ -93,7 +93,7 @@ namespace Degree_Work
                     PlotModel.Axes.Add(YAxis);
                     break;
 #else
-                    XAxis = new LinearAxis(AxisPosition.Bottom, -1.5, 1.5, "X") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "X", AbsoluteMaximum = 5, AbsoluteMinimum = -5, Font = "Times New Roman", FontSize = 15 };
+                    XAxis = new LinearAxis(AxisPosition.Bottom, -3, 3, "X") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "X", AbsoluteMaximum = 5, AbsoluteMinimum = -5, Font = "Times New Roman", FontSize = 15 };
                     PlotModel.Axes.Add(XAxis);
                     YAxis = new LinearAxis(AxisPosition.Left, -0.1, 1, "Y") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Y", AbsoluteMaximum = 5, AbsoluteMinimum = -5, Font = "Times New Roman", FontSize = 15 };
                     PlotModel.Axes.Add(YAxis);

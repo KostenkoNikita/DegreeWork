@@ -1,5 +1,4 @@
 ﻿using System;
-using System;
 using MathCore_2_0;
 using OxyPlot;
 using static MathCore_2_0.complex;

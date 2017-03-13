@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define HELP_FOR_GROUP_LEADER
+using System;
 using System.Collections.Generic;
 using OxyPlot;
 
@@ -12,11 +13,17 @@ namespace Degree_Work.Hydrodynamics_Sources
         IniFillAsync async_base;
         TransformationAsync async_transform;
         FullBuildAsync async_full;
-
+#if !HELP_FOR_GROUP_LEADER
         public HalfPlaneAndZoneStreamLinesBuilder(Potential w, PlotWindowModel g, CanonicalDomain domain) : base(w,g,domain)
         {
             InitialBuild();
         }
+#else
+        public HalfPlaneAndZoneStreamLinesBuilder(Potential w, PlotWindowModel g, CanonicalDomain domain)
+        {
+            InitialBuild();
+        }
+#endif
         public override void ChangeParams(double? x_min, double? x_max, double? y_max, double? h_horizontal, double? h_vertical)
         {
             this.x_min = x_min ?? this.x_min;
@@ -150,3 +157,4 @@ namespace Degree_Work.Hydrodynamics_Sources
         }
     }
 }
+

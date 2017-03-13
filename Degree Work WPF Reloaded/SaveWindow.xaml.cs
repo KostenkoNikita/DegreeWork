@@ -90,7 +90,7 @@ namespace Degree_Work
                     doneImage.MouseEnter -= ico_MouseEnter;
                     doneImage.MouseLeave -= ico_MouseLeave;
                 }
-                catch(Exception ex)
+                catch
                 {
                     MessageBox.Show("Возможно, Вы некорректно указали путь.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }

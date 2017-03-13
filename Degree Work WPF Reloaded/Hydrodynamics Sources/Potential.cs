@@ -137,14 +137,14 @@ namespace Degree_Work.Hydrodynamics_Sources
     {
         public complex this[complex dzeta] { get { return W(dzeta); } }
 
-        public double V0, Omega, a;
+        public double V0, Sh, a;
         IConformalMapFunction _f;
 
         complex tmp;
-        public PotentialHelp(double V0, double Omega, double a)
+        public PotentialHelp(double V0, double Sh, double a)
         {
-            this.V0 = V0;
-            this.Omega = Omega;
+            this.V0 = 1;
+            this.Sh = Sh;
             this.a = a;
             _f = new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform();
         }
@@ -174,13 +174,18 @@ namespace Degree_Work.Hydrodynamics_Sources
         }
         public complex W(complex dzeta)
         {
-            return -(1.0 / pi) * (V0 * ((dzeta - 1) * ln(dzeta - a) - (dzeta + a) * ln(dzeta + a) + 2 * a)
-                + (Omega / 4.0) * (2 * (dzeta - a) * (dzeta + a) * (ln(dzeta - a) - ln(dzeta + a)) + 3 * a * a - 4 * a * dzeta)
-                + 2 * Omega * a * dzeta);
+            //return -(1.0 / pi) * (V0 * ((dzeta - 1) * ln(dzeta - a) - (dzeta + a) * ln(dzeta + a) + 2 * a)
+            //    + (Sh / 4.0) * (2 * (dzeta - a) * (dzeta + a) * (ln(dzeta - a) - ln(dzeta + a)) + 3 * a * a - 4 * a * dzeta)
+            //    + 2 * Sh * a * dzeta);
+            return (-1 / pi) * ((dzeta - 1) * ln(dzeta - 1) - (dzeta + 1) * ln(dzeta + 1) +
+   2 + 0.25 *
+    Sh * (4 * dzeta + 3 +
+      2 * (dzeta - 1) * (dzeta + 1) * ln((dzeta - 1) / (dzeta + 1))));
         }
         public complex dW_ddzeta(complex dzeta)
         {
-            return -(V0 * (ln(dzeta - a) - ln(dzeta + a)) + Omega * (0.2e1 * (dzeta + a) * (ln(dzeta - a) - ln(dzeta + a)) + 0.2e1 * (dzeta - a) * (ln(dzeta - a) - ln(dzeta + a)) + 0.2e1 * (dzeta - a) * (dzeta + a) * (0.1e1 / (dzeta - a) - 0.1e1 / (dzeta + a))) / 0.4e1) / Math.PI;
+            //return -(V0 * (ln(dzeta - a) - ln(dzeta + a)) + Sh * (0.2e1 * (dzeta + a) * (ln(dzeta - a) - ln(dzeta + a)) + 0.2e1 * (dzeta - a) * (ln(dzeta - a) - ln(dzeta + a)) + 0.2e1 * (dzeta - a) * (dzeta + a) * (0.1e1 / (dzeta - a) - 0.1e1 / (dzeta + a))) / 0.4e1) / Math.PI;
+            return 0.31831*(-2*Sh - ln(-1 + dzeta) - dzeta*Sh*ln((-1 + dzeta) / (1 + dzeta)) + ln(1 + dzeta));
         }
         public override string ToString()
         {

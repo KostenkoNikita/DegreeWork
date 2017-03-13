@@ -39,12 +39,15 @@ namespace Degree_Work
             InitializeComponent();
             Settings.PlotGeomParams.hVertical = 0.5;
             Settings.PlotGeomParamsConstant.hVertical = 0.5;
+#if !HELP_FOR_GROUP_LEADER
             w = new Hydrodynamics_Sources.Potential(1, 0, 1, 0, new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform());
             s = new Hydrodynamics_Sources.CircleStreamLinesBuilder(w, viewModel);
+#endif
             mapsList.SelectionChanged += MapsList_SelectionChanged;
+#if !HELP_FOR_GROUP_LEADER
             mapsList.Items.Add("Тождественное отображение");
             mapsList.Items.Add("Обтекание пластины");
-#if HELP_FOR_GROUP_LEADER
+#else
             mapsList.Items.Add("Help");
 #endif
             mapsList.SelectedIndex = 0;
@@ -89,10 +92,11 @@ namespace Degree_Work
         {
             switch (mapsList.SelectedIndex)
             {
+#if !HELP_FOR_GROUP_LEADER
                 case 0: w.f = new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform(); break;
                 case 1: w.f = new Hydrodynamics_Sources.Conformal_Maps.Plate(); break;
-#if HELP_FOR_GROUP_LEADER
-                case 2: Settings.PlotGeomParams.MRKh = 0.01; Settings.PlotGeomParams.hVertical = 0.05; wHelp = new Hydrodynamics_Sources.PotentialHelp(1, 1, 1); s = new Hydrodynamics_Sources.StreamLinesBuilderForGroupLeader(wHelp,viewModel); break;
+#else
+                case 0: Settings.PlotGeomParams.MRKh = 0.005; Settings.PlotGeomParams.hVertical = 0.05; wHelp = new Hydrodynamics_Sources.PotentialHelp(1, 1, 1); s = new Hydrodynamics_Sources.StreamLinesBuilderForGroupLeader(wHelp, viewModel); break;
 #endif
             }
             Mouse.OverrideCursor = Cursors.Wait;
@@ -108,6 +112,7 @@ namespace Degree_Work
             angleSlider.ValueChanged -= angleSlider_ValueChanged;
             switch (mapsList.SelectedIndex)
             {
+#if !HELP_FOR_GROUP_LEADER
                 case 0:
                     paramBox1.Text = w.AlphaDegrees.ToString();
                     paramBox1.Visibility = Visibility.Visible;
@@ -126,8 +131,8 @@ namespace Degree_Work
                     paramBox1.TextChanged += paramBox1_TextChanged;
                     angleSlider.ValueChanged += angleSlider_ValueChanged;
                     break;
-#if HELP_FOR_GROUP_LEADER
-                case 2:
+#else
+                case 0:
                     paramBox1.Text = string.Empty;
                     paramBox1.Visibility = Visibility.Hidden;
                     param1.Visibility = Visibility.Hidden;

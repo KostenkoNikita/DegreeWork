@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿//#define HELP_FOR_GROUP_LEADER
+using System.Collections.Generic;
 using OxyPlot;
 using System;
 
@@ -20,6 +21,7 @@ namespace Degree_Work.Hydrodynamics_Sources
         public virtual void Rebuild() { }
         public virtual void ChangeParams(double? x_min, double? x_max, double? y_max, double? h_horizontal, double? h_vertical) { }
         protected List<IAsyncResult> res_list;
+#if !HELP_FOR_GROUP_LEADER
         protected StreamLinesBuilder(Potential w, PlotWindowModel g, CanonicalDomain domain)
         {
             this.w = w;
@@ -52,5 +54,6 @@ namespace Degree_Work.Hydrodynamics_Sources
             h = Settings.PlotGeomParams.hVertical;
             StreamLinesBase = new List<List<DataPoint>>();
         }
+#endif
     }
 }

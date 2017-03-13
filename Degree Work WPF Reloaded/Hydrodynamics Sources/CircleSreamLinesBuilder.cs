@@ -9,6 +9,7 @@ using OxyPlot;
 
 namespace Degree_Work.Hydrodynamics_Sources
 {
+    #if !HELP_FOR_GROUP_LEADER
     class CircleStreamLinesBuilder : StreamLinesBuilderCircle
     {
         delegate void IniFillAsync(List<DataPoint> BasePlus, List<DataPoint> ListMinus, double y);
@@ -17,7 +18,6 @@ namespace Degree_Work.Hydrodynamics_Sources
         IniFillAsync async_base;
         TransformationAsync async_transform;
         FullBuildAsync async_full;
-
         public CircleStreamLinesBuilder(Potential w, PlotWindowModel g) : base(w,g,CanonicalDomain.Circular)
         {
             InitialBuild();
@@ -187,8 +187,7 @@ namespace Degree_Work.Hydrodynamics_Sources
             g.DrawCurve(lm);
         }
     }
-
-#if HELP_FOR_GROUP_LEADER
+#else
     class StreamLinesBuilderForGroupLeader : StreamLinesBuilder
     {
         delegate void IniFillAsync(List<DataPoint> Base, double x);
@@ -247,8 +246,9 @@ namespace Degree_Work.Hydrodynamics_Sources
         {
             async_base = new IniFillAsync(AsyncIniFill);
             res_list = new List<IAsyncResult>();
-            for (double x = x_min + h; x <= x_max - h; x += h)
+            for (double x = x_min + h; x <x_max; x += h)
             {
+                x = Math.Round(x, 4);
                 StreamLinesBase.Add(new List<DataPoint>());
                 res_list.Add(async_base.BeginInvoke(StreamLinesBase[StreamLinesBase.Count - 1], x, null, null));
             }

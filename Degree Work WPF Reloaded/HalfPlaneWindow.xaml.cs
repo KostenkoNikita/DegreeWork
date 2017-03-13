@@ -42,6 +42,7 @@ namespace Degree_Work
             mapsList.Items.Add("Полуплоскость с\nвыброшенным отрезком");
             mapsList.Items.Add("Номер 81");
             mapsList.Items.Add("Номер 79");
+            mapsList.Items.Add("Кандидат");
             mapsList.SelectedIndex = 0;
             viewModel.PlotModel.MouseMove += PlotModel_MouseMove;
             viewModel.PlotModel.MouseDown += PlotModel_MouseDown;
@@ -105,6 +106,10 @@ namespace Degree_Work
                     Settings.PlotGeomParams.MRKh = 0.1;
                     Settings.PlotGeomParams.hVertical = 0.3;
                     s.ChangeParams(Settings.PlotGeomParams.XMin, Settings.PlotGeomParams.XMax, Settings.PlotGeomParams.YMax, Settings.PlotGeomParams.MRKh, Settings.PlotGeomParams.hVertical);
+                    break;
+                case 5:
+                    w.f = new Hydrodynamics_Sources.Conformal_Maps.Candidate();
+                    s.Rebuild();
                     break;
             }
             ChangeParamsConfiguration();
