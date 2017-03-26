@@ -328,6 +328,22 @@ namespace Degree_Work
                             BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
                             PlotModel.Annotations.Add(BorderPolyBottom);
                             break;
+                        case "Number89":
+                            Hydrodynamics_Sources.Conformal_Maps.Number89 ne = s.W.f as Hydrodynamics_Sources.Conformal_Maps.Number89;
+                            BorderBottom = new PolygonAnnotation();
+                            BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
+                            BorderPolyBottom.Points.Add(new DataPoint(-6, 0));
+                            BorderPolyBottom.Points.Add(new DataPoint(-PolygonLineHalfWidth, 0));
+                            BorderPolyBottom.Points.Add(new DataPoint(-PolygonLineHalfWidth, ne.h1));
+                            BorderPolyBottom.Points.Add(new DataPoint(PolygonLineHalfWidth, ne.h1));
+                            BorderPolyBottom.Points.Add(new DataPoint(PolygonLineHalfWidth, ne.h2));
+                            BorderPolyBottom.Points.Add(new DataPoint(6, ne.h2));
+                            BorderPolyBottom.Points.Add(new DataPoint(6, -1));
+                            BorderPolyBottom.Points.Add(new DataPoint(-6, -1));
+                            BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                            BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                            PlotModel.Annotations.Add(BorderPolyBottom);
+                            break;
                     }
                     BorderBottom.MouseDown += (sender, e) => { IsMouseClickedInPolygon = true; };
                     break;
@@ -374,6 +390,52 @@ namespace Degree_Work
                             BorderPolyTop.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
                             PlotModel.Annotations.Add(BorderPolyBottom);
                             PlotModel.Annotations.Add(BorderPolyTop);
+                            break;
+                        case "Diffusor":
+                            Hydrodynamics_Sources.Conformal_Maps.Diffusor db = s.W.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor;
+                            if (db.angleDegrees == 90)
+                            {
+                                BorderBottom = new PolygonAnnotation();
+                                BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
+                                BorderPolyBottom.Points.Add(new DataPoint(-6,-db.h));
+                                BorderPolyBottom.Points.Add(new DataPoint(0, -db.h));
+                                BorderPolyBottom.Points.Add(new DataPoint(0, -5));
+                                BorderPolyBottom.Points.Add(new DataPoint(-6, -5));
+                                BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                                BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                                BorderTop = new PolygonAnnotation();
+                                BorderPolyTop.Fill = Settings.PlotVisualParams.BorderFillColor;
+                                BorderPolyTop.Points.Add(new DataPoint(-6, db.h));
+                                BorderPolyTop.Points.Add(new DataPoint(0, db.h));
+                                BorderPolyTop.Points.Add(new DataPoint(0, 5));
+                                BorderPolyTop.Points.Add(new DataPoint(-6, 5));
+                                BorderPolyTop.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                                BorderPolyTop.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                                PlotModel.Annotations.Add(BorderPolyBottom);
+                                PlotModel.Annotations.Add(BorderPolyTop);
+                            }
+                            else
+                            {
+                                double angle = db.angleDegrees * Math.PI / 180;
+                                BorderBottom = new PolygonAnnotation();
+                                BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
+                                BorderPolyBottom.Points.Add(new DataPoint(-6, -db.h));
+                                BorderPolyBottom.Points.Add(new DataPoint(0, -db.h));
+                                BorderPolyBottom.Points.Add(new DataPoint(20, -db.h - 20*Math.Tan(angle)));
+                                BorderPolyBottom.Points.Add(new DataPoint(-6, -5));
+                                BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                                BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                                BorderTop = new PolygonAnnotation();
+                                BorderPolyTop.Fill = Settings.PlotVisualParams.BorderFillColor;
+                                BorderPolyTop.Points.Add(new DataPoint(-6, db.h));
+                                BorderPolyTop.Points.Add(new DataPoint(0, db.h));
+                                BorderPolyTop.Points.Add(new DataPoint(20, db.h + 20 * Math.Tan(angle)));
+                                BorderPolyTop.Points.Add(new DataPoint(-6, 5));
+                                BorderPolyTop.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                                BorderPolyTop.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                                PlotModel.Annotations.Add(BorderPolyBottom);
+                                PlotModel.Annotations.Add(BorderPolyTop);
+                            }
                             break;
                     }
                     BorderBottom.MouseDown += (sender, e) => { IsMouseClickedInPolygon = true; };

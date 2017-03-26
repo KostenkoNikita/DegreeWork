@@ -42,7 +42,7 @@ namespace Degree_Work
             mapsList.Items.Add("Полуплоскость с\nвыброшенным отрезком");
             mapsList.Items.Add("Номер 81");
             mapsList.Items.Add("Номер 79");
-            mapsList.Items.Add("Кандидат");
+            mapsList.Items.Add("Номер 89");
             mapsList.SelectedIndex = 0;
             viewModel.PlotModel.MouseMove += PlotModel_MouseMove;
             viewModel.PlotModel.MouseDown += PlotModel_MouseDown;
@@ -108,7 +108,7 @@ namespace Degree_Work
                     s.ChangeParams(Settings.PlotGeomParams.XMin, Settings.PlotGeomParams.XMax, Settings.PlotGeomParams.YMax, Settings.PlotGeomParams.MRKh, Settings.PlotGeomParams.hVertical);
                     break;
                 case 5:
-                    w.f = new Hydrodynamics_Sources.Conformal_Maps.Candidate();
+                    w.f = new Hydrodynamics_Sources.Conformal_Maps.Number89(2,1);
                     s.Rebuild();
                     break;
             }
@@ -132,6 +132,8 @@ namespace Degree_Work
                     param1.Text = string.Empty;
                     param2.Visibility = Visibility.Hidden;
                     param2.Text = string.Empty;
+                    paramBox1.IsReadOnly = false;
+                    paramBox2.IsReadOnly = false;
                     break;
                 case 1:
                     paramBox1.Text = "1";
@@ -142,6 +144,8 @@ namespace Degree_Work
                     param1.Text = "h =";
                     param2.Visibility = Visibility.Hidden;
                     param2.Text = string.Empty;
+                    paramBox1.IsReadOnly = false;
+                    paramBox2.IsReadOnly = false;
                     paramBox1.TextChanged += paramBox1_TextChanged;
                     break;
                 case 2:
@@ -153,6 +157,8 @@ namespace Degree_Work
                     param1.Text = "X =";
                     param2.Visibility = Visibility.Visible;
                     param2.Text = "h =";
+                    paramBox1.IsReadOnly = false;
+                    paramBox2.IsReadOnly = false;
                     paramBox1.TextChanged += paramBox1_TextChanged;
                     paramBox2.TextChanged += paramBox2_TextChanged;
                     break;
@@ -165,6 +171,8 @@ namespace Degree_Work
                     param1.Text = "h =";
                     param2.Visibility = Visibility.Hidden;
                     param2.Text = string.Empty;
+                    paramBox1.IsReadOnly = false;
+                    paramBox2.IsReadOnly = false;
                     paramBox1.TextChanged += paramBox1_TextChanged;
                     break;
                 case 4:
@@ -176,7 +184,21 @@ namespace Degree_Work
                     param1.Text = "h =";
                     param2.Visibility = Visibility.Hidden;
                     param2.Text = string.Empty;
+                    paramBox1.IsReadOnly = false;
+                    paramBox2.IsReadOnly = false;
                     paramBox1.TextChanged += paramBox1_TextChanged;
+                    break;
+                case 5:
+                    paramBox1.Text = "2";
+                    paramBox1.Visibility = Visibility.Visible;
+                    paramBox2.Text = "1";
+                    paramBox2.Visibility = Visibility.Visible;
+                    param1.Visibility = Visibility.Visible;
+                    param1.Text = "h1 =";
+                    param2.Visibility = Visibility.Visible;
+                    param2.Text = "h2 =";
+                    paramBox1.IsReadOnly = true;
+                    paramBox2.IsReadOnly = true;
                     break;
             }
         }
@@ -345,6 +367,8 @@ namespace Degree_Work
                     return CursorPosition.Im < 0 && CursorPosition.Re < 0;
                 case "Number79":
                     return (CursorPosition.Re<0 && CursorPosition.Im>((Hydrodynamics_Sources.Conformal_Maps.Number79)w.f).h+1) || (CursorPosition.Re > 0 && (CursorPosition.Im > ((Hydrodynamics_Sources.Conformal_Maps.Number79)w.f).h + 1 || CursorPosition.Im < 1));
+                case "Number89":
+                    return (CursorPosition.Re < 0 && CursorPosition.Im <= 0) || (CursorPosition.Re > 0 && CursorPosition.Im <= ((Hydrodynamics_Sources.Conformal_Maps.Number89)w.f).h2);
                 default: return true;
             }
         }

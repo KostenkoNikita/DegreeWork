@@ -40,7 +40,7 @@ namespace Degree_Work.Hydrodynamics_Sources
                     x_min = Settings.PlotGeomParams.XMin;
                     x_max = Settings.PlotGeomParams.XMax;
                     y_max = Math.PI;
-                    y_min = -Math.PI;
+                    y_min = -Settings.PlotGeomParams.hVertical;
                     break;
                 case CanonicalDomain.Circular:
                     x_min = Settings.PlotGeomParams.XMin;

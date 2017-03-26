@@ -15,6 +15,11 @@ namespace Degree_Work
         {
             return new DataPoint(c.Re, c.Im);
         }
+        public static DataPoint Conjugate(this DataPoint p)
+        {
+            p.Y = -p.Y;
+            return p;
+        }
         public static double Abs(this DataPoint p)
         {
             return Math.Sqrt(p.X * p.X + p.Y * p.Y);

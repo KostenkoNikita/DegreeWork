@@ -58,7 +58,8 @@ namespace Degree_Work.Hydrodynamics_Sources
         {
             async_base = new IniFillAsync(AsyncIniFill);
             res_list = new List<IAsyncResult>();
-            for (double y = y_min + h; y <= y_max-h; y += h)
+            if (w.f is Conformal_Maps.Diffusor) { y_min = -h; }
+            for (double y = y_min+h; y <= y_max - h; y += h)
             {
                 StreamLinesBase.Add(new List<DataPoint>());
                 res_list.Add(async_base.BeginInvoke(StreamLinesBase[StreamLinesBase.Count - 1], y, null, null));
@@ -82,7 +83,8 @@ namespace Degree_Work.Hydrodynamics_Sources
         {
             async_full = new FullBuildAsync(AsyncFullBuild);
             res_list = new List<IAsyncResult>();
-            for (double y = y_min + h; y <= y_max-h; y += h)
+            if (w.f is Conformal_Maps.Diffusor) { y_min = -h; }
+            for (double y = y_min + h; y <= y_max - h; y += h)
             {
                 StreamLines.Add(new List<DataPoint>());
                 StreamLinesBase.Add(new List<DataPoint>());
@@ -100,60 +102,59 @@ namespace Degree_Work.Hydrodynamics_Sources
         }
         void AsyncTransform(List<DataPoint> b, List<DataPoint> l)
         {
-            //switch (Domain)
-            //{
-            //    case CanonicalDomain.HalfPlane:
-            //        foreach (DataPoint bp in b)
-            //        {
-            //            l.Add(w.f.z(bp));
-            //        }
-            //        break;
-            //    case CanonicalDomain.Zone:
-            //        DataPoint tmp;
-            //        foreach (DataPoint bp in b)
-            //        {
-            //            tmp = w.f.z(bp);
-            //            if (tmp.Abs() < 20){l.Add(tmp);}
-            //        }
-            //        break;
-            //}
-            DataPoint tmp;
-            foreach (DataPoint bp in b)
+            switch (domain)
             {
-                tmp = w.f.z(bp);
-                if (tmp.Abs() < 20) { l.Add(tmp); }
+                case CanonicalDomain.HalfPlane:
+                    DataPoint tmp;
+                    foreach (DataPoint bp in b)
+                    {
+                        tmp = w.f.z(bp);
+                        if (tmp.Abs() < 20) { l.Add(tmp); }
+                    }
+                    g.DrawCurve(l);
+                    return;
+                case CanonicalDomain.Zone:
+                    DataPoint tmp1, tmp2;
+                    List<DataPoint> lReflect = new List<DataPoint>();
+                    foreach (DataPoint bp in b)
+                    {
+                        tmp1 = w.f.z(bp);
+                        tmp2 = tmp1.Conjugate();
+                        if (tmp1.Abs() < 20) { l.Add(tmp1); if (tmp2.Y != 0) { lReflect.Add(tmp2); } }
+                    }
+                    g.DrawCurve(l);
+                    g.DrawCurve(lReflect);
+                    return;
             }
-            g.DrawCurve(l);
         }
         void AsyncFullBuild(List<DataPoint> b, List<DataPoint> l, double y)
         {
-            //switch (Domain)
-            //{
-            //    case CanonicalDomain.HalfPlane:
-            //        for (double x = x_min; x <= x_max; x += h_mrk)
-            //        {
-            //            b.Add(new DataPoint(x, y));
-            //            l.Add(w.f.z(b[b.Count - 1]));
-            //        }
-            //        break;
-            //    case CanonicalDomain.Zone:
-            //        DataPoint tmp;
-            //        for (double x = x_min; x <= x_max; x += h_mrk)
-            //        {
-            //            b.Add(new DataPoint(x, y));
-            //            tmp = w.f.z(b[b.Count - 1]);
-            //            if (tmp.Abs() < 20) { l.Add(tmp); }
-            //        }
-            //        break;
-            //}
-            DataPoint tmp;
-            for (double x = x_min; x <= x_max; x += h_mrk)
+            switch (domain)
             {
-                b.Add(new DataPoint(x, y));
-                tmp = w.f.z(b[b.Count - 1]);
-                if (tmp.Abs() < 20) { l.Add(tmp); }
+                case CanonicalDomain.HalfPlane:
+                    DataPoint tmp;
+                    for (double x = x_min; x <= x_max; x += h_mrk)
+                    {
+                        b.Add(new DataPoint(x, y));
+                        tmp = w.f.z(b[b.Count - 1]);
+                        if (tmp.Abs() < 20) { l.Add(tmp); }
+                    }
+                    g.DrawCurve(l);
+                    return;
+                case CanonicalDomain.Zone:
+                    DataPoint tmp1, tmp2;
+                    List<DataPoint> lReflect = new List<DataPoint>();
+                    for (double x = x_min; x <= x_max; x += h_mrk)
+                    {
+                        b.Add(new DataPoint(x, y));
+                        tmp1 = w.f.z(b[b.Count - 1]);
+                        tmp2 = tmp1.Conjugate();
+                        if (tmp1.Abs() < 20) { l.Add(tmp1); if (tmp2.Y != 0) { lReflect.Add(tmp2); } }
+                    }
+                    g.DrawCurve(l);
+                    g.DrawCurve(lReflect);
+                    return;
             }
-            g.DrawCurve(l);
         }
     }
 }
