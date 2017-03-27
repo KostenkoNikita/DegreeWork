@@ -24,9 +24,9 @@ namespace Degree_Work
         {
             switch ((sender as Image).Name)
             {
-                case "halfplaneImage": halfplaneContainer.Margin = new Thickness(0, 5, 0, 5); return;
-                case "zoneImage": zoneContainer.Margin = new Thickness(0, 5, 0, 5); return;
-                case "circleImage": circleContainer.Margin = new Thickness(0, 5, 0, 5); return;
+                case "halfplaneImage": halfplaneContainer.Margin = new Thickness(0, 5, 0, 5); MenuItemImage.Source = Settings.HalfPlaneImageSource; MenuItemImageDescription.Text = Settings.HafPlaneDescription;  return;
+                case "zoneImage": zoneContainer.Margin = new Thickness(0, 5, 0, 5); MenuItemImage.Source = Settings.ZoneImageSource; MenuItemImageDescription.Text = Settings.ZoneDescription; return;
+                case "circleImage": circleContainer.Margin = new Thickness(0, 5, 0, 5); MenuItemImage.Source = Settings.CircleImageSource; MenuItemImageDescription.Text = Settings.CircleDescription; return;
                 case "exitImage": exitImage.Source = Settings.exitIcoSelectedSource; return;
                 default: throw new ArgumentException("undefined TextBlock name");
             }
@@ -34,6 +34,8 @@ namespace Degree_Work
 
         private void Icon_MouseLeave(object sender, MouseEventArgs e)
         {
+            MenuItemImage.Source = Settings.EmptyImageSource;
+            MenuItemImageDescription.Text = String.Empty;
             switch ((sender as Image).Name)
             {
                 case "halfplaneImage": halfplaneContainer.Margin = new Thickness(1, 10, 1, 10); return;

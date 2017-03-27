@@ -209,5 +209,11 @@
   <ItemGroup>
     <Resource Include="Resources\menuPicCircle.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CircleImage.png" />
+    <Resource Include="Resources\Empty.png" />
+    <Resource Include="Resources\HalfPlaneImage.png" />
+    <Resource Include="Resources\ZoneImage.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

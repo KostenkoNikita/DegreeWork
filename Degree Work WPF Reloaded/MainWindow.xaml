@@ -50,6 +50,18 @@
             <Border Grid.Row="4" BorderThickness="1" BorderBrush="Black"/>
 
         </Grid>
-
+        <Grid Grid.Column="1" Margin="50,40,50,15" Height="Auto" Width="Auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.8*"/>
+                <RowDefinition Height="0.2*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Viewbox x:Name="MenuItemImageContainer" Margin="1,1,1,1" Grid.Row="0">
+                <Image x:Name ="MenuItemImage" Source="Resources\Empty.png"/>
+            </Viewbox>
+            <TextBlock x:Name="MenuItemImageDescription" Grid.Column="0" Grid.Row="3" Text="" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontFamily="Times New Roman"/>
+        </Grid>
     </Grid>
 </Window>
