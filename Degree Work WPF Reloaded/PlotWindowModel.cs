@@ -344,6 +344,21 @@ namespace Degree_Work
                             BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
                             PlotModel.Annotations.Add(BorderPolyBottom);
                             break;
+                        case "Triangle":
+                            Hydrodynamics_Sources.Conformal_Maps.Triangle nt = s.W.f as Hydrodynamics_Sources.Conformal_Maps.Triangle;
+                            BorderBottom = new PolygonAnnotation();
+                            BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
+                            BorderPolyBottom.Points.Add(new DataPoint(-6, 0));
+                            BorderPolyBottom.Points.Add(new DataPoint(-nt.A/2.0, 0));
+                            BorderPolyBottom.Points.Add(new DataPoint(0, nt.h));
+                            BorderPolyBottom.Points.Add(new DataPoint(nt.A / 2.0, 0));
+                            BorderPolyBottom.Points.Add(new DataPoint(6, 0));
+                            BorderPolyBottom.Points.Add(new DataPoint(6, -1));
+                            BorderPolyBottom.Points.Add(new DataPoint(-6, -1));
+                            BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                            BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                            PlotModel.Annotations.Add(BorderPolyBottom);
+                            break;
                     }
                     BorderBottom.MouseDown += (sender, e) => { IsMouseClickedInPolygon = true; };
                     break;

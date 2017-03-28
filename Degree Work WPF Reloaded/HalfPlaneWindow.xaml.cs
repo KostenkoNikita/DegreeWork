@@ -43,6 +43,7 @@ namespace Degree_Work
             mapsList.Items.Add("Номер 81");
             mapsList.Items.Add("Номер 79");
             mapsList.Items.Add("Номер 89");
+            mapsList.Items.Add("Полуплоскость с\nвыброшенным\nравнобедренным\nтреугольником");
             mapsList.SelectedIndex = 0;
             viewModel.PlotModel.MouseMove += PlotModel_MouseMove;
             viewModel.PlotModel.MouseDown += PlotModel_MouseDown;
@@ -109,6 +110,10 @@ namespace Degree_Work
                     break;
                 case 5:
                     w.f = new Hydrodynamics_Sources.Conformal_Maps.Number89(2,1);
+                    s.Rebuild();
+                    break;
+                case 6:
+                    w.f = new Hydrodynamics_Sources.Conformal_Maps.Triangle(1, 1);
                     s.Rebuild();
                     break;
             }
@@ -200,6 +205,20 @@ namespace Degree_Work
                     paramBox1.IsReadOnly = true;
                     paramBox2.IsReadOnly = true;
                     break;
+                case 6:
+                    paramBox1.Text = "1";
+                    paramBox1.Visibility = Visibility.Visible;
+                    paramBox2.Text = "1";
+                    paramBox2.Visibility = Visibility.Visible;
+                    param1.Visibility = Visibility.Visible;
+                    param1.Text = "h =";
+                    param2.Visibility = Visibility.Visible;
+                    param2.Text = "A =";
+                    paramBox1.IsReadOnly = false;
+                    paramBox2.IsReadOnly = false;
+                    paramBox1.TextChanged += paramBox1_TextChanged;
+                    paramBox2.TextChanged += paramBox2_TextChanged;
+                    break;
             }
         }
 
@@ -279,6 +298,23 @@ namespace Degree_Work
                     Mouse.OverrideCursor = null;
                 }
             }
+            else if (w.f is Hydrodynamics_Sources.Conformal_Maps.Triangle)
+            {
+                try
+                {
+                    Mouse.OverrideCursor = Cursors.Wait;
+                    double tmp = Convert.ToDouble(TemporaryString(1));
+                    (w.f as Hydrodynamics_Sources.Conformal_Maps.Triangle).h = tmp; s.Rebuild(); PlotRefresh();
+                }
+                catch
+                {
+                    return;
+                }
+                finally
+                {
+                    Mouse.OverrideCursor = null;
+                }
+            }
         }
 
         private void paramBox2_TextChanged(object sender, TextChangedEventArgs e)
@@ -290,6 +326,24 @@ namespace Degree_Work
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(2));
                     if (tmp > 0) { (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedSegment).Y = tmp; s.Rebuild(); PlotRefresh(); }
+                    else { throw new FormatException(); }
+                }
+                catch
+                {
+                    return;
+                }
+                finally
+                {
+                    Mouse.OverrideCursor = null;
+                }
+            }
+            if (w.f is Hydrodynamics_Sources.Conformal_Maps.Triangle)
+            {
+                try
+                {
+                    Mouse.OverrideCursor = Cursors.Wait;
+                    double tmp = Convert.ToDouble(TemporaryString(2));
+                    if (tmp > 0) { (w.f as Hydrodynamics_Sources.Conformal_Maps.Triangle).A = tmp; s.Rebuild(); PlotRefresh(); }
                     else { throw new FormatException(); }
                 }
                 catch
@@ -369,6 +423,8 @@ namespace Degree_Work
                     return (CursorPosition.Re<0 && CursorPosition.Im>((Hydrodynamics_Sources.Conformal_Maps.Number79)w.f).h+1) || (CursorPosition.Re > 0 && (CursorPosition.Im > ((Hydrodynamics_Sources.Conformal_Maps.Number79)w.f).h + 1 || CursorPosition.Im < 1));
                 case "Number89":
                     return (CursorPosition.Re < 0 && CursorPosition.Im <= 0) || (CursorPosition.Re > 0 && CursorPosition.Im <= ((Hydrodynamics_Sources.Conformal_Maps.Number89)w.f).h2);
+                case "Triangle":
+                    return false;
                 default: return true;
             }
         }
