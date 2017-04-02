@@ -71,7 +71,7 @@ namespace Degree_Work
             {
                 V = w.V_physical_plane(CursorPosition);
             }
-            if (w.f is Hydrodynamics_Sources.Conformal_Maps.EjectedRays && CursorPosition.Re < 0)
+            if (w.f is Hydrodynamics_Sources.Conformal_Maps.EjectedRays && CursorPosition.Re < 0 && (Math.Abs(CursorPosition.Im) < CursorPosition.Re * Math.Tan((w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedRays).Angle)))
             {
                 V = -V;
             }
@@ -130,7 +130,7 @@ namespace Degree_Work
                     param1.Visibility = Visibility.Visible;
                     param2.Visibility = Visibility.Visible;
                     angleSlider.Visibility = Visibility.Visible;
-                    angleSlider.Minimum = 0;
+                    angleSlider.Minimum = 90;
                     angleSlider.Maximum = 180;
                     angleSlider.Value = 90;
                     paramBox1.TextChanged += paramBox1_TextChanged;
