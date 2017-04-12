@@ -18,10 +18,12 @@ namespace Degree_Work.Hydrodynamics_Sources
         IniFillAsync async_base;
         TransformationAsync async_transform;
         FullBuildAsync async_full;
+        bool wasJoukowski = false;
         public CircleStreamLinesBuilder(Potential w, PlotWindowModel g) : base(w,g,CanonicalDomain.Circular)
         {
             InitialBuild();
         }
+
         public override void ChangeParams(double? x_min, double? x_max, double? y_max, double? h_horizontal, double? h_vertical)
         {
             this.x_min = x_min ?? this.x_min;
@@ -31,17 +33,38 @@ namespace Degree_Work.Hydrodynamics_Sources
             this.h = h_vertical ?? this.h;
             FullRebuild();
         }
+
         void InitialBuild()
         {
             g.Clear();
             FindBaseStreamLines();
         }
+
         public override void Rebuild()
         {
+            if (w.f is Conformal_Maps.JoukowskiAirfoil)
+            {
+                var tmp = w.f as Conformal_Maps.JoukowskiAirfoil;
+                w.R = tmp.R;
+                FullRebuild();
+                wasJoukowski = true;
+                return;
+            }
+            else
+            {
+                if (wasJoukowski)
+                {
+                    wasJoukowski = false;
+                    w.R = 1;
+                    FullRebuild();
+                    return;
+                }
+            }
             g.Clear();
             g.DrawBorder(this);
             Transform();
         }
+
         void FullRebuild()
         {
             g.Clear();
@@ -62,6 +85,7 @@ namespace Degree_Work.Hydrodynamics_Sources
                 RightSpecialStreamLineBase.Add(new DataPoint(x, 0));
             }
         }
+
         void FindBaseStreamLines()
         {
             FindInitSpecial();
@@ -77,6 +101,7 @@ namespace Degree_Work.Hydrodynamics_Sources
             while (!res_list.IsAllThreadsCompleted()) { }
             res_list = null;
         }
+
         void Transform()
         {
             StreamLines = new List<List<DataPoint>>();
@@ -97,6 +122,7 @@ namespace Degree_Work.Hydrodynamics_Sources
             while (!res_list.IsAllThreadsCompleted()) { }
             res_list = null;
         }
+
         void FindAllStreamLines()
         {
             FindInitSpecial();
@@ -126,7 +152,6 @@ namespace Degree_Work.Hydrodynamics_Sources
             res_list = null;
         }
 
-
         void AsyncIniFill(List<DataPoint> bp, List<DataPoint> bm, double y)
         {
             double x, x_new, y_new, k1, k2, k3, k4;
@@ -148,6 +173,7 @@ namespace Degree_Work.Hydrodynamics_Sources
                 bm.Add(new DataPoint(x_new, -y_new));
             }
         }
+
         void AsyncTransform(List<DataPoint> b, List<DataPoint> l, complex angleMult)
         {
             DataPoint tmp;
@@ -158,6 +184,7 @@ namespace Degree_Work.Hydrodynamics_Sources
             }
             g.DrawCurve(l);
         }
+
         void AsyncFullBuild(List<DataPoint> bp, List<DataPoint> bm, List<DataPoint> lp, List<DataPoint> lm, complex angleMult, double y)
         {
             DataPoint tmp;

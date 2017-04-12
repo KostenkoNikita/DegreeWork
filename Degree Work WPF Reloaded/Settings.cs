@@ -19,6 +19,7 @@ namespace Degree_Work
         public static readonly StreamLinesPlotVisualParams PlotVisualParamsConstant;
         public static ushort Precision { get { return precision.decimals; } set { precision.decimals = value; } }
         public static string Format => precision.format;
+        public static double Eps => precision.eps;
         internal static ImageSource exitIcoSource;
         internal static ImageSource exitIcoSelectedSource;
         internal static ImageSource saveIcoSource;

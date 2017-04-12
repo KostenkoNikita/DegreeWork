@@ -108,8 +108,13 @@
 
 
                 <TextBlock x:Name="param1" Grid.Column="0" Grid.Row="0" Text="α =" TextAlignment="Justify"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontFamily="Times New Roman"/>
-                <TextBox x:Name="paramBox1" Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" TextAlignment="Center"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" FontSize="30" FontFamily="Times New Roman" TextChanged="paramBox2_TextChanged"/>
+                <TextBox x:Name="paramBox1" Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" TextAlignment="Center"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" FontSize="30" FontFamily="Times New Roman" TextChanged="paramBox1_TextChanged"/>
                 <Slider x:Name="angleSlider" Grid.Row="1" Grid.ColumnSpan="2" Minimum="-90" Maximum="90" VerticalAlignment="Center" Margin="5,0,5,0" SmallChange="1" LargeChange="10" ValueChanged="angleSlider_ValueChanged"/>
+
+                <TextBlock x:Name="param2" Grid.Column="0" Grid.Row="2" Text="h =" TextAlignment="Justify"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontFamily="Times New Roman"/>
+                <TextBox x:Name="paramBox2" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" TextAlignment="Center"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" FontSize="30" FontFamily="Times New Roman" TextChanged="paramBox2_TextChanged"/>
+                <TextBlock x:Name="param3" Grid.Column="0" Grid.Row="3" Text="eps =" TextAlignment="Justify"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontFamily="Times New Roman"/>
+                <TextBox x:Name="paramBox3" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" TextAlignment="Center"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" FontSize="30" FontFamily="Times New Roman" TextChanged="paramBox3_TextChanged"/>
 
                 <TextBlock Grid.Column="0" Grid.Row="4" Text="x =" TextAlignment="Justify"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25" FontFamily="Times New Roman"/>
                 <TextBlock Grid.Column="0" Grid.Row="5" Text="y =" TextAlignment="Justify"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25" FontFamily="Times New Roman"/>

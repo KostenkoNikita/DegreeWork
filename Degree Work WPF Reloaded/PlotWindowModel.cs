@@ -481,6 +481,17 @@ namespace Degree_Work
                             BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
                             PlotModel.Annotations.Add(BorderPolyBottom);
                             break;
+                        case "JoukowskiAirfoil":
+                            BorderBottom = new PolygonAnnotation();
+                            BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
+                            for (double theta = 0; theta < 2*Math.PI; theta += 0.001)
+                            {
+                                BorderPolyBottom.Points.Add(s.W.f.z(s.W.R * math.exp(complex.i * theta)).ComplexToDataPoint());
+                            }
+                            BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                            BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                            PlotModel.Annotations.Add(BorderPolyBottom);
+                            break;
                     }
                     BorderBottom.MouseDown += (sender, e) => { IsMouseClickedInPolygon = true; };
                     break;
