@@ -121,13 +121,11 @@ namespace Degree_Work.Hydrodynamics_Sources
         }
         public complex W(complex dzeta)
         {
-
             return _V_inf * exp(-i * this._alpha) * dzeta + (_R * _R * _V_inf * exp(i * _alpha)) / dzeta + this._G * ln(dzeta) / (2 * pi * i);
         }
         public complex dW_ddzeta(complex dzeta)
         {
             return _V_inf * exp(-i * this._alpha) - (_R * _R * _V_inf * exp(i * this._alpha)) / (dzeta * dzeta) + this._G / (2 * pi * i * dzeta);
-
         }
         public override string ToString()
         {

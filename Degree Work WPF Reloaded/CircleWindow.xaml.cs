@@ -171,6 +171,10 @@ namespace Degree_Work
                     angleSlider.Maximum = 15;
                     paramBox1.TextChanged += paramBox1_TextChanged;
                     angleSlider.ValueChanged += angleSlider_ValueChanged;
+                    if (Math.Abs(w.AlphaDegrees) > 15)
+                    {
+                        angleSlider.Value = 0;
+                    }
                     paramBox2.TextChanged += paramBox2_TextChanged;
                     paramBox3.TextChanged += paramBox3_TextChanged;
                     break;

@@ -6,6 +6,7 @@ using MathCore_2_0;
 using static MathCore_2_0.complex;
 using static MathCore_2_0.math;
 using OxyPlot;
+using System.Threading.Tasks;
 
 namespace Degree_Work.Hydrodynamics_Sources
 {
@@ -15,9 +16,11 @@ namespace Degree_Work.Hydrodynamics_Sources
         delegate void IniFillAsync(List<DataPoint> BasePlus, List<DataPoint> ListMinus, double y);
         delegate void TransformationAsync(List<DataPoint> Base, List<DataPoint> Lines, complex angleMult);
         delegate void FullBuildAsync(List<DataPoint> BasePlus, List<DataPoint> BaseMinus, List<DataPoint> LinesPlus, List<DataPoint> LinesMinus, complex angleMult, double y);
+        delegate void JoukowskiAsync(List<DataPoint> StreamLines, double y);
         IniFillAsync async_base;
         TransformationAsync async_transform;
         FullBuildAsync async_full;
+        JoukowskiAsync async_Joukowski;
         bool wasJoukowski = false;
         public CircleStreamLinesBuilder(Potential w, PlotWindowModel g) : base(w,g,CanonicalDomain.Circular)
         {
@@ -82,12 +85,14 @@ namespace Degree_Work.Hydrodynamics_Sources
             RightSpecialStreamLineBase = new List<DataPoint>();
             RightSpecialStreamLine = new List<DataPoint>();
             LeftSpecialStreamLine = new List<DataPoint>();
+            StreamLines = new List<List<DataPoint>>();
+            StreamLinesBase = new List<List<DataPoint>>();
             LeftStagnationPointBase = (i * exp(i * w.AlphaRadians) * w.G - exp(i * w.AlphaRadians) * sqrt(-w.G * w.G + 16 * pi * pi * w.R * w.R * w.V_inf * w.V_inf)) / (4 * pi * w.V_inf);
             RightStagnationPointBase = (i * exp(i * w.AlphaRadians) * w.G + exp(i * w.AlphaRadians) * sqrt(-w.G * w.G + 16 * pi * pi * w.R * w.R * w.V_inf * w.V_inf)) / (4 * pi * w.V_inf);
             LeftStagnationPoint = w.f.z(LeftStagnationPointBase);
             RightStagnationPoint = w.f.z(RightStagnationPointBase);
             g.DrawStagnationPoints(RightStagnationPoint, LeftStagnationPoint);
-            double x,y, x_new, y_new, k1, k2, k3, k4;
+            double x_new, y_new;
             h_mrk /= 10.0;
             x_new = RightStagnationPointBase.Re + (h_mrk); 
             y_new = RightStagnationPointBase.Im + (h_mrk);
@@ -111,22 +116,19 @@ namespace Degree_Work.Hydrodynamics_Sources
                 LeftSpecialStreamLine.Add(w.f.z(LeftSpecialStreamLineBase[LeftSpecialStreamLineBase.Count - 1]));
             }
             h_mrk = -h_mrk*10.0;
-
-            //to be added
-
+            async_Joukowski = new JoukowskiAsync(AsyncJoukowskiBuild);
+            res_list = new List<IAsyncResult>();
+            for (double y1 = LeftSpecialStreamLine[LeftSpecialStreamLine.Count-1].Y+h * Math.Cos(w.AlphaRadians), y2 = LeftSpecialStreamLine[LeftSpecialStreamLine.Count - 1].Y - h * Math.Cos(w.AlphaRadians); y1 <= y_max && y2 >= -y_max; y1 += h, y2-=h)
+            {
+                StreamLines.Add(new List<DataPoint>());
+                res_list.Add(async_Joukowski.BeginInvoke(StreamLines[StreamLines.Count - 1], y1, null, null));
+                StreamLines.Add(new List<DataPoint>());
+                res_list.Add(async_Joukowski.BeginInvoke(StreamLines[StreamLines.Count - 1], y2, null, null));
+            }
+            while (!res_list.IsAllThreadsCompleted()) { }
+            res_list = null;
             g.DrawCurve(RightSpecialStreamLine);
             g.DrawCurve(LeftSpecialStreamLine);
-        }
-
-        void MRK_loop(ref double x_new, ref double y_new)
-        {
-            double k1, k2, k3, k4;
-            k1 = f(x_new, y_new);
-            k2 = f(x_new + h_mrk / 2, y_new + (h_mrk * k1) / 2);
-            k3 = f(x_new + h_mrk / 2, y_new + (h_mrk * k2) / 2);
-            k4 = f(x_new + h_mrk, y_new + (h_mrk * k3));
-            y_new = y_new + (h_mrk / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
-            x_new = x_new + h_mrk;
         }
 
         void FindInitSpecial() 
@@ -211,21 +213,14 @@ namespace Degree_Work.Hydrodynamics_Sources
 
         void AsyncIniFill(List<DataPoint> bp, List<DataPoint> bm, double y)
         {
-            double x, x_new, y_new, k1, k2, k3, k4;
+            double x_new, y_new;
             x_new = x_min;
             y_new = y;
             bp.Add(new DataPoint(x_new, y_new));
             bm.Add(new DataPoint(x_new, -y_new));
             while (x_new < x_max)
             {
-                x = x_new;
-                y = y_new;
-                k1 = f(x, y);
-                k2 = f(x + h_mrk / 2, y + (h_mrk * k1) / 2);
-                k3 = f(x + h_mrk / 2, y + (h_mrk * k2) / 2);
-                k4 = f(x + h_mrk, y + (h_mrk * k3));
-                y_new = y + (h_mrk / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
-                x_new = x + h_mrk;
+                MRK_loop(ref x_new, ref y_new);
                 bp.Add(new DataPoint(x_new, y_new));
                 bm.Add(new DataPoint(x_new, -y_new));
             }
@@ -245,21 +240,14 @@ namespace Degree_Work.Hydrodynamics_Sources
         void AsyncFullBuild(List<DataPoint> bp, List<DataPoint> bm, List<DataPoint> lp, List<DataPoint> lm, complex angleMult, double y)
         {
             DataPoint tmp;
-            double x, x_new, y_new, k1, k2, k3, k4;
+            double x_new, y_new;
             x_new = x_min;
             y_new = y;
             bp.Add(new DataPoint(x_new, y_new));
             bm.Add(new DataPoint(x_new, -y_new));
             while (x_new < x_max)
             {
-                x = x_new;
-                y = y_new;
-                k1 = f(x, y);
-                k2 = f(x + h_mrk / 2, y + (h_mrk * k1) / 2);
-                k3 = f(x + h_mrk / 2, y + (h_mrk * k2) / 2);
-                k4 = f(x + h_mrk, y + (h_mrk * k3));
-                y_new = y + (h_mrk / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
-                x_new = x + h_mrk;
+                MRK_loop(ref x_new, ref y_new);
                 bp.Add(new DataPoint(x_new, y_new));
                 bm.Add(new DataPoint(x_new, -y_new));
                 tmp = w.f.z((bp[bp.Count - 1].DataPointToComplex() * angleMult).ComplexToDataPoint());
@@ -269,6 +257,20 @@ namespace Degree_Work.Hydrodynamics_Sources
             }
             g.DrawCurve(lp);
             g.DrawCurve(lm);
+        }
+
+        void AsyncJoukowskiBuild(List<DataPoint> l, double y)
+        {
+            double x_new, y_new;
+            x_new = x_min;
+            y_new = y;
+            l.Add(w.f.z(new DataPoint(x_new, y_new)));
+            while (x_new < x_max)
+            {
+                MRK_loop(ref x_new, ref y_new);
+                l.Add(w.f.z(new DataPoint(x_new, y_new)));
+            }
+            g.DrawCurve(l);
         }
     }
 #else
