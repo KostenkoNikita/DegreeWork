@@ -46,7 +46,8 @@ namespace Degree_Work.Hydrodynamics_Sources
             {
                 var tmp = w.f as Conformal_Maps.JoukowskiAirfoil;
                 w.R = tmp.R;
-                FullRebuild();
+                w.G = -4 * Math.PI * w.V_inf * (tmp.eps + Math.Sqrt(Math.Pow(tmp.h, 2) + Math.Pow(tmp.c, 2))) * Math.Sin(w.AlphaRadians + tmp.betaDiv2);
+                FullRebuildJoukowski();
                 wasJoukowski = true;
                 return;
             }
@@ -56,6 +57,7 @@ namespace Degree_Work.Hydrodynamics_Sources
                 {
                     wasJoukowski = false;
                     w.R = 1;
+                    w.G = 0;
                     FullRebuild();
                     return;
                 }
@@ -70,6 +72,61 @@ namespace Degree_Work.Hydrodynamics_Sources
             g.Clear();
             g.DrawBorder(this);
             FindAllStreamLines();
+        }
+
+        void FullRebuildJoukowski()
+        {
+            g.Clear();
+            g.DrawBorder(this);
+            LeftSpecialStreamLineBase = new List<DataPoint>();
+            RightSpecialStreamLineBase = new List<DataPoint>();
+            RightSpecialStreamLine = new List<DataPoint>();
+            LeftSpecialStreamLine = new List<DataPoint>();
+            LeftStagnationPointBase = (i * exp(i * w.AlphaRadians) * w.G - exp(i * w.AlphaRadians) * sqrt(-w.G * w.G + 16 * pi * pi * w.R * w.R * w.V_inf * w.V_inf)) / (4 * pi * w.V_inf);
+            RightStagnationPointBase = (i * exp(i * w.AlphaRadians) * w.G + exp(i * w.AlphaRadians) * sqrt(-w.G * w.G + 16 * pi * pi * w.R * w.R * w.V_inf * w.V_inf)) / (4 * pi * w.V_inf);
+            LeftStagnationPoint = w.f.z(LeftStagnationPointBase);
+            RightStagnationPoint = w.f.z(RightStagnationPointBase);
+            g.DrawStagnationPoints(RightStagnationPoint, LeftStagnationPoint);
+            double x,y, x_new, y_new, k1, k2, k3, k4;
+            h_mrk /= 10.0;
+            x_new = RightStagnationPointBase.Re + (h_mrk); 
+            y_new = RightStagnationPointBase.Im + (h_mrk);
+            RightSpecialStreamLineBase.Add(new DataPoint(x_new, y_new));
+            RightSpecialStreamLine.Add(w.f.z(RightSpecialStreamLineBase[RightSpecialStreamLineBase.Count - 1]));
+            while (x_new < x_max)
+            {
+                MRK_loop(ref x_new, ref y_new);
+                RightSpecialStreamLineBase.Add(new DataPoint(x_new, y_new));
+                RightSpecialStreamLine.Add(w.f.z(RightSpecialStreamLineBase[RightSpecialStreamLineBase.Count - 1]));
+            }
+            h_mrk = -h_mrk;
+            x_new = LeftStagnationPointBase.Re + (h_mrk);
+            y_new = LeftStagnationPointBase.Im;
+            LeftSpecialStreamLineBase.Add(new DataPoint(x_new, y_new));
+            LeftSpecialStreamLine.Add(w.f.z(LeftSpecialStreamLineBase[LeftSpecialStreamLineBase.Count - 1]));
+            while (x_new > x_min)
+            {
+                MRK_loop(ref x_new, ref y_new);
+                LeftSpecialStreamLineBase.Add(new DataPoint(x_new, y_new));
+                LeftSpecialStreamLine.Add(w.f.z(LeftSpecialStreamLineBase[LeftSpecialStreamLineBase.Count - 1]));
+            }
+            h_mrk = -h_mrk*10.0;
+
+            //to be added
+
+            g.DrawCurve(RightSpecialStreamLine);
+            g.DrawCurve(LeftSpecialStreamLine);
+        }
+
+        void MRK_loop(ref double x_new, ref double y_new)
+        {
+            double k1, k2, k3, k4;
+            k1 = f(x_new, y_new);
+            k2 = f(x_new + h_mrk / 2, y_new + (h_mrk * k1) / 2);
+            k3 = f(x_new + h_mrk / 2, y_new + (h_mrk * k2) / 2);
+            k4 = f(x_new + h_mrk, y_new + (h_mrk * k3));
+            y_new = y_new + (h_mrk / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
+            x_new = x_new + h_mrk;
         }
 
         void FindInitSpecial() 

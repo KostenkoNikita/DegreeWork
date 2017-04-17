@@ -17,11 +17,11 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
 
         double _eps;
 
-        double c => 1;
+        public double c => 1;
 
         public double R => Math.Pow(eps + Math.Sqrt(Math.Pow(h, 2) + Math.Pow(c, 2)), 2);
 
-        double betaDiv2 => Math.Atan(h / c);
+        public double betaDiv2 => Math.Atan(h / c);
 
         public double h { get => _h; set => _h = value; }
 
