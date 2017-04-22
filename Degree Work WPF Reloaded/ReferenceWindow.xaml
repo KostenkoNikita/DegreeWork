@@ -1,0 +1,34 @@
+﻿<Window x:Class="Degree_Work.ReferenceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Degree_Work"
+        mc:Ignorable="d"
+        Title="ReferenceWindow" Height="600" Width="900" MinHeight="600" MinWidth="900" ScrollViewer.VerticalScrollBarVisibility="Disabled" WindowStyle="None" BorderThickness="2" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.75*"></ColumnDefinition>
+            <ColumnDefinition Width="0.25*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+        </Grid.RowDefinitions>
+        <DocumentViewer x:Name="docViewer" Background="White" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.7*"></RowDefinition>
+                <RowDefinition Height="0.3*"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <ListBox x:Name="TipsList" Grid.Column="1" Grid.Row="0" FontSize="25" FontFamily="Times New Roman"/>
+
+            <Viewbox x:Name="exitContainer" Grid.Row="2" Margin="7,7,0,7">
+                <Image x:Name ="exitImage"  Source="Resources\exitIco.bmp" MouseEnter="ico_MouseEnter" MouseLeave="ico_MouseLeave" MouseDown="ico_MouseDown"/>
+            </Viewbox>
+            <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="0"/>
+            <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="1"/>
+        </Grid>
+    </Grid>
+</Window>

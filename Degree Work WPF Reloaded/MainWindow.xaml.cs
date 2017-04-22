@@ -18,6 +18,8 @@ namespace Degree_Work
         {
             InitializeComponent();
             WindowsReferences.MainW = this;
+            MenuItemImage.Source = Settings.MMFImageSource;
+            MenuItemImageDescription.Text = Settings.EmptyDescription;
         }
 
         private void Icon_MouseEnter(object sender, MouseEventArgs e)
@@ -34,8 +36,8 @@ namespace Degree_Work
 
         private void Icon_MouseLeave(object sender, MouseEventArgs e)
         {
-            MenuItemImage.Source = Settings.EmptyImageSource;
-            MenuItemImageDescription.Text = String.Empty;
+            MenuItemImage.Source = Settings.MMFImageSource;
+            MenuItemImageDescription.Text = Settings.EmptyDescription;
             switch ((sender as Image).Name)
             {
                 case "halfplaneImage": halfplaneContainer.Margin = new Thickness(1, 10, 1, 10); return;

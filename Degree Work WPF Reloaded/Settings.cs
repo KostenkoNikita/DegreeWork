@@ -12,6 +12,8 @@ namespace Degree_Work
         public const string HafPlaneDescription = "Обтекание полуплоскости и конформные\nотображения полуплоскости на различные области";
         public const string ZoneDescription = "Обтекание полосы -π..π и конформные отображения\nполосы -π..π на различные области";
         public const string CircleDescription = "Обтекание единичной окружности и конформные отображения\nединичной окружности на различные области";
+        public const string EmptyDescription = "Дипломная работа\nстудента группы МХ-13-1 ДНУ им. О. Гончара\nКостенко Никиты Викторовича";
+        //public const string EmptyDescription = "Дипломная работа\nЗК исправительной колонии №21\nЖмыха Дениса Петрова";
 
         public static StreamLinesPlotGeomParams PlotGeomParams;
         public static StreamLinesPlotVisualParams PlotVisualParams;
@@ -31,6 +33,8 @@ namespace Degree_Work
         internal static ImageSource CircleImageSource;
         internal static ImageSource EmptyImageSource;
 
+        internal static ImageSource MMFImageSource;
+
 
 
 
@@ -46,6 +50,8 @@ namespace Degree_Work
             ZoneImageSource = new BitmapImage(new Uri(@"Resources/ZoneImage.png", UriKind.Relative));
             CircleImageSource = new BitmapImage(new Uri(@"Resources/CircleImage.png", UriKind.Relative));
             EmptyImageSource = new BitmapImage(new Uri(@"Resources/Empty.png", UriKind.Relative));
+
+            MMFImageSource = new BitmapImage(new Uri(@"Resources/mmfImage.png", UriKind.Relative));
 
             PlotGeomParams = new StreamLinesPlotGeomParams() { hVertical = 0.5, MRKh = 0.3, XMax = 20, XMin = -20, YMax = 20, YMin = -20 };
             PlotVisualParams = new StreamLinesPlotVisualParams()

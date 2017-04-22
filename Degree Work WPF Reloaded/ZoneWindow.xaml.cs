@@ -293,7 +293,7 @@ namespace Degree_Work
             {
                 switch ((sender as Image).Name)
                 {
-                    case "referImage": MessageBox.Show("Developer has not added this window yet", "Error", MessageBoxButton.OK, MessageBoxImage.Error); return;
+                    case "referImage": WindowsReferences.RefW = new ReferenceWindow(this); WindowsReferences.RefW.Show(); return;
                     case "saveImage": SaveWindow sw = new SaveWindow(viewModel); sw.Show(); return;
                     case "menuImage": WindowsReferences.MainW.Show(); Close(); return;
                     case "exitImage": Process.GetCurrentProcess().Kill(); return;

@@ -45,6 +45,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\C#\MathCore_2.0\MathCore_2.0\bin\Debug\MathCore_2.0.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.Office.Interop.Word.15.0.4797.1003\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="OxyPlot">
       <HintPath>..\..\..\C#\WPF\Oxxxymiron\OxyPlot.dll</HintPath>
     </Reference>
@@ -54,6 +59,7 @@
     <Reference Include="OxyPlot.Xps">
       <HintPath>..\..\..\C#\WPF\Oxxxymiron\NET45\OxyPlot.Xps.dll</HintPath>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -92,6 +98,9 @@
     <Compile Include="Hydrodynamics Sources\Conformal Maps\Rays.cs" />
     <Compile Include="Hydrodynamics Sources\StreamLinesBuilder.cs" />
     <Compile Include="IStreamLinesPlotWindow.cs" />
+    <Compile Include="ReferenceWindow.xaml.cs">
+      <DependentUpon>ReferenceWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SaveWindow.xaml.cs">
       <DependentUpon>SaveWindow.xaml</DependentUpon>
     </Compile>
@@ -132,6 +141,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ReferenceWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SaveWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -164,10 +177,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\Documents\Test.docx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -217,5 +232,9 @@
     <Resource Include="Resources\HalfPlaneImage.png" />
     <Resource Include="Resources\ZoneImage.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mmfImage.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

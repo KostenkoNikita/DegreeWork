@@ -61,7 +61,7 @@
             <Viewbox x:Name="MenuItemImageContainer" Margin="1,1,1,1" Grid.Row="0">
                 <Image x:Name ="MenuItemImage" Source="Resources\Empty.png"/>
             </Viewbox>
-            <TextBlock x:Name="MenuItemImageDescription" Grid.Column="0" Grid.Row="3" Text="" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontFamily="Times New Roman"/>
+            <TextBlock x:Name="MenuItemImageDescription" Grid.Column="0" Grid.Row="3" Text="" Margin="0,42,0,0" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontFamily="Times New Roman" FontWeight="Bold"/>
         </Grid>
     </Grid>
 </Window>
