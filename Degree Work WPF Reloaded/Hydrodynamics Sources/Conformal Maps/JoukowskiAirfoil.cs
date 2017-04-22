@@ -64,6 +64,14 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
             return new complex(x, y);
         }
 
+        public complex RightStagnationPointToPhysicalPlane(complex dzeta)
+        {
+
+           double newX = (dzeta.Re - eps * Math.Cos(betaDiv2)) * (0.1e1 + c * c /(Math.Pow(dzeta.Re - eps * Math.Cos(betaDiv2), 0.2e1) +Math.Pow(dzeta.Im + h + eps * Math.Sin(betaDiv2), 0.2e1)));
+           double newY = (dzeta.Im + h + eps * Math.Sin(betaDiv2)) *(0.1e1 - c * c / (Math.Pow(dzeta.Re - eps * Math.Cos(betaDiv2), 0.2e1) +Math.Pow(dzeta.Im + h + eps * Math.Sin(betaDiv2), 0.2e1)));
+            return new complex(newX, newY);
+        }
+
         public DataPoint z(DataPoint dzeta)
         {
             return z(dzeta.DataPointToComplex()).ComplexToDataPoint();

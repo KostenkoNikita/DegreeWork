@@ -50,7 +50,7 @@ namespace Degree_Work.Hydrodynamics_Sources
             }
             set
             {
-                _G = Math.Abs(value);
+                _G = value;
             }
         }
         public double AlphaRadians
