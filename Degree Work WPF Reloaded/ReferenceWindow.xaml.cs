@@ -27,6 +27,7 @@ namespace Degree_Work
         public ReferenceWindow(System.Windows.Window from)
         {
             InitializeComponent();
+            docViewer.Zoom = 125;
             TipsList.Items.Add("Общие сведения");
             TipsList.Items.Add("Обтекание полуплоскости");
             TipsList.Items.Add("Обтекание полосы -π..π");
@@ -55,12 +56,32 @@ namespace Degree_Work
         private void TipsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 #if DEBUG
-            //To be added for different indexes
-            string wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\Test.docx";
+            string wordDocument = string.Empty;
+            switch (TipsList.SelectedIndex)
+            {
+                case 0:
+                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\GeneralInfo.docx";
+                    break;
+                case 1:
+                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\HalfPlaneInfo.docx";
+                    break;
+                case 2:
+                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\ZoneInfo.docx";
+                    break;
+                case 3:
+                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\CircleInfo.docx";
+                    break;
+                case 4:
+                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\SettingsInfo.docx";
+                    break;
+                case 5:
+                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\SaveInfo.docx";
+                    break;
+            }
 #endif
             if (string.IsNullOrEmpty(wordDocument) || !File.Exists(wordDocument))
             {
-                MessageBox.Show("The file is invalid. Please select an existing file again.");
+                MessageBox.Show("Файл документации отсутствует.");
             }
             else
             {

@@ -182,7 +182,12 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resources\Documents\Test.docx" />
+    <None Include="Resources\Documents\CircleInfo.docx" />
+    <None Include="Resources\Documents\GeneralInfo.docx" />
+    <None Include="Resources\Documents\HalfPlaneInfo.docx" />
+    <None Include="Resources\Documents\SaveInfo.docx" />
+    <None Include="Resources\Documents\SettingsInfo.docx" />
+    <None Include="Resources\Documents\ZoneInfo.docx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
