@@ -38,11 +38,11 @@ namespace Degree_Work
             s = new Hydrodynamics_Sources.HalfPlaneAndZoneStreamLinesBuilder(w, viewModel, CanonicalDomain.HalfPlane);
             mapsList.SelectionChanged += MapsList_SelectionChanged;
             mapsList.Items.Add("Тождественное\nотображение");
-            mapsList.Items.Add("Поребрик");
+            mapsList.Items.Add("Треугольник 1");
             mapsList.Items.Add("Полуплоскость с\nвыброшенным отрезком");
-            mapsList.Items.Add("Номер 81");
-            mapsList.Items.Add("Номер 79");
-            mapsList.Items.Add("Номер 89");
+            mapsList.Items.Add("Треугольник 2");
+            mapsList.Items.Add("Треугольник 3");
+            mapsList.Items.Add("Четырёхугольник 1");
             mapsList.Items.Add("Полуплоскость с\nвыброшенным\nравнобедренным\nтреугольником");
             mapsList.SelectedIndex = 0;
             viewModel.PlotModel.MouseMove += PlotModel_MouseMove;

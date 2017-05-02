@@ -14,23 +14,67 @@ using OxyPlot.Annotations;
 
 namespace Degree_Work
 {
+    /// <summary>
+    /// Перечисление, что задаёт вид канонической области: обтекание полуплоскости, полосы или окружности
+    /// </summary>
     enum CanonicalDomain { HalfPlane, Zone, Circular }
 
     class PlotWindowModel : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Константа, которая задаёт половину ширины линии при её рисовании для таких конформных отображений, как отображение полуплоскости на полуплоскость с выброшенным отрезком
+        /// </summary>
         private const double PolygonLineHalfWidth = 0.02;
+
+        /// <summary>
+        /// Константа, которая задаёт радиус точки торможения при её рисовании
+        /// </summary>
         private const double StagnationPointsRadius = 0.05;
+
         private PlotModel p;
+
+        /// <summary>
+        /// Вектор скорости, что появляется при нажатии на исследуемую область
+        /// </summary>
         private ArrowAnnotation arrow;
+
+        /// <summary>
+        /// Текст, что появляется вместе с вектором скорости, несущий в себе информацию о месте, в котором произведено нажатие
+        /// </summary>
         private TextAnnotation arrowText;
+
+        /// <summary>
+        /// Нижняя граница
+        /// </summary>
         public Annotation BorderBottom;
+
+        /// <summary>
+        /// Безопасное приведение типов для нижней границы в случае полуплоскости или полосы
+        /// </summary>
         PolygonAnnotation BorderPolyBottom => BorderBottom as PolygonAnnotation;
+
+        /// <summary>
+        /// Безопасное приведение типов для нижней границы в случае окружности
+        /// </summary>
         EllipseAnnotation EllipseBorder => BorderBottom as EllipseAnnotation;
-        //BorderTop будет присутствовать только в том случае, если
-        //вспомогательная плоскость имеет вид полосы
+
+        /// <summary>
+        /// Верхняя граница. будет присутствовать только в том случае, если
+        /// вспомогательная плоскость имеет вид полосы. В остальных случаях
+        /// роль границы выполняет BorderBottom
+        /// </summary>
         public Annotation BorderTop;
+
+        /// <summary>
+        /// Безопасное приведение типов для верхней границы
+        /// </summary>
         PolygonAnnotation BorderPolyTop => BorderTop as PolygonAnnotation;
+
+        /// <summary>
+        /// Нажата ли левая кнопка мыши на границе области
+        /// </summary>
         bool IsMouseClickedInPolygon;
+
         object locker = new object();
 
         public PlotModel PlotModel
@@ -39,29 +83,56 @@ namespace Degree_Work
             set { p = value; OnPropertyChanged("PlotModel"); }
         }
 
+        /// <summary>
+        /// Горизонтальная ось
+        /// </summary>
         private Axis X_Axis
         {
             get { return PlotModel.Axes[0] as Axis; }
         }
+
+        /// <summary>
+        /// Вертикальная ось
+        /// </summary>
         private Axis Y_Axis
         {
             get { return PlotModel.Axes[1] as Axis; }
         }
+
+        /// <summary>
+        /// Получение координат точки на экране в виде объекта DataPoint
+        /// </summary>
+        /// <param name="pos">Точка на экране</param>
+        /// <returns></returns>
         public DataPoint GetDataPointCursorPositionOnPlot(ScreenPoint pos)
         {
             return OxyPlot.Axes.Axis.InverseTransform(pos, X_Axis, Y_Axis);
         }
+
+        /// <summary>
+        /// Получение координат точки на экране в виде комплексного числа 
+        /// </summary>
+        /// <param name="pos">Точка на экране</param>
+        /// <returns></returns>
         public complex GetComplexCursorPositionOnPlot(ScreenPoint pos)
         {
             return OxyPlot.Axes.Axis.InverseTransform(pos, X_Axis, Y_Axis).DataPointToComplex();
         }
 
+        /// <summary>
+        /// Конструктор класса. Все графические пострения проходят через методы экземпляра этого класса
+        /// </summary>
+        /// <param name="domain">Вид канонической области</param>
         internal PlotWindowModel(CanonicalDomain domain)
         {
             PlotModel = new PlotModel();
             SetUpModel(domain);
         }
 
+        /// <summary>
+        /// Настройка модели. Тут происходит настройка координатных осей.
+        /// </summary>
+        /// <param name="domain">Вид канонической области</param>
         void SetUpModel(CanonicalDomain domain)
         {
             PlotModel.LegendTitle = null;
@@ -102,8 +173,15 @@ namespace Degree_Work
             }
         }
 
+        /// <summary>
+        /// Событие интерфейса INotifyPropertyChanged (в данной реализации не имеет подписчиков за ненадобностью)
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Безопасная в отношении потоков отрисовка кривой
+        /// </summary>
+        /// <param name="l">Список точек DataPoint, для которых рисуется кривая</param>
         public void DrawCurve(List<DataPoint> l)
         {
             lock (locker)
@@ -115,9 +193,11 @@ namespace Degree_Work
                 foreach (DataPoint p in l) { ls.Points.Add(p); }
                 PlotModel.Series.Add(ls);
             }
-
         }
 
+        /// <summary>
+        /// Сброс визуальных параметров графических элементов
+        /// </summary>
         public void ReassignVisualParams()
         {
             lock (locker)
@@ -163,6 +243,9 @@ namespace Degree_Work
             }
         }
 
+        /// <summary>
+        /// Создание вектора скорости и сопутствующего текста
+        /// </summary>
         void CreateArrow()
         {
             arrow = new ArrowAnnotation()
@@ -184,6 +267,9 @@ namespace Degree_Work
             PlotModel.Annotations.Add(arrowText);
         }
 
+        /// <summary>
+        /// Удаление вектора скорости и сопутсвующего текста, если таковые присутствуют
+        /// </summary>
         void DeleteArrow()
         {
             if (arrow != null)
@@ -196,6 +282,13 @@ namespace Degree_Work
             }
         }
 
+        /// <summary>
+        /// Перемещение созданного вектора (и его создание, если таковой отсутствует)
+        /// </summary>
+        /// <param name="start">Начало вектора</param>
+        /// <param name="end">Конец вектора</param>
+        /// <param name="V">Значение скорости</param>
+        /// <param name="domain">Вид канонической области</param>
         public void RedrawArrow(complex start, complex end, complex V, CanonicalDomain domain)
         {
             if (IsMouseClickedInPolygon)
@@ -218,6 +311,12 @@ namespace Degree_Work
             }
         }
 
+        /// <summary>
+        /// Сохранение результирующего графика в формат JPG
+        /// </summary>
+        /// <param name="path">Путь к результирующему файлу</param>
+        /// <param name="width">Ширина рисунка</param>
+        /// <param name="height">Высота рисунка</param>
         public void SavePlotToJPG(string path, int width, int height)
         {
             var pngExporter = new OxyPlot.Wpf.PngExporter { Width = width, Height = height, Background = OxyColors.White };
@@ -225,6 +324,12 @@ namespace Degree_Work
             bitmap.SaveJPG100(path);
         }
 
+        /// <summary>
+        /// Сохранение результирующего графика в формат PNG
+        /// </summary>
+        /// <param name="path">Путь к результирующему файлу</param>
+        /// <param name="width">Ширина рисунка</param>
+        /// <param name="height">Высота рисунка</param>
         public void SavePlotToPNG(string path, int width, int height)
         {
             using (FileStream s = new FileStream(path, FileMode.Create))
@@ -234,6 +339,12 @@ namespace Degree_Work
             }
         }
 
+        /// <summary>
+        /// Сохранение результирующего графика в формат BMP
+        /// </summary>
+        /// <param name="path">Путь к результирующему файлу</param>
+        /// <param name="width">Ширина рисунка</param>
+        /// <param name="height">Высота рисунка</param>
         public void SavePlotToBMP(string path, int width, int height)
         {
             var pngExporter = new OxyPlot.Wpf.PngExporter { Width = width, Height = height, Background = OxyColors.White };
@@ -241,6 +352,10 @@ namespace Degree_Work
             bitmap.GetBitmap().Save(path);
         }
 
+        /// <summary>
+        /// Имеется ли на графике вектор скорости
+        /// </summary>
+        /// <returns></returns>
         bool HasArrow()
         {
             foreach (Annotation a in PlotModel.Annotations)
@@ -250,6 +365,10 @@ namespace Degree_Work
             return false;
         }
 
+        /// <summary>
+        /// Метод, выполняющий рисование границы области
+        /// </summary>
+        /// <param name="s">Ссылка на объект, производный от абстрактного класса StreamLinesBuilder</param>
         public void DrawBorder(Hydrodynamics_Sources.StreamLinesBuilder s)
         {
             switch (s.Domain)
@@ -498,6 +617,11 @@ namespace Degree_Work
             }
         }
 
+        /// <summary>
+        /// Метод, выполняющий рисование точек торможения (если каноническая область является окружностью)
+        /// </summary>
+        /// <param name="r">Правая точка торможения</param>
+        /// <param name="l">Левая точка торможения</param>
         public void DrawStagnationPoints(complex r, complex l)
         {
             EllipseAnnotation rsp, lsp;
@@ -507,6 +631,9 @@ namespace Degree_Work
             PlotModel.Annotations.Add(lsp);
         }
 
+        /// <summary>
+        /// Очистка графической поверхности
+        /// </summary>
         public void Clear()
         {
             PlotModel.Series.Clear();

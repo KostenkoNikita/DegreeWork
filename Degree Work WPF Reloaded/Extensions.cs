@@ -11,23 +11,52 @@ namespace Degree_Work
 {
     static class Extensions
     {
+        /// <summary>
+        /// Перевод комплексного числа в точку
+        /// </summary>
+        /// <param name="c">Комплексное число</param>
+        /// <returns>Тока</returns>
         public static DataPoint ComplexToDataPoint(this complex c)
         {
             return new DataPoint(c.Re, c.Im);
         }
+
+        /// <summary>
+        /// Выполнение операции комплексного сопряжения над точкой как над комплексным числом
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public static DataPoint Conjugate(this DataPoint p)
         {
             p.Y = -p.Y;
             return p;
         }
+
+        /// <summary>
+        /// Вычисление модуля точки как модуля комплексного числа
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public static double Abs(this DataPoint p)
         {
             return Math.Sqrt(p.X * p.X + p.Y * p.Y);
         }
+
+        /// <summary>
+        /// Перевод точки в комплексное число
+        /// </summary>
+        /// <param name="p">Точка</param>
+        /// <returns>Комплексное число</returns>
         public static complex DataPointToComplex(this DataPoint p)
         {
             return new complex(p.X, p.Y);
         }
+
+        /// <summary>
+        /// Выполняет проверку, завершено ли выполнение всех асинхронных делегатов, полученных в виде списка IAsyncResult
+        /// </summary>
+        /// <param name="l">Список возвращаемых методом BeginInvoke экземпляра делегата интерфейсных ссылок</param>
+        /// <returns></returns>
         public static bool IsAllThreadsCompleted(this List<IAsyncResult> l)
         {
             foreach (IAsyncResult i in l)
@@ -36,12 +65,23 @@ namespace Degree_Work
             }
             return true;
         }
+
+        /// <summary>
+        /// Сохранение битового рисунка в JPG
+        /// </summary>
+        /// <param name="bmp">Объект BitmapSource</param>
+        /// <param name="filename">Имя конечного файла</param>
         public static void SaveJPG100(this BitmapSource bmp, string filename)
         {
             EncoderParameters encoderParameters = new EncoderParameters(1);
             encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
             bmp.GetBitmap().Save(filename, GetEncoder(System.Drawing.Imaging.ImageFormat.Jpeg), encoderParameters);
         }
+        /// <summary>
+        /// Получение объекта Bitmap из BitmapSource
+        /// </summary>
+        /// <param name="source">Объект BitmapSource</param>
+        /// <returns></returns>
         public static Bitmap GetBitmap(this BitmapSource source)
         {
             Bitmap bmp = new Bitmap(
@@ -60,6 +100,7 @@ namespace Degree_Work
             bmp.UnlockBits(data);
             return bmp;
         }
+
         static ImageCodecInfo GetEncoder(System.Drawing.Imaging.ImageFormat format)
         {
             ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();

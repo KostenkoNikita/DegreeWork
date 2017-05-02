@@ -6,7 +6,6 @@ using MathCore_2_0;
 using static MathCore_2_0.complex;
 using static MathCore_2_0.math;
 using OxyPlot;
-using System.Threading.Tasks;
 
 namespace Degree_Work.Hydrodynamics_Sources
 {

@@ -104,7 +104,7 @@ namespace Degree_Work
                     break; 
                 
 #else
-                case 0: Settings.PlotGeomParams.MRKh = 0.005; Settings.PlotGeomParams.hVertical = 0.05; wHelp = new Hydrodynamics_Sources.PotentialHelp(1, 1, 1); s = new Hydrodynamics_Sources.StreamLinesBuilderForGroupLeader(wHelp, viewModel); break;
+                case 0: Settings.PlotGeomParams.MRKh = 0.005; Settings.PlotGeomParams.hVertical = 0.05; wHelp = new Hydrodynamics_Sources.PotentialHelp(0.8,0.8); s = new Hydrodynamics_Sources.StreamLinesBuilderForGroupLeader(wHelp, viewModel); break;
 #endif
             }
             Mouse.OverrideCursor = Cursors.Wait;
