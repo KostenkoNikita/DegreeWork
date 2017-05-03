@@ -639,7 +639,7 @@ namespace Degree_Work
             PlotModel.Series.Clear();
             PlotModel.Annotations.Clear();
         }
-
+ 
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -55,7 +55,6 @@ namespace Degree_Work
 
         private void TipsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-#if DEBUG
             string wordDocument = string.Empty;
             switch (TipsList.SelectedIndex)
             {
@@ -78,7 +77,6 @@ namespace Degree_Work
                     wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\SaveInfo.docx";
                     break;
             }
-#endif
             if (string.IsNullOrEmpty(wordDocument) || !File.Exists(wordDocument))
             {
                 MessageBox.Show("Файл документации отсутствует.");
