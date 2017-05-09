@@ -114,6 +114,7 @@
     <Compile Include="Hydrodynamics Sources\Conformal Maps\Rays.cs" />
     <Compile Include="Hydrodynamics Sources\StreamLinesBuilder.cs" />
     <Compile Include="IStreamLinesPlotWindow.cs" />
+    <Compile Include="Mathematical Sources\Complex.cs" />
     <Compile Include="ReferenceWindow.xaml.cs">
       <DependentUpon>ReferenceWindow.xaml</DependentUpon>
     </Compile>

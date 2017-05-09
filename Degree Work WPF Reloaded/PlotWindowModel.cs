@@ -164,9 +164,9 @@ namespace Degree_Work
                     PlotModel.Axes.Add(YAxis);
                     break;
 #else
-                    XAxis = new LinearAxis(AxisPosition.Bottom, -3, 3, "X") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "X", AbsoluteMaximum = 5, AbsoluteMinimum = -5, Font = "Times New Roman", FontSize = 15 };
+                    XAxis = new LinearAxis(AxisPosition.Bottom, -3, 5, "X") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "X", AbsoluteMaximum = 5, AbsoluteMinimum = -5, Font = "Times New Roman", FontSize = 15 };
                     PlotModel.Axes.Add(XAxis);
-                    YAxis = new LinearAxis(AxisPosition.Left, -0.1, 1, "Y") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Y", AbsoluteMaximum = 5, AbsoluteMinimum = -5, Font = "Times New Roman", FontSize = 15 };
+                    YAxis = new LinearAxis(AxisPosition.Left, -0.1, 1, "Y") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Y", AbsoluteMaximum = 1, AbsoluteMinimum = -0.1, Font = "Times New Roman", FontSize = 15 };
                     PlotModel.Axes.Add(YAxis);
                     break;
 #endif
@@ -189,7 +189,30 @@ namespace Degree_Work
                 LineSeries ls = new LineSeries();
                 ls.Smooth = true;
                 ls.Color = Settings.PlotVisualParams.LineColor;
+#if !HELP_FOR_GROUP_LEADER
                 ls.StrokeThickness = Settings.PlotVisualParams.LineStrokeThickness;
+#elif HELP_FOR_GROUP_LEADER
+                ls.StrokeThickness = 1;
+#endif
+                foreach (DataPoint p in l) { ls.Points.Add(p); }
+                PlotModel.Series.Add(ls);
+            }
+        }
+
+        /// <summary>
+        /// Безопасная в отношении потоков отрисовка кривой
+        /// </summary>
+        /// <param name="l">Список точек DataPoint, для которых рисуется кривая</param>
+        /// <param name="thickness">Толщина линии</param>
+        /// <param name="color">Цвет линии</param>
+        public void DrawCurve(List<DataPoint> l, double thickness, OxyColor color)
+        {
+            lock (locker)
+            {
+                LineSeries ls = new LineSeries();
+                ls.Smooth = true;
+                ls.Color = color;
+                ls.StrokeThickness = thickness;
                 foreach (DataPoint p in l) { ls.Points.Add(p); }
                 PlotModel.Series.Add(ls);
             }

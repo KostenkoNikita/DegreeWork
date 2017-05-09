@@ -331,13 +331,24 @@ namespace Degree_Work.Hydrodynamics_Sources
         {
             async_base = new IniFillAsync(AsyncIniFill);
             res_list = new List<IAsyncResult>();
+            h = 0.05;
             for (double x = x_min + h; x <x_max; x += h)
             {
                 x = Math.Round(x, 4);
                 StreamLinesBase.Add(new List<DataPoint>());
                 res_list.Add(async_base.BeginInvoke(StreamLinesBase[StreamLinesBase.Count - 1], x, null, null));
             }
-            while (!res_list.IsAllThreadsCompleted()) { }
+            StreamLinesBase.Add(new List<DataPoint>());
+            res_list.Add(async_base.BeginInvoke(StreamLinesBase[StreamLinesBase.Count - 1], w.a-0.01, null, null));
+            for (double x = x_min + h+w.R; x < x_max+w.R; x += h)
+            {
+                x = Math.Round(x, 4);
+                StreamLinesBase.Add(new List<DataPoint>());
+                res_list.Add(async_base.BeginInvoke(StreamLinesBase[StreamLinesBase.Count - 1], x, null, null));
+            }
+            StreamLinesBase.Add(new List<DataPoint>());
+            res_list.Add(async_base.BeginInvoke(StreamLinesBase[StreamLinesBase.Count - 1], -w.a+w.R +0.01, null, null));
+            while (!res_list.IsAllThreadsCompleted()) { }           
             res_list = null;
         }
         void Transform()
@@ -350,6 +361,13 @@ namespace Degree_Work.Hydrodynamics_Sources
                 res_list.Add(async_transform.BeginInvoke(sllb, StreamLines[StreamLines.Count - 1], null, null));
             }
             while (!res_list.IsAllThreadsCompleted()) { }
+            g.DrawCurve(new List<DataPoint>() { new DataPoint(-5, 0), new DataPoint(-w.a, 0) }, 3, OxyColors.Black);
+            g.DrawCurve(new List<DataPoint>() { new DataPoint(w.a, 0), new DataPoint(-w.a+w.R, 0) }, 3, OxyColors.Black);
+            g.DrawCurve(new List<DataPoint>() { new DataPoint(w.a + w.R, 0), new DataPoint(10, 0) }, 3, OxyColors.Black);
+            if (w.Sh1 == 0 && w.Sh2 == 0)
+            {
+                g.DrawCurve(new List<DataPoint>() { new DataPoint(0.5*(w.a+(-w.a+w.R)), 0), new DataPoint(0.5 * (w.a + (-w.a + w.R)), 10) }, 3, OxyColors.Black);
+            }
             res_list = null;
         }
         void FindAllStreamLines()

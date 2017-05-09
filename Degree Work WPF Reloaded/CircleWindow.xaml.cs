@@ -63,7 +63,7 @@ namespace Degree_Work
         private void PlotModel_MouseDown(object sender, OxyMouseDownEventArgs e)
         {
 #if !HELP_FOR_GROUP_LEADER
-            if (e.ChangedButton.ToString() == "Left")
+            if (e.ChangedButton.ToString() == "Left" && w.f is Hydrodynamics_Sources.Conformal_Maps.IdentityTransform)
             {
                 viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.abs, V, CanonicalDomain.Circular);
                 PlotRefresh();
@@ -75,18 +75,28 @@ namespace Degree_Work
         {
 #if !HELP_FOR_GROUP_LEADER
             CursorPosition = viewModel.GetComplexCursorPositionOnPlot(e.Position);
-            V = w.V_physical_plane(CursorPosition);
-            if (complex.IsNaN(V) || IsCursorInBorder())
+            if (w.f is Hydrodynamics_Sources.Conformal_Maps.IdentityTransform)
             {
-                ClearTextBoxes();
-                return;
+                V = w.V_physical_plane(CursorPosition);
+                if (complex.IsNaN(V) || IsCursorInBorder())
+                {
+                    ClearTextBoxes();
+                    return;
+                }
+                else
+                {
+                    xTextBox.Text = CursorPosition.Re.ToString(Settings.Format);
+                    yTextBox.Text = CursorPosition.Im.ToString(Settings.Format);
+                    VxTextBox.Text = V.Re.ToString(Settings.Format);
+                    VyTextBox.Text = V.Im.ToString(Settings.Format);
+                }
             }
             else
             {
                 xTextBox.Text = CursorPosition.Re.ToString(Settings.Format);
                 yTextBox.Text = CursorPosition.Im.ToString(Settings.Format);
-                VxTextBox.Text = V.Re.ToString(Settings.Format);
-                VyTextBox.Text = V.Im.ToString(Settings.Format);
+                VxTextBox.Text = string.Empty;
+                VyTextBox.Text = string.Empty;
             }
 #endif
         }
@@ -104,7 +114,7 @@ namespace Degree_Work
                     break; 
                 
 #else
-                case 0: Settings.PlotGeomParams.MRKh = 0.005; Settings.PlotGeomParams.hVertical = 0.05; wHelp = new Hydrodynamics_Sources.PotentialHelp(0.8,0.8); s = new Hydrodynamics_Sources.StreamLinesBuilderForGroupLeader(wHelp, viewModel); break;
+                case 0: Settings.PlotGeomParams.MRKh = 0.005; Settings.PlotGeomParams.hVertical = 0.05; wHelp = new Hydrodynamics_Sources.PotentialHelp(1,1); s = new Hydrodynamics_Sources.StreamLinesBuilderForGroupLeader(wHelp, viewModel); break;
 #endif
             }
             Mouse.OverrideCursor = Cursors.Wait;
@@ -340,10 +350,10 @@ namespace Degree_Work
             {
                 case "IdentityTransform":
                     return CursorPosition.abs < w.R;
-                case "Plate":
-                    return false;
-                case "JoukowskiAirfoil":
-                    return false;/*w.f.dzeta(CursorPosition).abs < w.R;*/
+                //case "Plate":
+                //    return false;
+                //case "JoukowskiAirfoil":
+                //    return false;
                 default: return true;
             }
         }
