@@ -118,6 +118,9 @@
     <Compile Include="Mathematical Sources\Complex\Complex.cs" />
     <Compile Include="Mathematical Sources\Complex\ComplexNumberFormatEnum.cs" />
     <Compile Include="Mathematical Sources\Complex\ComplexNumberFormatInfo.cs" />
+    <Compile Include="Mathematical Sources\Functions\ElementaryFunctions.cs" />
+    <Compile Include="Mathematical Sources\Functions\SpecialFunctions.cs" />
+    <Compile Include="Mathematical Sources\MathematicalConstants.cs" />
     <Compile Include="ReferenceWindow.xaml.cs">
       <DependentUpon>ReferenceWindow.xaml</DependentUpon>
     </Compile>
