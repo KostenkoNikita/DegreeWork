@@ -114,7 +114,10 @@
     <Compile Include="Hydrodynamics Sources\Conformal Maps\Rays.cs" />
     <Compile Include="Hydrodynamics Sources\StreamLinesBuilder.cs" />
     <Compile Include="IStreamLinesPlotWindow.cs" />
-    <Compile Include="Mathematical Sources\Complex.cs" />
+    <Compile Include="Mathematical Sources\Complex\AngleMeasurement.cs" />
+    <Compile Include="Mathematical Sources\Complex\Complex.cs" />
+    <Compile Include="Mathematical Sources\Complex\ComplexNumberFormatEnum.cs" />
+    <Compile Include="Mathematical Sources\Complex\ComplexNumberFormatInfo.cs" />
     <Compile Include="ReferenceWindow.xaml.cs">
       <DependentUpon>ReferenceWindow.xaml</DependentUpon>
     </Compile>

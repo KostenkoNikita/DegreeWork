@@ -8,13 +8,8 @@ using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.Globalization;
 
-namespace Degree_Work.Mathematical_Sources
+namespace Degree_Work.Mathematical_Sources.Complex
 {
-    /// <summary>
-    /// Перечисление, представляющее собой тип измерения угла -- радианы или градусы
-    /// </summary>
-    public enum AngleMeasurement { Radians, Degrees };
-
     /// <summary>
     /// Структура, представляющая собой комплексное число
     /// </summary>
@@ -31,8 +26,6 @@ namespace Degree_Work.Mathematical_Sources
 
         public double ArgDegrees => getArg() * 180.0 / Math.PI;
 
-        public double Phi => getArg();
-
         public Complex Conjugate => new Complex(Re, -Im);
 
         public static Complex I => new Complex(0, 1);
@@ -45,7 +38,7 @@ namespace Degree_Work.Mathematical_Sources
 
         public static Complex Epsilon => new Complex(double.Epsilon, double.Epsilon);
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double GetArgument(AngleMeasurement m)
         {
             switch (m)
@@ -140,35 +133,13 @@ namespace Degree_Work.Mathematical_Sources
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
-            if (double.IsInfinity(Re) || double.IsInfinity(Im))
-            {
-                return "ComplexInfinity";
-            }
-            else if (double.IsNaN(Re) || double.IsNaN(Im))
-            {
-                return "NaN";
-            }
-            else if (Re == 0 && Im == 0)
-            {
-                return "0";
-            }
-            string reStr = string.Empty;
-            string opStr = string.Empty;
-            string imStr = string.Empty;
-            if (Im > 0)
-            {
-                imStr = string.Concat(Im.ToString("G", CultureInfo.InvariantCulture), "I");
-                opStr = "+";
-            }
-            else if (Im < 0)
-            {
-                imStr = string.Concat(Im.ToString("G", CultureInfo.InvariantCulture), "I");
-            }
-            if (Re != 0)
-            {
-                reStr = Re.ToString("G", CultureInfo.InvariantCulture);
-            }
-            return string.Concat(reStr, opStr, imStr);
+            return ToString("G", ComplexNumberFormatInfo.AlgebraicFormBigImagiaryOne);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public string ToString(IFormatProvider formatProvider)
+        {
+            return ToString("G", formatProvider);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -186,24 +157,113 @@ namespace Degree_Work.Mathematical_Sources
             {
                 return "0";
             }
-            string reStr = string.Empty;
-            string opStr = string.Empty;
-            string imStr = string.Empty;
-            if (Im > 0)
+            if (formatProvider is ComplexNumberFormatInfo)
             {
-                imStr = string.Concat(Im.ToString(format, formatProvider), "I");
-                opStr = "+";
-            }
-            else if (Im < 0)
-            {
-                imStr = string.Concat(Im.ToString(format, formatProvider), "I");
-            }
+                ComplexNumberFormatInfo tmp = formatProvider as ComplexNumberFormatInfo;
+                if (tmp.Equals(ComplexNumberFormatEnum.AlgebraicFormBigImagiaryOne))
+                {
+                    string reStr = string.Empty;
+                    string opStr = string.Empty;
+                    string imStr = string.Empty;
+                    if (Im > 0)
+                    {
+                        imStr = string.Concat(Im.ToString(format, CultureInfo.InvariantCulture), "I");
+                        opStr = "+";
+                    }
+                    else if (Im < 0)
+                    {
+                        imStr = string.Concat(Im.ToString(format, CultureInfo.InvariantCulture), "I");
+                    }
 
-            if (Re != 0)
-            {
-                reStr = Re.ToString(format, formatProvider);
+                    if (Re != 0)
+                    {
+                        reStr = Re.ToString(format, CultureInfo.InvariantCulture);
+                    }
+                    return string.Concat(reStr, opStr, imStr);
+                }
+                else if (tmp.Equals(ComplexNumberFormatEnum.AlgebraicFormLittleImagiaryOne))
+                {
+                    string reStr = string.Empty;
+                    string opStr = string.Empty;
+                    string imStr = string.Empty;
+                    if (Im > 0)
+                    {
+                        imStr = string.Concat(Im.ToString(format, CultureInfo.InvariantCulture), "i");
+                        opStr = "+";
+                    }
+                    else if (Im < 0)
+                    {
+                        imStr = string.Concat(Im.ToString(format, CultureInfo.InvariantCulture), "i");
+                    }
+
+                    if (Re != 0)
+                    {
+                        reStr = Re.ToString(format, CultureInfo.InvariantCulture);
+                    }
+                    return string.Concat(reStr, opStr, imStr);
+                }
+                else if (tmp.Equals(ComplexNumberFormatEnum.ExponentialFormBigImagiaryOne))
+                {
+                    string absStr = string.Empty;
+                    string expStr = string.Empty;
+                    string powStr = string.Empty;
+                    if (Im != 0)
+                    {
+                        powStr = string.Concat(ArgRadians.ToString(format, CultureInfo.InvariantCulture), "I]");
+                        expStr = "Exp[";
+                    }
+                    if (Re != 0)
+                    {
+                        absStr = Abs.ToString(format, CultureInfo.InvariantCulture);
+                    }
+                    return string.Concat(absStr, expStr, powStr);
+                }
+                else if (tmp.Equals(ComplexNumberFormatEnum.ExponentialFormLittleImagiaryOne))
+                {
+                    string absStr = string.Empty;
+                    string expStr = string.Empty;
+                    string powStr = string.Empty;
+                    if (Im != 0)
+                    {
+                        powStr = string.Concat(ArgRadians.ToString(format, formatProvider), "i]");
+                        expStr = "Exp[";
+                    }
+                    if (Re != 0)
+                    {
+                        absStr = Abs.ToString(format, CultureInfo.InvariantCulture);
+                    }
+                    return string.Concat(absStr, expStr, powStr);
+                }
+                else if (tmp.Equals(ComplexNumberFormatEnum.Parentheses))
+                {
+                    return $"({Re.ToString(format, CultureInfo.InvariantCulture)},{Im.ToString(format, CultureInfo.InvariantCulture)})";
+                }
+                else
+                {
+                    return $"[{Re.ToString(format, CultureInfo.InvariantCulture)},{Im.ToString(format, CultureInfo.InvariantCulture)}]";
+                }
             }
-            return string.Concat(reStr, opStr, imStr);
+            else
+            {
+                string reStr = string.Empty;
+                string opStr = string.Empty;
+                string imStr = string.Empty;
+                if (Im > 0)
+                {
+                    imStr = string.Concat(Im.ToString(format, CultureInfo.InvariantCulture), "I");
+                    opStr = "+";
+                }
+                else if (Im < 0)
+                {
+                    imStr = string.Concat(Im.ToString(format, CultureInfo.InvariantCulture), "I");
+                }
+
+                if (Re != 0)
+                {
+                    reStr = Re.ToString(format, CultureInfo.InvariantCulture);
+                }
+                return string.Concat(reStr, opStr, imStr);
+            }
         }
 
         /// <summary>
@@ -254,7 +314,7 @@ namespace Degree_Work.Mathematical_Sources
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Complex ComplexNumberFromMagnitudeAndPhaseInRadians(double r, double phiRad)
         {
-            return new Complex();
+            return new Complex(r * Math.Cos(phiRad), r * Math.Sin(phiRad));
         }
 
         /// <summary>
@@ -540,19 +600,64 @@ namespace Degree_Work.Mathematical_Sources
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator /(Complex z1, Complex z2)
         {
-            return new Complex((z1.Re * z2.Re + z1.Im * z2.Im) / (z2.Re * z2.Re + z2.Im * z2.Im), (z1.Im * z2.Re - z1.Re * z2.Im) / (z2.Re * z2.Re + z2.Im * z2.Im));
+            if ((IsZero(z1) && IsZero(z2)) || (IsInfinity(z1) && IsInfinity(z2)) || IsNaN(z1) || IsNaN(z2))
+            {
+                return NaN;
+            }
+            else if (IsZero(z1) || IsInfinity(z2))
+            {
+                return Zero;
+            }
+            else if (IsInfinity(z1) || IsZero(z2))
+            {
+                return Infinity;
+            }
+            else
+            {
+                return new Complex((z1.Re * z2.Re + z1.Im * z2.Im) / (z2.Re * z2.Re + z2.Im * z2.Im), (z1.Im * z2.Re - z1.Re * z2.Im) / (z2.Re * z2.Re + z2.Im * z2.Im));
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator /(double d, Complex z2)
         {
-            return new Complex((d * z2.Re) / (z2.Re * z2.Re + z2.Im * z2.Im), (-d * z2.Im) / (z2.Re * z2.Re + z2.Im * z2.Im));
+            if ((d == 0.0 && IsZero(z2)) || (double.IsInfinity(d) && IsInfinity(z2)) || double.IsNaN(d) || IsNaN(z2))
+            {
+                return NaN;
+            }
+            else if (d == 0.0 || IsInfinity(z2))
+            {
+                return Zero;
+            }
+            else if (double.IsInfinity(d) || IsZero(z2))
+            {
+                return Infinity;
+            }
+            else
+            {
+                return new Complex((d * z2.Re) / (z2.Re * z2.Re + z2.Im * z2.Im), (-d * z2.Im) / (z2.Re * z2.Re + z2.Im * z2.Im));
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator /(Complex z1, double d)
         {
-            return new Complex((z1.Re * d) / (d * d), (z1.Im * d) / (d * d));
+            if ((IsZero(z1) && d == 0.0) || (IsInfinity(z1) && double.IsInfinity(d)) || IsNaN(z1) || double.IsNaN(d))
+            {
+                return NaN;
+            }
+            else if (IsZero(z1) || double.IsInfinity(d))
+            {
+                return Zero;
+            }
+            else if (IsInfinity(z1) || d == 0.0)
+            {
+                return Infinity;
+            }
+            else
+            {
+                return new Complex((z1.Re * d) / (d * d), (z1.Im * d) / (d * d));
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
