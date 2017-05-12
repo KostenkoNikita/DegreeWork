@@ -5,7 +5,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using MathCore_2_0;
+using Degree_Work.Mathematical_Sources.Complex;
+using static Degree_Work.Mathematical_Sources.Functions.ElementaryFunctions;
+using static Degree_Work.Mathematical_Sources.Functions.SpecialFunctions;
 
 namespace Degree_Work
 {
@@ -16,7 +18,7 @@ namespace Degree_Work
         /// </summary>
         /// <param name="c">Комплексное число</param>
         /// <returns>Тока</returns>
-        public static DataPoint ComplexToDataPoint(this complex c)
+        public static DataPoint ComplexToDataPoint(this Complex c)
         {
             return new DataPoint(c.Re, c.Im);
         }
@@ -47,9 +49,9 @@ namespace Degree_Work
         /// </summary>
         /// <param name="p">Точка</param>
         /// <returns>Комплексное число</returns>
-        public static complex DataPointToComplex(this DataPoint p)
+        public static Complex DataPointToComplex(this DataPoint p)
         {
-            return new complex(p.X, p.Y);
+            return new Complex(p.X, p.Y);
         }
 
         /// <summary>

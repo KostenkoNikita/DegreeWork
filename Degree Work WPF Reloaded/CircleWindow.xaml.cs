@@ -5,8 +5,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Diagnostics;
 using System.Windows.Input;
+using Degree_Work.Mathematical_Sources.Complex;
+using static Degree_Work.Mathematical_Sources.Functions.ElementaryFunctions;
+using static Degree_Work.Mathematical_Sources.Functions.SpecialFunctions;
 using OxyPlot;
-using MathCore_2_0;
 
 namespace Degree_Work
 {
@@ -15,7 +17,7 @@ namespace Degree_Work
     /// </summary>
     public partial class CircleWindow : Window, IStreamLinesPlotWindow
     {
-        complex CursorPosition, V;
+        Complex CursorPosition, V;
         private PlotWindowModel viewModel;
         Hydrodynamics_Sources.Potential w;
 #if HELP_FOR_GROUP_LEADER
@@ -65,7 +67,7 @@ namespace Degree_Work
 #if !HELP_FOR_GROUP_LEADER
             if (e.ChangedButton.ToString() == "Left" && w.f is Hydrodynamics_Sources.Conformal_Maps.IdentityTransform)
             {
-                viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.abs, V, CanonicalDomain.Circular);
+                viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.Abs, V, CanonicalDomain.Circular);
                 PlotRefresh();
             }
 #endif
@@ -78,7 +80,7 @@ namespace Degree_Work
             if (w.f is Hydrodynamics_Sources.Conformal_Maps.IdentityTransform)
             {
                 V = w.V_physical_plane(CursorPosition);
-                if (complex.IsNaN(V) || IsCursorInBorder())
+                if (Complex.IsNaN(V) || IsCursorInBorder())
                 {
                     ClearTextBoxes();
                     return;
@@ -181,7 +183,7 @@ namespace Degree_Work
                     angleSlider.Maximum = 15;
                     paramBox1.TextChanged += paramBox1_TextChanged;
                     angleSlider.ValueChanged += angleSlider_ValueChanged;
-                    if (Math.Abs(w.AlphaDegrees) > 15)
+                    if (Abs(w.AlphaDegrees) > 15)
                     {
                         angleSlider.Value = 0;
                     }
@@ -349,7 +351,7 @@ namespace Degree_Work
             switch (w.f.ToString())
             {
                 case "IdentityTransform":
-                    return CursorPosition.abs < w.R;
+                    return CursorPosition.Abs < w.R;
                 //case "Plate":
                 //    return false;
                 //case "JoukowskiAirfoil":

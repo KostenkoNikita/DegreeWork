@@ -131,30 +131,33 @@ namespace Degree_Work.Mathematical_Sources.Complex
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private double getArg()
         {
-            if (Re > 0)
+            if ((Re > 0 && Im > 0) || (Re > 0 && Im < 0))
             {
                 return Math.Atan(Im / Re);
             }
-            else if (Re < 0 && Im >= 0)
+            else if ((Re < 0 && Im > 0) || (Re < 0 && Im < 0))
             {
-                double test = Math.Atan(Im / Re);
-                return Math.Atan(Im / Re) + Math.PI;
+                return Math.PI + Math.Atan(Im / Re);
             }
-            else if (Re < 0 && Im < 0)
+            else if (Im == 0 && Re > 0)
             {
-                return Math.Atan(Im / Re) - Math.PI;
+                return 0;
             }
-            else if (Re == 0 && Im > 0)
+            else if (Im == 0 && Re < 0)
             {
-                return 0.5 * Math.PI;
+                return Math.PI;
             }
             else if (Re == 0 && Im < 0)
             {
-                return -0.5 * Math.PI;
+                return 3 * Math.PI / 2;
+            }
+            else if (Re == 0 && Im > 0)
+            {
+                return Math.PI / 2;
             }
             else
             {
-                return double.NaN;
+                return 0;
             }
         }
 
@@ -300,35 +303,35 @@ namespace Degree_Work.Mathematical_Sources.Complex
                 }
                 else if (tmp.Equals(ComplexNumberFormatEnum.ExponentialFormBigImagiaryOne))
                 {
-                    string absStr = string.Empty;
-                    string expStr = string.Empty;
+                    string AbsStr = string.Empty;
+                    string ExpStr = string.Empty;
                     string powStr = string.Empty;
                     if (Im != 0)
                     {
                         powStr = string.Concat(ArgRadians.ToString(format, CultureInfo.InvariantCulture), "I]");
-                        expStr = "Exp[";
+                        ExpStr = "Exp[";
                     }
                     if (Re != 0)
                     {
-                        absStr = Abs.ToString(format, CultureInfo.InvariantCulture);
+                        AbsStr = Abs.ToString(format, CultureInfo.InvariantCulture);
                     }
-                    return string.Concat(absStr, expStr, powStr);
+                    return string.Concat(AbsStr, ExpStr, powStr);
                 }
                 else if (tmp.Equals(ComplexNumberFormatEnum.ExponentialFormLittleImagiaryOne))
                 {
-                    string absStr = string.Empty;
-                    string expStr = string.Empty;
+                    string AbsStr = string.Empty;
+                    string ExpStr = string.Empty;
                     string powStr = string.Empty;
                     if (Im != 0)
                     {
                         powStr = string.Concat(ArgRadians.ToString(format, formatProvider), "i]");
-                        expStr = "Exp[";
+                        ExpStr = "Exp[";
                     }
                     if (Re != 0)
                     {
-                        absStr = Abs.ToString(format, CultureInfo.InvariantCulture);
+                        AbsStr = Abs.ToString(format, CultureInfo.InvariantCulture);
                     }
-                    return string.Concat(absStr, expStr, powStr);
+                    return string.Concat(AbsStr, ExpStr, powStr);
                 }
                 else if (tmp.Equals(ComplexNumberFormatEnum.Parentheses))
                 {
@@ -453,7 +456,7 @@ namespace Degree_Work.Mathematical_Sources.Complex
                     case ComplexNumberFormatEnum.ExponentialFormBigImagiaryOne:
                         {
                             string[] strArray = s.Split('[', '(');
-                            string rStr = strArray[0].Replace("Exp", string.Empty).Replace("exp", string.Empty);
+                            string rStr = strArray[0].Replace("Exp", string.Empty).Replace("Exp", string.Empty);
                             string phiStr = strArray[1].Replace("I", string.Empty).Replace(")", string.Empty).Replace("]", string.Empty);
                             return
                                 ComplexNumberFromMagnitudeAndPhase
@@ -465,7 +468,7 @@ namespace Degree_Work.Mathematical_Sources.Complex
                     case ComplexNumberFormatEnum.ExponentialFormLittleImagiaryOne:
                         {
                             string[] strArray = s.Split('[', '(');
-                            string rStr = strArray[0].Replace("Exp", string.Empty).Replace("exp", string.Empty);
+                            string rStr = strArray[0].Replace("Exp", string.Empty).Replace("Exp", string.Empty);
                             string phiStr = strArray[1].Replace("i", string.Empty).Replace(")", string.Empty).Replace("]", string.Empty);
                             return
                                 ComplexNumberFromMagnitudeAndPhase

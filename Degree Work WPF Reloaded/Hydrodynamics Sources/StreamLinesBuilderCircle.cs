@@ -1,7 +1,7 @@
 ﻿//#define HELP_FOR_GROUP_LEADER
 using System;
 using System.Collections.Generic;
-using MathCore_2_0;
+using Degree_Work.Mathematical_Sources.Complex;
 using OxyPlot;
 
 namespace Degree_Work.Hydrodynamics_Sources
@@ -10,17 +10,17 @@ namespace Degree_Work.Hydrodynamics_Sources
     {
         protected List<DataPoint> LeftSpecialStreamLine;
         protected List<DataPoint> RightSpecialStreamLine;
-        protected complex LeftStagnationPoint;
-        protected complex RightStagnationPoint;
-        protected complex LeftStagnationPointBase;
-        protected complex RightStagnationPointBase;
+        protected Complex LeftStagnationPoint;
+        protected Complex RightStagnationPoint;
+        protected Complex LeftStagnationPointBase;
+        protected Complex RightStagnationPointBase;
         protected List<DataPoint> LeftSpecialStreamLineBase;
         protected List<DataPoint> RightSpecialStreamLineBase;
         protected DataPoint LeftStagnationPointDP => LeftStagnationPoint.ComplexToDataPoint();
         protected DataPoint RightStagnationPointDP => LeftStagnationPoint.ComplexToDataPoint();
         protected DataPoint LeftStagnationPointBaseDP => LeftStagnationPointBase.ComplexToDataPoint();
         protected DataPoint RightStagnationPointBaseDP => LeftStagnationPointBase.ComplexToDataPoint();
-        protected double f(double X, double Y) => w.V_eta(new complex(X, Y)) / w.V_ksi(new complex(X, Y));
+        protected double f(double X, double Y) => w.V_eta(new Complex(X, Y)) / w.V_ksi(new Complex(X, Y));
         double[,] ReflectionMatrix()
         {
             return new double[2, 2] {

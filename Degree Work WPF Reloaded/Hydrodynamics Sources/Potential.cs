@@ -3,11 +3,13 @@
 //#define HELP_FOR_GROUP_LEADER
 
 using System;
-using MathCore_2_0;
-using static MathCore_2_0.math;
-using static MathCore_2_0.complex;
+
+using static Degree_Work.Mathematical_Sources.Functions.ElementaryFunctions;
+using static Degree_Work.Mathematical_Sources.Functions.SpecialFunctions;
+using static Degree_Work.Mathematical_Sources.Complex.Complex;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Degree_Work.Mathematical_Sources.Complex;
 
 namespace Degree_Work.Hydrodynamics_Sources
 {
@@ -18,7 +20,7 @@ namespace Degree_Work.Hydrodynamics_Sources
         /// </summary>
         /// <param name="dzeta">Комплексное число, представляющее собой точку, значение потенциала в которой нужно определить</param>
         /// <returns></returns>
-        public complex this[complex dzeta] { get { return W(dzeta); } }
+        public Complex this[Complex dzeta] { get { return W(dzeta); } }
 
         /// <summary>
         /// Скорость потока на бесконечности
@@ -78,7 +80,7 @@ namespace Degree_Work.Hydrodynamics_Sources
             }
             set
             {
-                _R = value == 0 ? throw new ArgumentException() : Math.Abs(value);
+                _R = value == 0 ? throw new ArgumentException() : Abs(value);
                 OnPropertyChanged();
             }
         }
@@ -151,7 +153,7 @@ namespace Degree_Work.Hydrodynamics_Sources
         /// <summary>
         /// Временная переменная, используется для вичисления скорости в физической плоскости
         /// </summary>
-        complex tmp;
+        Complex tmp;
 
         /// <summary>
         /// Событие, которое выполняется при изменении какого-то свойства
@@ -180,7 +182,8 @@ namespace Degree_Work.Hydrodynamics_Sources
         /// </summary>
         /// <param name="z">Точка, в которой ищется значение потенциальной функции</param>
         /// <returns></returns>
-        public double phi(complex z)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double phi(Complex z)
         {
             return this[z].Re;
         }
@@ -190,7 +193,8 @@ namespace Degree_Work.Hydrodynamics_Sources
         /// </summary>
         /// <param name="z">Точка, в которой ищется значение функции тока</param>
         /// <returns></returns>
-        public double psi(complex z)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double psi(Complex z)
         {
             return this[z].Im;
         }
@@ -200,9 +204,10 @@ namespace Degree_Work.Hydrodynamics_Sources
         /// </summary>
         /// <param name="dzeta">Точка, в которой ищется значение скорости</param>
         /// <returns></returns>
-        public complex V(complex dzeta)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Complex V(Complex dzeta)
         {
-            return dW_ddzeta(dzeta).conjugate;
+            return dW_ddzeta(dzeta).Conjugate;
         }
 
         /// <summary>
@@ -210,12 +215,13 @@ namespace Degree_Work.Hydrodynamics_Sources
         /// </summary>
         /// <param name="z">Точка, в которой ищется значение скорости</param>
         /// <returns></returns>
-        public complex V_physical_plane(complex z)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Complex V_physical_plane(Complex z)
         {
             try
             {
                 tmp = f.dzeta(z);
-                return IsNaN(tmp) ? NaN : (dW_ddzeta(z) / f.dz_ddzeta(tmp)).conjugate;
+                return IsNaN(tmp) ? NaN : (dW_ddzeta(z) / f.dz_ddzeta(tmp)).Conjugate;
             }
             catch { return NaN; }
         }
@@ -225,9 +231,10 @@ namespace Degree_Work.Hydrodynamics_Sources
         /// </summary>
         /// <param name="dzeta">Точка, в которой ищется значение горозонтальной компоненты скорости</param>
         /// <returns></returns>
-        public double V_ksi(complex dzeta)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double V_ksi(Complex dzeta)
         {
-            return dW_ddzeta(dzeta).conjugate.Re;
+            return dW_ddzeta(dzeta).Conjugate.Re;
         }
 
         /// <summary>
@@ -235,9 +242,10 @@ namespace Degree_Work.Hydrodynamics_Sources
         /// </summary>
         /// <param name="dzeta">Точка, в которой ищется значение горозонтальной компоненты скорости</param>
         /// <returns></returns>
-        public double V_eta(complex dzeta)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double V_eta(Complex dzeta)
         {
-            return dW_ddzeta(dzeta).conjugate.Im;
+            return dW_ddzeta(dzeta).Conjugate.Im;
         }
 
         /// <summary>
@@ -245,9 +253,10 @@ namespace Degree_Work.Hydrodynamics_Sources
         /// </summary>
         /// <param name="dzeta">Комплексное число, представляющее собой точку, в которой ищется значение комплексного потенциала</param>
         /// <returns></returns>
-        public complex W(complex dzeta)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Complex W(Complex dzeta)
         {
-            return _V_inf * exp(-i * this._alpha) * dzeta + (_R * _R * _V_inf * exp(i * _alpha)) / dzeta + this._G * ln(dzeta) / (2 * pi * i);
+            return _V_inf * Exp(-I * this._alpha) * dzeta + (_R * _R * _V_inf * Exp(I * _alpha)) / dzeta + this._G * Ln(dzeta) / (2 * Math.PI * I);
         }
 
         /// <summary>
@@ -255,15 +264,17 @@ namespace Degree_Work.Hydrodynamics_Sources
         /// </summary>
         /// <param name="dzeta">Комплексное число, представляющее собой точку, в которой ищется значение производной комплексного потенциала по комплексной координате</param>
         /// <returns></returns>
-        public complex dW_ddzeta(complex dzeta)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Complex dW_ddzeta(Complex dzeta)
         {
-            return _V_inf * exp(-i * this._alpha) - (_R * _R * _V_inf * exp(i * this._alpha)) / (dzeta * dzeta) + this._G / (2 * pi * i * dzeta);
+            return _V_inf * Exp(-I * this._alpha) - (_R * _R * _V_inf * Exp(I * this._alpha)) / (dzeta * dzeta) + this._G / (2 * Math.PI * I * dzeta);
         }
 
         /// <summary>
         /// Переопределенный метод класс Object, возвращающий строковое представление экземпляра класса комплексного потенциала
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
             return $"V={_V_inf}, alpha={_alpha}, R={_R}, G={_G}";
@@ -282,12 +293,12 @@ namespace Degree_Work.Hydrodynamics_Sources
 #if HELP_FOR_GROUP_LEADER
     class PotentialHelp
     {
-        public complex this[complex dzeta] { get { return W(dzeta); } }
+        public Complex this[Complex dzeta] { get { return W(dzeta); } }
 
         public double Sh1, a,b,R,Sh2;
         IConformalMapFunction _f;
 
-        complex tmp;
+        Complex tmp;
         public PotentialHelp(double Sh1, double Sh2)
         {
             this.a = 1;
@@ -297,31 +308,31 @@ namespace Degree_Work.Hydrodynamics_Sources
             this.Sh2 = Sh2;
             _f = new Hydrodynamics_Sources.Conformal_Maps.IdentityTransform();
         }
-        public double phi(complex z)
+        public double phi(Complex z)
         {
             return this[z].Re;
         }
-        public double psi(complex z)
+        public double psi(Complex z)
         {
             return this[z].Im;
         }
-        public complex V(complex dzeta)
+        public Complex V(Complex dzeta)
         {
-            return dW_ddzeta(dzeta).conjugate;
+            return dW_ddzeta(dzeta).Conjugate;
         }
-        public complex V_physical_plane(complex z)
+        public Complex V_physical_plane(Complex z)
         {
-            return new complex();
+            return new Complex();
         }
-        public double V_ksi(complex dzeta)
+        public double V_ksi(Complex dzeta)
         {
-            return dW_ddzeta(dzeta).conjugate.Re;
+            return dW_ddzeta(dzeta).Conjugate.Re;
         }
-        public double V_eta(complex dzeta)
+        public double V_eta(Complex dzeta)
         {
-            return dW_ddzeta(dzeta).conjugate.Im;
+            return dW_ddzeta(dzeta).Conjugate.Im;
         }
-        public complex W(complex dzeta)
+        public Complex W(Complex dzeta)
         {
             //return -(1.0 / pi) * (V0 * ((dzeta - 1) * ln(dzeta - a) - (dzeta + a) * ln(dzeta + a) + 2 * a)
             //    + (Sh / 4.0) * (2 * (dzeta - a) * (dzeta + a) * (ln(dzeta - a) - ln(dzeta + a)) + 3 * a * a - 4 * a * dzeta)
@@ -334,7 +345,7 @@ namespace Degree_Work.Hydrodynamics_Sources
 
             return -((dzeta / a - 1) * ln((dzeta / a - 1)) - (dzeta / a + 1) * ln((dzeta / a + 1)) + 0.4e1 + 0.25e0 * Sh1 * (0.2e1 * (dzeta / a - 1) * (dzeta / a + 1) * (ln((dzeta / a - 1)) - ln((dzeta / a + 1))) + 0.3e1 + (4 * dzeta / a)) + ((dzeta - R) / b - 1) * ln(((dzeta - R) / b - 1)) - ((dzeta - R) / b + 1) * ln(((dzeta - R) / b + 1)) + 0.25e0 * Sh2 * (0.2e1 * ((dzeta - R) / b - 1) * ((dzeta - R) / b + 1) * (ln(((dzeta - R) / b - 1)) - ln(((dzeta - R) / b + 1))) + 0.3e1 + (4 * (dzeta - R) / b))) / Math.PI;
         }
-        public complex dW_ddzeta(complex dzeta)
+        public Complex dW_ddzeta(Complex dzeta)
         {
             //return -(V0 * (ln(dzeta - a) - ln(dzeta + a)) + Sh * (0.2e1 * (dzeta + a) * (ln(dzeta - a) - ln(dzeta + a)) + 0.2e1 * (dzeta - a) * (ln(dzeta - a) - ln(dzeta + a)) + 0.2e1 * (dzeta - a) * (dzeta + a) * (0.1e1 / (dzeta - a) - 0.1e1 / (dzeta + a))) / 0.4e1) / Math.PI;
             //return 0.31831 * (-2 * Sh1 - ln(-1 + dzeta) - dzeta * Sh1 * ln((-1 + dzeta) / (1 + dzeta)) + ln(1 + dzeta));

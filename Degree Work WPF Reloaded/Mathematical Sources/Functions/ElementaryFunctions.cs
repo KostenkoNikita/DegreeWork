@@ -23,6 +23,30 @@ namespace Degree_Work.Mathematical_Sources.Functions
         /// <summary>
         /// Возведение в степень
         /// </summary>
+        /// <param name="a">Основание</param>
+        /// <param name="b">Показатель</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Pow(double a, double b)
+        {
+            return Math.Pow(a, b);
+        }
+
+        /// <summary>
+        /// Возведение в степень
+        /// </summary>
+        /// <param name="a">Основание</param>
+        /// <param name="b">Показатель</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Pow(double a, int b)
+        {
+            return Math.Pow(a, b);
+        }
+
+        /// <summary>
+        /// Возведение в степень
+        /// </summary>
         /// <param name="z">Основание</param>
         /// <param name="n">Показатель</param>
         /// <returns></returns>
@@ -87,7 +111,18 @@ namespace Degree_Work.Mathematical_Sources.Functions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex Exp(Complex z)
         {
-            return new Complex(Math.Exp(z.Re) * Math.Cos(z.Im), Math.Exp(z.Re) * Math.Sin(z.Im));
+            return new Complex(Math.Exp(z.Re) * Cos(z.Im), Exp(z.Re) * Sin(z.Im));
+        }
+
+        /// <summary>
+        /// Экспонента
+        /// </summary>
+        /// <param name="z">Aргумент</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Exp(double z)
+        {
+            return Math.Exp(z);
         }
 
         /// <summary>
@@ -121,6 +156,28 @@ namespace Degree_Work.Mathematical_Sources.Functions
         public static Complex Cos(Complex z)
         {
             return (Exp(Complex.I * z) + Exp(-Complex.I * z)) / 2.0;
+        }
+
+        /// <summary>
+        /// Синус
+        /// </summary>
+        /// <param name="z">Aргумент</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Sin(double z)
+        {
+            return Math.Sin(z);
+        }
+
+        /// <summary>
+        /// Косинус
+        /// </summary>
+        /// <param name="z">Aргумент</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Cos(double z)
+        {
+            return Math.Cos(z);
         }
 
         /// <summary>

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MathCore_2_0;
+using Degree_Work.Mathematical_Sources.Complex;
+using static Degree_Work.Mathematical_Sources.Functions.ElementaryFunctions;
+using static Degree_Work.Mathematical_Sources.Functions.SpecialFunctions;
 using OxyPlot;
 
 namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
@@ -12,11 +14,11 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
     {
         public DataPoint this[DataPoint dzeta] { get { return z(dzeta); } }
 
-        public complex pos => new complex(X, Y);
+        public Complex pos => new Complex(X, Y);
 
         public double X, Y;
 
-        public EjectedSegment(complex SegmentPosition)
+        public EjectedSegment(Complex SegmentPosition)
         {
             X = SegmentPosition.Re;
             Y = SegmentPosition.Im;
@@ -28,41 +30,51 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
             this.Y = Y;
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override bool Equals(object obj) => obj.GetType() == typeof(EjectedSegment) ? Equals((EjectedSegment)obj) : false;
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         bool Equals(EjectedSegment other) => pos == other.pos;
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode() => pos.GetHashCode() ^ (typeof(EjectedSegment)).GetHashCode();
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override string ToString() => "EjectedSegment";
 
-        public complex z(complex dzeta)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public Complex z(Complex dzeta)
         {
-            complex tmp = pos.Re + math.sqrt(pos.Re * pos.Re - 2 * pos.Re * dzeta - pos.Im * pos.Im + dzeta * dzeta);
-            return tmp.Im < 0 ? pos.Re - math.sqrt(pos.Re * pos.Re - 2 * pos.Re * dzeta - pos.Im * pos.Im + dzeta * dzeta) : tmp;
+            Complex tmp = pos.Re + Sqrt(pos.Re * pos.Re - 2 * pos.Re * dzeta - pos.Im * pos.Im + dzeta * dzeta);
+            return tmp.Im < 0 ? pos.Re - Sqrt(pos.Re * pos.Re - 2 * pos.Re * dzeta - pos.Im * pos.Im + dzeta * dzeta) : tmp;
         }
 
-        public complex dz_ddzeta(complex dzeta)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public Complex dz_ddzeta(Complex dzeta)
         {
-            complex tmp = ((dzeta - pos.Re) / (math.sqrt(pos.Re * pos.Re - 2 * pos.Re * dzeta - pos.Im * pos.Im + dzeta * dzeta)));
+            Complex tmp = ((dzeta - pos.Re) / (Sqrt(pos.Re * pos.Re - 2 * pos.Re * dzeta - pos.Im * pos.Im + dzeta * dzeta)));
             return tmp.Re < 0 ? -tmp : tmp;
         }
 
-        public complex dzeta(complex Z)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public Complex dzeta(Complex Z)
         {
-            return math.sqrt(math.pow(Z - pos.Re, 2) + pos.Im * pos.Im) + pos.Re;
+            return Sqrt(Pow(Z - pos.Re, 2) + pos.Im * pos.Im) + pos.Re;
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint z(DataPoint dzeta)
         {
             return z(dzeta.DataPointToComplex()).ComplexToDataPoint();
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint dz_ddzeta(DataPoint dzeta)
         {
             return dz_ddzeta(dzeta.DataPointToComplex()).ComplexToDataPoint();
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint dzeta(DataPoint Z)
         {
             return dzeta(Z.DataPointToComplex()).ComplexToDataPoint();

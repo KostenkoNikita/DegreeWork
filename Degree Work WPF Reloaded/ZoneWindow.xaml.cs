@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Diagnostics;
 using System.Windows.Input;
 using OxyPlot;
-using MathCore_2_0;
+using Degree_Work.Mathematical_Sources.Complex;
 
 namespace Degree_Work
 {
@@ -15,7 +15,7 @@ namespace Degree_Work
     /// </summary>
     public partial class ZoneWindow : Window, IStreamLinesPlotWindow
     {
-        complex CursorPosition, V;
+        Complex CursorPosition, V;
         private double oldDiffusorAngle;
         private PlotWindowModel viewModel;
         Hydrodynamics_Sources.Potential w;
@@ -54,7 +54,7 @@ namespace Degree_Work
         {
             if (e.ChangedButton.ToString() == "Left")
             {
-                viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.abs, V, CanonicalDomain.Zone);
+                viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.Abs, V, CanonicalDomain.Zone);
                 PlotRefresh();
             }
         }
@@ -64,8 +64,8 @@ namespace Degree_Work
             CursorPosition = viewModel.GetComplexCursorPositionOnPlot(e.Position);
             if (w.f is Hydrodynamics_Sources.Conformal_Maps.Diffusor && CursorPosition.Im < 0)
             {
-                V = w.V_physical_plane(CursorPosition.conjugate);
-                V = V.conjugate;
+                V = w.V_physical_plane(CursorPosition.Conjugate);
+                V = V.Conjugate;
             }
             else
             {
@@ -75,7 +75,7 @@ namespace Degree_Work
             {
                 V = -V;
             }
-            if (complex.IsNaN(V) || IsCursorInBorder())
+            if (Complex.IsNaN(V) || IsCursorInBorder())
             {
                 ClearTextBoxes();
                 return;
@@ -320,7 +320,7 @@ namespace Degree_Work
                     return false;
                 case "Diffusor":
                     return (CursorPosition.Re <0 && Math.Abs(CursorPosition.Im)>=(w.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor).h) 
-                        || (CursorPosition.Re >0 && Math.Abs(CursorPosition.Im) >= (w.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor).h+ CursorPosition.Re*Math.Tan((w.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor).angleDegrees*Math.PI/180.0));
+                        || (CursorPosition.Re >0 && Math.Abs(CursorPosition.Im) >= (w.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor).h+ CursorPosition.Re* Math.Tan((w.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor).angleDegrees*Math.PI/180.0));
                 default: return true;
             }
         }

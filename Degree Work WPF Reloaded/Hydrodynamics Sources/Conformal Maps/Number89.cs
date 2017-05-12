@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MathCore_2_0;
-using static MathCore_2_0.complex;
-using static MathCore_2_0.math;
+
+using static Degree_Work.Mathematical_Sources.Complex.Complex;
+using static Degree_Work.Mathematical_Sources.Functions.ElementaryFunctions;
+using Degree_Work.Mathematical_Sources.Complex;
 using OxyPlot;
 
 namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
@@ -16,7 +17,7 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
 
         public double h1, h2;
 
-        public double lam => equations.nsolve(lamRootFunc, lamRootFuncD, 0.1);
+        public double lam => Mathematical_Sources.Equations.NSolve(lamRootFunc, lamRootFuncD, 0.1);
 
         private Func<double, double> lamRootFunc;
 
@@ -31,43 +32,52 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
             double test = lam;
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override bool Equals(object obj) => obj.GetType() == typeof(Number89) ? Equals((Number89)obj) : false;
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode() => h1.GetHashCode()^h2.GetHashCode();
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override string ToString() => "Number89";
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         bool Equals(Number89 other) => h1==other.h1 && h2==other.h2;
 
-        public complex z(complex dzeta)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public Complex z(Complex dzeta)
         {
-            complex tmp = i + ((h1 - h2) / (pi * lam)) * (sqrt(dzeta * dzeta - 1) - lam * arch(dzeta));
-            return tmp.Im<0? -tmp:tmp;
+            Complex tmp = I + ((h1 - h2) / (Math.PI * lam)) * (Sqrt(dzeta * dzeta - 1) - lam * Arch(dzeta));
+            return tmp.Im < 0 ? -tmp : tmp;
         }
 
-        public complex dz_ddzeta(complex dzeta)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public Complex dz_ddzeta(Complex dzeta)
         {
-            complex tmp1 = i + ((h1 - h2) / (pi * lam)) * (sqrt(dzeta * dzeta - 1) - lam * arch(dzeta));
-            complex tmp = ((h1 - h2) / (lam * Math.PI)) * (-1.0 / (1 - dzeta * dzeta) + dzeta / (sqrt(dzeta * dzeta - 1)));
-            if (tmp.Re < 0) { tmp = -(tmp.conjugate); }
+            Complex tmp = ((h1 - h2) / (lam * Math.PI)) * (-1.0 / (1 - dzeta * dzeta) + dzeta / (Sqrt(dzeta * dzeta - 1)));
+            if (tmp.Re < 0) { tmp = -(tmp.Conjugate); }
             return tmp;
         }
 
-        public complex dzeta(complex Z)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public Complex dzeta(Complex Z)
         {
-            return equations.solve(z, dz_ddzeta, Z);
+            return Mathematical_Sources.Equations.Solve(z, dz_ddzeta, Z);
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint z(DataPoint dzeta)
         {
             return z(dzeta.DataPointToComplex()).ComplexToDataPoint();
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint dz_ddzeta(DataPoint dzeta)
         {
             return dz_ddzeta(dzeta.DataPointToComplex()).ComplexToDataPoint();
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint dzeta(DataPoint Z)
         {
             return dzeta(Z.DataPointToComplex()).ComplexToDataPoint();

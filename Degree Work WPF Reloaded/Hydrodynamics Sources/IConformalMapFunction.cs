@@ -1,4 +1,4 @@
-﻿using MathCore_2_0;
+﻿using Degree_Work.Mathematical_Sources.Complex;
 using OxyPlot;
 
 namespace Degree_Work.Hydrodynamics_Sources
@@ -17,21 +17,21 @@ namespace Degree_Work.Hydrodynamics_Sources
         /// </summary>
         /// <param name="dzeta">Точка, в которой ищется значение функции</param>
         /// <returns></returns>
-        complex z(complex dzeta);
+        Complex z(Complex dzeta);
 
         /// <summary>
         /// Значение производной функции в точке
         /// </summary>
         /// <param name="dzeta">Точка, в которой ищется значение производной функции</param>
         /// <returns></returns>
-        complex dz_ddzeta(complex dzeta);
+        Complex dz_ddzeta(Complex dzeta);
 
         /// <summary>
         /// Значение функции, обратной к функции конформного отображения
         /// </summary>
         /// <param name="Z">Точка, в которой ищется значение функции, обратной к функции конформного отображения</param>
         /// <returns></returns>
-        complex dzeta(complex Z);
+        Complex dzeta(Complex Z);
 
         /// <summary>
         /// Значение функции в точке

@@ -80,12 +80,12 @@ namespace Degree_Work.Mathematical_Sources.Functions
         public static Complex Digamma(Complex z)
         {
             bool biggerPI = false;
-            if (Math.Abs(z.ArgRadians) >= Math.PI) { z = z.Conjugate; biggerPI = true; }
+            if (Abs(z.ArgRadians) >= Math.PI) { z = z.Conjugate; biggerPI = true; }
             Complex s = 0, tmp = 10;
             for (int n = 1; ; n++)
             {
                 s += BernulliNumber(2 * n) / (2 * n * Pow(z, 2 * n));
-                if (Abs(s.Re - tmp.Re) < Settings.Eps && Math.Abs(s.Im - tmp.Im) < Settings.Eps)
+                if (Abs(s.Re - tmp.Re) < Settings.Eps && Abs(s.Im - tmp.Im) < Settings.Eps)
                 {
                     s = Ln(z) - 1.0 / (2 * z) - s;
                     if (biggerPI) { return s.Conjugate; }
@@ -118,7 +118,7 @@ namespace Degree_Work.Mathematical_Sources.Functions
             if (z == 0) { return 1; }
             if (z.Abs > 1)
             {
-                if (Math.Abs(((-z).ArgRadians)) < Math.PI)
+                if (Abs(((-z).ArgRadians)) < Math.PI)
                 {
                     return (Gamma(c) * Gamma(b - a) / (Gamma(b) * Gamma(c - a))) * Hypergeometric2F1(a, a + 1 - c, a + 1 - b, 1.0 / z) * Pow(-z, -a) + (Gamma(c) * Gamma(a - b) / (Gamma(a) * Gamma(c - b))) * Hypergeometric2F1(b, b + 1 - c, b + 1 - a, 1.0 / z) * Pow(-z, -b);
                 }
@@ -149,13 +149,13 @@ namespace Degree_Work.Mathematical_Sources.Functions
         private static double SinPi(double x)
         {
             x -= 2.0 * Math.Round(x / 2.0);
-            if (Math.Abs(x) == 1.0)
+            if (Abs(x) == 1.0)
             {
                 return 0.0;
             }
-            if (Math.Abs(x) != 0.5)
+            if (Abs(x) != 0.5)
             {
-                return Math.Sin(x * 3.1415926535897931);
+                return Sin(x * 3.1415926535897931);
             }
             if (x <= 0.0)
             {
@@ -186,17 +186,17 @@ namespace Degree_Work.Mathematical_Sources.Functions
                 num = 3.6998328;
                 array = SD;
             }
-            Complex _complex = array[0];
+            Complex _Complex = array[0];
             for (int i = 1; i < array.Length; i++)
             {
-                _complex += array[i] / (z + i);
+                _Complex += array[i] / (z + i);
             }
-            Complex complex2 = -(num + 0.5 + z) + (0.5 + z) * Ln(num + 0.5 + z) + Ln(_complex);
+            Complex Complex2 = -(num + 0.5 + z) + (0.5 + z) * Ln(num + 0.5 + z) + Ln(_Complex);
             if (flag)
             {
-                complex2 = Ln(3.1415926535897931 / Sin(3.1415926535897931 * (1.0 - z))) - complex2 - (3.1415926535897931 * Complex.I);
+                Complex2 = Ln(3.1415926535897931 / Sin(3.1415926535897931 * (1.0 - z))) - Complex2 - (3.1415926535897931 * Complex.I);
             }
-            return complex2 - (Complex.I * Math.Floor(complex2.Im / 6.2831853071795862 + 0.5) * 6.2831853071795862);
+            return Complex2 - (Complex.I * Math.Floor(Complex2.Im / 6.2831853071795862 + 0.5) * 6.2831853071795862);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -216,10 +216,10 @@ namespace Degree_Work.Mathematical_Sources.Functions
                     return Z[num2 - 1];
                 }
             }
-            if (Math.Abs(num) <= 9.9)
+            if (Abs(num) <= 9.9)
             {
 
-                return Math.Log(Math.Abs(Gamma(num)));
+                return Math.Log(Abs(Gamma(num)));
             }
             bool flag = false;
             if (num < 0.0)
@@ -252,7 +252,7 @@ namespace Degree_Work.Mathematical_Sources.Functions
             if (flag)
             {
 
-                num5 = Math.Log(Math.Abs(3.1415926535897931 / SinPi(num))) - num5;
+                num5 = Math.Log(Abs(3.1415926535897931 / SinPi(num))) - num5;
             }
             return num5;
         }
@@ -271,9 +271,9 @@ namespace Degree_Work.Mathematical_Sources.Functions
             }
             else
             {
-                if (Math.Abs(num) > 20.0)
+                if (Abs(num) > 20.0)
                 {
-                    double num2 = Math.Exp(LnG(num));
+                    double num2 = Exp(LnG(num));
                     if (num < 0.0)
                     {
                         if ((int)Math.Floor(num) % 2 != 0)
@@ -283,11 +283,11 @@ namespace Degree_Work.Mathematical_Sources.Functions
                     }
                     return num2;
                 }
-                if (Math.Abs(num) >= 2.2474362225598545E-308)
+                if (Abs(num) >= 2.2474362225598545E-308)
                 {
                     double num3 = num - Math.Round(num);
                     double num4;
-                    if (Math.Abs(num3) <= 0.1)
+                    if (Abs(num3) <= 0.1)
                     {
                         if (num3 == 0.0)
                         {
@@ -333,6 +333,7 @@ namespace Degree_Work.Mathematical_Sources.Functions
             }
         }
 
+        #region Approximations
 
         private static readonly double[] TD = new double[]
 {
@@ -345,6 +346,7 @@ namespace Degree_Work.Mathematical_Sources.Functions
     1.2869686141588626E-05,
     -3.2349738354906731E-06
 };
+
         private static readonly double[] SD = new double[]
 {
     2.5066282746363426,
@@ -357,6 +359,7 @@ namespace Degree_Work.Mathematical_Sources.Functions
     8.4040594453044693E-05,
     -1.4981925182237168E-05
 };
+
         private static readonly double[] Z = new double[]
 {
     0.0,
@@ -461,5 +464,8 @@ namespace Degree_Work.Mathematical_Sources.Functions
     359.1342053695754,
     363.73937555556347
 };
+
+        #endregion
+
     }
 }

@@ -3,10 +3,11 @@
 
 using System;
 using System.IO;
-
 using System.Collections.Generic;
 using System.ComponentModel;
-using MathCore_2_0;
+using Degree_Work.Mathematical_Sources.Complex;
+using static Degree_Work.Mathematical_Sources.Functions.ElementaryFunctions;
+using static Degree_Work.Mathematical_Sources.Functions.SpecialFunctions;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -114,7 +115,7 @@ namespace Degree_Work
         /// </summary>
         /// <param name="pos">Точка на экране</param>
         /// <returns></returns>
-        public complex GetComplexCursorPositionOnPlot(ScreenPoint pos)
+        public Complex GetComplexCursorPositionOnPlot(ScreenPoint pos)
         {
             return OxyPlot.Axes.Axis.InverseTransform(pos, X_Axis, Y_Axis).DataPointToComplex();
         }
@@ -312,14 +313,14 @@ namespace Degree_Work
         /// <param name="end">Конец вектора</param>
         /// <param name="V">Значение скорости</param>
         /// <param name="domain">Вид канонической области</param>
-        public void RedrawArrow(complex start, complex end, complex V, CanonicalDomain domain)
+        public void RedrawArrow(Complex start, Complex end, Complex V, CanonicalDomain domain)
         {
             if (IsMouseClickedInPolygon)
             {
                 DeleteArrow();
                 IsMouseClickedInPolygon = false;
             }
-            else if (complex.IsNaN(V))
+            else if (Complex.IsNaN(V))
             {
                 DeleteArrow(); return;
             }
@@ -330,7 +331,7 @@ namespace Degree_Work
                 arrow.EndPoint = end.ComplexToDataPoint();
                 arrowText.Text = $"X: {start.Re.ToString(Settings.Format)}; Y: {start.Im.ToString(Settings.Format)};".Replace(',', '.') +
                     $"\nVx: {V.Re.ToString(Settings.Format)}; Vy: {V.Im.ToString(Settings.Format)};".Replace(',', '.');
-                arrowText.TextPosition = (start + (V.Im>=0? -1: 0.2)*(domain == CanonicalDomain.HalfPlane ? 0.6 : 1.2) * complex.i).ComplexToDataPoint();
+                arrowText.TextPosition = (start + (V.Im>=0? -1: 0.2)*(domain == CanonicalDomain.HalfPlane ? 0.6 : 1.2) * Complex.I).ComplexToDataPoint();
             }
         }
 
@@ -531,18 +532,18 @@ namespace Degree_Work
                             Hydrodynamics_Sources.Conformal_Maps.EjectedRays tmp = s.W.f as Hydrodynamics_Sources.Conformal_Maps.EjectedRays;
                             BorderBottom = new PolygonAnnotation();
                             BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
-                            BorderPolyBottom.Points.Add(new DataPoint(tmp.l * Math.Cos(tmp.Angle)-PolygonLineHalfWidth, tmp.l * Math.Sin(tmp.Angle)));
-                            BorderPolyBottom.Points.Add(new DataPoint(tmp.l * Math.Cos(tmp.Angle)+ PolygonLineHalfWidth, tmp.l * Math.Sin(tmp.Angle)));
-                            BorderPolyBottom.Points.Add(new DataPoint(100 * tmp.l * Math.Cos(tmp.Angle)+ PolygonLineHalfWidth, 100 * tmp.l * Math.Sin(tmp.Angle)));
-                            BorderPolyBottom.Points.Add(new DataPoint(100 * tmp.l * Math.Cos(tmp.Angle)- PolygonLineHalfWidth, 100 * tmp.l * Math.Sin(tmp.Angle)));
+                            BorderPolyBottom.Points.Add(new DataPoint(tmp.l * Cos(tmp.Angle)-PolygonLineHalfWidth, tmp.l * Sin(tmp.Angle)));
+                            BorderPolyBottom.Points.Add(new DataPoint(tmp.l * Cos(tmp.Angle)+ PolygonLineHalfWidth, tmp.l * Sin(tmp.Angle)));
+                            BorderPolyBottom.Points.Add(new DataPoint(100 * tmp.l * Cos(tmp.Angle)+ PolygonLineHalfWidth, 100 * tmp.l * Sin(tmp.Angle)));
+                            BorderPolyBottom.Points.Add(new DataPoint(100 * tmp.l * Cos(tmp.Angle)- PolygonLineHalfWidth, 100 * tmp.l * Sin(tmp.Angle)));
                             BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
                             BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
                             BorderTop = new PolygonAnnotation();
                             BorderPolyTop.Fill = Settings.PlotVisualParams.BorderFillColor;
-                            BorderPolyTop.Points.Add(new DataPoint(tmp.l * Math.Cos(tmp.Angle)- PolygonLineHalfWidth, -tmp.l * Math.Sin(tmp.Angle)));
-                            BorderPolyTop.Points.Add(new DataPoint(tmp.l * Math.Cos(tmp.Angle)+ PolygonLineHalfWidth, -tmp.l * Math.Sin(tmp.Angle)));
-                            BorderPolyTop.Points.Add(new DataPoint(100 * tmp.l * Math.Cos(tmp.Angle)+ PolygonLineHalfWidth, -100 * tmp.l * Math.Sin(tmp.Angle)));
-                            BorderPolyTop.Points.Add(new DataPoint(100 * tmp.l * Math.Cos(tmp.Angle)- PolygonLineHalfWidth, -100 * tmp.l * Math.Sin(tmp.Angle)));
+                            BorderPolyTop.Points.Add(new DataPoint(tmp.l * Cos(tmp.Angle)- PolygonLineHalfWidth, -tmp.l * Sin(tmp.Angle)));
+                            BorderPolyTop.Points.Add(new DataPoint(tmp.l * Cos(tmp.Angle)+ PolygonLineHalfWidth, -tmp.l * Sin(tmp.Angle)));
+                            BorderPolyTop.Points.Add(new DataPoint(100 * tmp.l * Cos(tmp.Angle)+ PolygonLineHalfWidth, -100 * tmp.l * Sin(tmp.Angle)));
+                            BorderPolyTop.Points.Add(new DataPoint(100 * tmp.l * Cos(tmp.Angle)- PolygonLineHalfWidth, -100 * tmp.l * Sin(tmp.Angle)));
                             BorderPolyTop.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
                             BorderPolyTop.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
                             PlotModel.Annotations.Add(BorderPolyBottom);
@@ -578,7 +579,7 @@ namespace Degree_Work
                                 BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
                                 BorderPolyBottom.Points.Add(new DataPoint(-6, -db.h));
                                 BorderPolyBottom.Points.Add(new DataPoint(0, -db.h));
-                                BorderPolyBottom.Points.Add(new DataPoint(20, -db.h - 20*Math.Tan(angle)));
+                                BorderPolyBottom.Points.Add(new DataPoint(20, -db.h - 20* Math.Tan(angle)));
                                 BorderPolyBottom.Points.Add(new DataPoint(-6, -5));
                                 BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
                                 BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
@@ -628,7 +629,7 @@ namespace Degree_Work
                             BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
                             for (double theta = 0; theta < 2*Math.PI; theta += 0.001)
                             {
-                                BorderPolyBottom.Points.Add(s.W.f.z(s.W.R * math.exp(complex.i * theta)).ComplexToDataPoint());
+                                BorderPolyBottom.Points.Add(s.W.f.z(s.W.R * Exp(Complex.I * theta)).ComplexToDataPoint());
                             }
                             BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
                             BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
@@ -645,7 +646,7 @@ namespace Degree_Work
         /// </summary>
         /// <param name="r">Правая точка торможения</param>
         /// <param name="l">Левая точка торможения</param>
-        public void DrawStagnationPoints(complex r, complex l)
+        public void DrawStagnationPoints(Complex r, Complex l)
         {
             EllipseAnnotation rsp, lsp;
             rsp = new EllipseAnnotation() { X = r.Re, Y = r.Im, Width = 2*StagnationPointsRadius, Height = 2*StagnationPointsRadius, Stroke = OxyColors.Black, StrokeThickness=1, Fill = OxyColors.Red };

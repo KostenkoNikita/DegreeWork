@@ -1,6 +1,6 @@
 ﻿using System;
-
-using MathCore_2_0;
+using Degree_Work.Mathematical_Sources.Complex;
+using static Degree_Work.Mathematical_Sources.Functions.ElementaryFunctions;
 using OxyPlot;
 
 namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
@@ -20,39 +20,49 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
             this.l = l; a = alpha;
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override bool Equals(object obj) => obj.GetType() == typeof(EjectedRays) ? Equals((EjectedRays)obj) : false;
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode() => l.GetHashCode() ^ a.GetHashCode();
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override string ToString() => "EjectedRays";
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         bool Equals(EjectedRays other) => l == other.l && a == other.a;
 
-        public complex z(complex dzeta)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public Complex z(Complex dzeta)
         {
-            return (l * Math.Pow(a, a) * Math.Pow(1 - a, 1 - a)) * (math.exp(a * dzeta) - math.exp((a - 1) * dzeta));
+            return (l * Pow(a, a) * Pow(1 - a, 1 - a)) * (Exp(a * dzeta) - Exp((a - 1) * dzeta));
         }
 
-        public complex dz_ddzeta(complex dzeta)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public Complex dz_ddzeta(Complex dzeta)
         {
-            return (l * math.pow(a, a) * math.pow(1 - a, 1 - a)) * ((a - 1) * math.exp((a - 1) * dzeta) + a * math.exp(a * dzeta));
+            return (l * Pow(a, a) * Pow(1 - a, 1 - a)) * ((a - 1) * Exp((a - 1) * dzeta) + a * Exp(a * dzeta));
         }
 
-        public complex dzeta(complex Z)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public Complex dzeta(Complex Z)
         {
-            return equations.solve(z, dz_ddzeta, Z);
+            return Mathematical_Sources.Equations.Solve(z, dz_ddzeta, Z);
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint z(DataPoint dzeta)
         {
             return z(dzeta.DataPointToComplex()).ComplexToDataPoint();
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint dz_ddzeta(DataPoint dzeta)
         {
             return dz_ddzeta(dzeta.DataPointToComplex()).ComplexToDataPoint();
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint dzeta(DataPoint Z)
         {
             return dzeta(Z.DataPointToComplex()).ComplexToDataPoint();

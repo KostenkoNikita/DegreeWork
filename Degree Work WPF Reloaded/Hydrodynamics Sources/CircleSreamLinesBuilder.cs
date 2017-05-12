@@ -2,10 +2,13 @@
 
 using System;
 using System.Collections.Generic;
-using MathCore_2_0;
-using static MathCore_2_0.complex;
-using static MathCore_2_0.math;
+
+using static Degree_Work.Mathematical_Sources.Complex.Complex;
+using static Degree_Work.Mathematical_Sources.Functions.ElementaryFunctions;
+using static Degree_Work.Mathematical_Sources.MathematicalConstants;
+using static Degree_Work.Mathematical_Sources.Functions.SpecialFunctions;
 using OxyPlot;
+using Degree_Work.Mathematical_Sources.Complex;
 
 namespace Degree_Work.Hydrodynamics_Sources
 {
@@ -13,8 +16,8 @@ namespace Degree_Work.Hydrodynamics_Sources
     class CircleStreamLinesBuilder : StreamLinesBuilderCircle
     {
         delegate void IniFillAsync(List<DataPoint> BasePlus, List<DataPoint> ListMinus, double y);
-        delegate void TransformationAsync(List<DataPoint> Base, List<DataPoint> Lines, complex angleMult);
-        delegate void FullBuildAsync(List<DataPoint> BasePlus, List<DataPoint> BaseMinus, List<DataPoint> LinesPlus, List<DataPoint> LinesMinus, complex angleMult, double y);
+        delegate void TransformationAsync(List<DataPoint> Base, List<DataPoint> Lines, Complex angleMult);
+        delegate void FullBuildAsync(List<DataPoint> BasePlus, List<DataPoint> BaseMinus, List<DataPoint> LinesPlus, List<DataPoint> LinesMinus, Complex angleMult, double y);
         delegate void JoukowskiAsync(List<DataPoint> StreamLines, double y);
         IniFillAsync async_base;
         TransformationAsync async_transform;
@@ -86,8 +89,8 @@ namespace Degree_Work.Hydrodynamics_Sources
             LeftSpecialStreamLine = new List<DataPoint>();
             StreamLines = new List<List<DataPoint>>();
             StreamLinesBase = new List<List<DataPoint>>();
-            LeftStagnationPointBase = (i * exp(i * w.AlphaRadians) * w.G - exp(i * w.AlphaRadians) * sqrt(-w.G * w.G + 16 * pi * pi * w.R * w.R * w.V_inf * w.V_inf)) / (4 * pi * w.V_inf);
-            RightStagnationPointBase = (i * exp(i * w.AlphaRadians) * w.G + exp(i * w.AlphaRadians) * sqrt(-w.G * w.G + 16 * pi * pi * w.R * w.R * w.V_inf * w.V_inf)) / (4 * pi * w.V_inf);
+            LeftStagnationPointBase = (I * Exp(I * w.AlphaRadians) * w.G - Exp(I * w.AlphaRadians) * Sqrt(-w.G * w.G + 16 * Pi * Pi * w.R * w.R * w.V_inf * w.V_inf)) / (4 * Pi * w.V_inf);
+            RightStagnationPointBase = (I * Exp(I * w.AlphaRadians) * w.G + Exp(I * w.AlphaRadians) * Sqrt(-w.G * w.G + 16 * Pi * Pi * w.R * w.R * w.V_inf * w.V_inf)) / (4 * Pi * w.V_inf);
             LeftStagnationPoint = w.f.z(LeftStagnationPointBase);
             RightStagnationPoint = w.f.z(RightStagnationPointBase);
             g.DrawStagnationPoints(RightStagnationPoint, LeftStagnationPoint);
@@ -170,13 +173,13 @@ namespace Degree_Work.Hydrodynamics_Sources
             foreach (List<DataPoint> sllb in StreamLinesBase)
             {
                 StreamLines.Add(new List<DataPoint>());
-                res_list.Add(async_transform.BeginInvoke(sllb, StreamLines[StreamLines.Count - 1], exp(i * w.AlphaRadians), null, null));
+                res_list.Add(async_transform.BeginInvoke(sllb, StreamLines[StreamLines.Count - 1], Exp(I * w.AlphaRadians), null, null));
             }
-            LeftStagnationPoint = w.f.z(LeftStagnationPointBase * exp(i * w.AlphaRadians));
-            RightStagnationPoint = w.f.z(RightStagnationPointBase * exp(i * w.AlphaRadians));
+            LeftStagnationPoint = w.f.z(LeftStagnationPointBase * Exp(I * w.AlphaRadians));
+            RightStagnationPoint = w.f.z(RightStagnationPointBase * Exp(I * w.AlphaRadians));
             g.DrawStagnationPoints(RightStagnationPoint, LeftStagnationPoint);
-            res_list.Add(async_transform.BeginInvoke(LeftSpecialStreamLineBase,LeftSpecialStreamLine, exp(i * w.AlphaRadians), null,null));
-            res_list.Add(async_transform.BeginInvoke(RightSpecialStreamLineBase, RightSpecialStreamLine, exp(i * w.AlphaRadians), null, null));
+            res_list.Add(async_transform.BeginInvoke(LeftSpecialStreamLineBase,LeftSpecialStreamLine, Exp(I * w.AlphaRadians), null,null));
+            res_list.Add(async_transform.BeginInvoke(RightSpecialStreamLineBase, RightSpecialStreamLine, Exp(I * w.AlphaRadians), null, null));
             while (!res_list.IsAllThreadsCompleted()) { }
             res_list = null;
         }
@@ -196,15 +199,15 @@ namespace Degree_Work.Hydrodynamics_Sources
                 StreamLines.Add(new List<DataPoint>());
                 StreamLinesBase.Add(new List<DataPoint>());
                 StreamLinesBase.Add(new List<DataPoint>());
-                res_list.Add(async_full.BeginInvoke(StreamLinesBase[StreamLinesBase.Count - 2], StreamLinesBase[StreamLinesBase.Count - 1], StreamLines[StreamLines.Count - 2], StreamLines[StreamLines.Count - 1], exp(i * tmp), y, null, null));
+                res_list.Add(async_full.BeginInvoke(StreamLinesBase[StreamLinesBase.Count - 2], StreamLinesBase[StreamLinesBase.Count - 1], StreamLines[StreamLines.Count - 2], StreamLines[StreamLines.Count - 1], Exp(I * tmp), y, null, null));
             }
-            LeftStagnationPoint = w.f.z(LeftStagnationPointBase * exp(i * tmp));
-            RightStagnationPoint = w.f.z(RightStagnationPointBase * exp(i * tmp));
+            LeftStagnationPoint = w.f.z(LeftStagnationPointBase * Exp(I * tmp));
+            RightStagnationPoint = w.f.z(RightStagnationPointBase * Exp(I * tmp));
             g.DrawStagnationPoints(RightStagnationPoint, LeftStagnationPoint);
             LeftSpecialStreamLine = new List<DataPoint>();
             RightSpecialStreamLine = new List<DataPoint>();
-            res_list.Add(async_transform.BeginInvoke(LeftSpecialStreamLineBase, LeftSpecialStreamLine, exp(i * tmp), null, null));
-            res_list.Add(async_transform.BeginInvoke(RightSpecialStreamLineBase, RightSpecialStreamLine, exp(i * tmp), null, null));
+            res_list.Add(async_transform.BeginInvoke(LeftSpecialStreamLineBase, LeftSpecialStreamLine, Exp(I * tmp), null, null));
+            res_list.Add(async_transform.BeginInvoke(RightSpecialStreamLineBase, RightSpecialStreamLine, Exp(I * tmp), null, null));
             while (!res_list.IsAllThreadsCompleted()) { }
             w.AlphaRadians = tmp;
             res_list = null;
@@ -225,7 +228,7 @@ namespace Degree_Work.Hydrodynamics_Sources
             }
         }
 
-        void AsyncTransform(List<DataPoint> b, List<DataPoint> l, complex angleMult)
+        void AsyncTransform(List<DataPoint> b, List<DataPoint> l, Complex angleMult)
         {
             DataPoint tmp;
             foreach (DataPoint bp in b)
@@ -236,7 +239,7 @@ namespace Degree_Work.Hydrodynamics_Sources
             g.DrawCurve(l);
         }
 
-        void AsyncFullBuild(List<DataPoint> bp, List<DataPoint> bm, List<DataPoint> lp, List<DataPoint> lm, complex angleMult, double y)
+        void AsyncFullBuild(List<DataPoint> bp, List<DataPoint> bm, List<DataPoint> lp, List<DataPoint> lm, Complex angleMult, double y)
         {
             DataPoint tmp;
             double x_new, y_new;
@@ -334,7 +337,7 @@ namespace Degree_Work.Hydrodynamics_Sources
             h = 0.05;
             for (double x = x_min + h; x <x_max; x += h)
             {
-                x = Math.Round(x, 4);
+                x = Round(x, 4);
                 StreamLinesBase.Add(new List<DataPoint>());
                 res_list.Add(async_base.BeginInvoke(StreamLinesBase[StreamLinesBase.Count - 1], x, null, null));
             }
@@ -342,7 +345,7 @@ namespace Degree_Work.Hydrodynamics_Sources
             res_list.Add(async_base.BeginInvoke(StreamLinesBase[StreamLinesBase.Count - 1], w.a-0.01, null, null));
             for (double x = x_min + h+w.R; x < x_max+w.R; x += h)
             {
-                x = Math.Round(x, 4);
+                x = Round(x, 4);
                 StreamLinesBase.Add(new List<DataPoint>());
                 res_list.Add(async_base.BeginInvoke(StreamLinesBase[StreamLinesBase.Count - 1], x, null, null));
             }
@@ -384,7 +387,7 @@ namespace Degree_Work.Hydrodynamics_Sources
             res_list = null;
         }
 
-        double f(double X, double Y) => w.V_ksi(new complex(X, Y)) / w.V_eta(new complex(X, Y));
+        double f(double X, double Y) => w.V_ksi(new Complex(X, Y)) / w.V_eta(new Complex(X, Y));
 
         void AsyncIniFill(List<DataPoint> b, double x)
         {

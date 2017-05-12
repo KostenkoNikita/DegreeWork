@@ -4,7 +4,8 @@ using System.Windows.Controls;
 using System.Diagnostics;
 using System.Windows.Input;
 using OxyPlot;
-using MathCore_2_0;
+using Degree_Work.Mathematical_Sources.Complex;
+
 
 namespace Degree_Work
 {
@@ -13,7 +14,7 @@ namespace Degree_Work
     /// </summary>
     public partial class HalfPlane : Window, IStreamLinesPlotWindow
     {
-        complex CursorPosition, V;
+        Complex CursorPosition, V;
         private PlotWindowModel viewModel;
         Hydrodynamics_Sources.Potential w;
         Hydrodynamics_Sources.StreamLinesBuilder s;
@@ -55,7 +56,7 @@ namespace Degree_Work
         {
             if (e.ChangedButton.ToString()=="Left")
             {
-                viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.abs, V, CanonicalDomain.HalfPlane);
+                viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.Abs, V, CanonicalDomain.HalfPlane);
                 PlotRefresh();
             }
         }
@@ -64,7 +65,7 @@ namespace Degree_Work
         {
             CursorPosition = viewModel.GetComplexCursorPositionOnPlot(e.Position);
             V = w.V_physical_plane(CursorPosition);
-            if (complex.IsNaN(V) || IsCursorInBorder())
+            if (Complex.IsNaN(V) || IsCursorInBorder())
             {
                 ClearTextBoxes();
                 return;

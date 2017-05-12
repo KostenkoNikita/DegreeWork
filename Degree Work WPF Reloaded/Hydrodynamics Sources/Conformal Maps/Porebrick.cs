@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MathCore_2_0;
+
 using OxyPlot;
-using static MathCore_2_0.math;
-using static MathCore_2_0.complex;
+using static Degree_Work.Mathematical_Sources.Functions.ElementaryFunctions;
+using static Degree_Work.Mathematical_Sources.Complex.Complex;
+using Degree_Work.Mathematical_Sources.Complex;
 
 namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
 {
@@ -21,38 +22,45 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
             this.h = h;
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override bool Equals(object obj) => obj.GetType() == typeof(Porebrick) ? Equals((Porebrick)obj) : false;
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         bool Equals(Porebrick other) => h == other.h;
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode() => h.GetHashCode() ^ (typeof(Porebrick)).GetHashCode();
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override string ToString() => "Porebrick";
 
-        public complex dzeta(complex Z)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public Complex dzeta(Complex Z)
         {
-            return equations.solve(z, dz_ddzeta, Z);
+            return Mathematical_Sources.Equations.Solve(z, dz_ddzeta, Z);
         }
 
-        public complex dz_ddzeta(complex dzeta)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public Complex dz_ddzeta(Complex dzeta)
         {
-            complex tmp = i * h + (h / pi) * (sqrt(dzeta * dzeta - 1) - arch(dzeta));
+            Complex tmp = I * h + (h / Math.PI) * (Sqrt(dzeta * dzeta - 1) - Arch(dzeta));
             if (tmp.Im < 0)
             {
-                return -(h / pi) * ((dzeta - 1) / (sqrt(dzeta * dzeta - 1)));
+                return -(h / Math.PI) * ((dzeta - 1) / (Sqrt(dzeta * dzeta - 1)));
             }
             else
             {
-                return (h / pi) * ((dzeta - 1) / (sqrt(dzeta * dzeta - 1)));
+                return (h / Math.PI) * ((dzeta - 1) / (Sqrt(dzeta * dzeta - 1)));
             }
         }
 
-        public complex z(complex dzeta)
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public Complex z(Complex dzeta)
         {
-            complex tmp = i * h + (h / pi) * (sqrt(dzeta * dzeta - 1) - arch(dzeta));
+            Complex tmp = I * h + (h / Math.PI) * (Sqrt(dzeta * dzeta - 1.0) - Arch(dzeta));
             if (tmp.Im < 0)
             {
-                return -i * h - (h / pi) * (sqrt(dzeta * dzeta - 1) - arch(dzeta));
+                return -I * h - (h / Math.PI) * (Sqrt(dzeta * dzeta - 1.0) - Arch(dzeta));
             }
             else
             {
@@ -60,16 +68,19 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
             }
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint z(DataPoint dzeta)
         {
             return z(dzeta.DataPointToComplex()).ComplexToDataPoint();
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint dz_ddzeta(DataPoint dzeta)
         {
             return dz_ddzeta(dzeta.DataPointToComplex()).ComplexToDataPoint();
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint dzeta(DataPoint Z)
         {
             return dzeta(Z.DataPointToComplex()).ComplexToDataPoint();
