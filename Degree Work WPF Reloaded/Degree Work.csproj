@@ -121,6 +121,7 @@
     <Compile Include="Mathematical Sources\Functions\ElementaryFunctions.cs" />
     <Compile Include="Mathematical Sources\Functions\SpecialFunctions.cs" />
     <Compile Include="Mathematical Sources\MathematicalConstants.cs" />
+    <Compile Include="Mathematical Sources\Series.cs" />
     <Compile Include="ReferenceWindow.xaml.cs">
       <DependentUpon>ReferenceWindow.xaml</DependentUpon>
     </Compile>

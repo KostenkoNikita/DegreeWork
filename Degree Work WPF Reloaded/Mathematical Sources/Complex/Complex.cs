@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Globalization;
+using System.Text;
 
 namespace Degree_Work.Mathematical_Sources.Complex
 {
@@ -13,28 +14,73 @@ namespace Degree_Work.Mathematical_Sources.Complex
     [Serializable]
     public struct Complex : IEquatable<Complex>, IFormattable
     {
+        /// <summary>
+        /// Действительная часть комплексного числа
+        /// </summary>
         public readonly double Re;
 
+        /// <summary>
+        /// Мнимая часть комплексного числа
+        /// </summary>
         public readonly double Im;
 
+        /// <summary>
+        /// Модуль комплексного числа
+        /// </summary>
         public double Abs => Math.Sqrt(Re * Re + Im * Im);
 
+        /// <summary>
+        /// Аргумент комплексного числа в радианах
+        /// </summary>
         public double ArgRadians => getArg();
 
+        /// <summary>
+        /// Аргумент комплексного числа в градусах
+        /// </summary>
         public double ArgDegrees => getArg() * 180.0 / Math.PI;
 
+        /// <summary>
+        /// Сопряженное комплексное число
+        /// </summary>
         public Complex Conjugate => new Complex(Re, -Im);
 
+        /// <summary>
+        /// Операция сопряжения
+        /// </summary>
+        /// <param name="z">Комплексное число, сопряженное к которому возвращает метод</param>
+        /// <returns></returns>
+        public static Complex ComplexConjugate(Complex z) => z.Conjugate;
+
+        /// <summary>
+        /// Мнимая единица
+        /// </summary>
         public static Complex I => new Complex(0, 1);
 
+        /// <summary>
+        /// Ноль
+        /// </summary>
         public static Complex Zero => new Complex();
 
+        /// <summary>
+        /// Бесконечность
+        /// </summary>
         public static Complex Infinity => new Complex(double.PositiveInfinity, double.PositiveInfinity);
 
+        /// <summary>
+        /// Не-число
+        /// </summary>
         public static Complex NaN => new Complex(double.NaN, double.NaN);
 
+        /// <summary>
+        /// Комплексное число, действительная и мнимая части представляют собой очень малые числа
+        /// </summary>
         public static Complex Epsilon => new Complex(double.Epsilon, double.Epsilon);
 
+        /// <summary>
+        /// Аргумент комплексного числа
+        /// </summary>
+        /// <param name="m">Тип измерения угла</param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double GetArgument(AngleMeasurement m)
         {
@@ -49,18 +95,33 @@ namespace Degree_Work.Mathematical_Sources.Complex
             }
         }
 
+        /// <summary>
+        /// Является ли комплексное число не-числом (иными словами, определено ли оно)
+        /// </summary>
+        /// <param name="c">Комплексное число</param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNaN(Complex c)
         {
             return double.IsNaN(c.Re) || double.IsNaN(c.Im);
         }
 
+        /// <summary>
+        /// Являестя ли комплексное число бесконечно отдаленной точкой
+        /// </summary>
+        /// <param name="c">Комплексное число</param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsInfinity(Complex c)
         {
             return double.IsInfinity(c.Re) || double.IsInfinity(c.Im);
         }
 
+        /// <summary>
+        /// Являестя ли комплексное число нулём
+        /// </summary>
+        /// <param name="c">Комплексное число</param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsZero(Complex c)
         {
@@ -97,48 +158,86 @@ namespace Degree_Work.Mathematical_Sources.Complex
             }
         }
 
+        /// <summary>
+        /// Конструктор экземпляра типа
+        /// </summary>
+        /// <param name="Re">Действительная часть</param>
+        /// <param name="Im">Мнимая часть</param>
         public Complex(double Re, double Im)
         {
             this.Re = Re;
             this.Im = Im;
         }
 
+        /// <summary>
+        /// Конструктор экземпляра типа
+        /// </summary>
+        /// <param name="d">Действительная часть</param>
         public Complex(double d)
         {
             Re = d;
             Im = 0;
         }
 
+        /// <summary>
+        /// Проверка на равенство
+        /// </summary>
+        /// <param name="obj">Объект произвольного типа для сравнения</param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override bool Equals(object obj)
         {
             return obj is Complex ? Equals((Complex)obj) : false;
         }
 
+        /// <summary>
+        /// Проверка на равенство
+        /// </summary>
+        /// <param name="other">Другое комплексное число</param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Equals(Complex other)
         {
             return Re == other.Re && Im == other.Im;
         }
 
+        /// <summary>
+        /// Получение хэш-кода комплексного числа
+        /// </summary>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
         {
             return Re.GetHashCode() ^ Im.GetHashCode();
         }
 
+        /// <summary>
+        /// Перевод комплексного числа в строковое представление
+        /// </summary>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
             return ToString("G", ComplexNumberFormatInfo.AlgebraicFormBigImagiaryOne);
         }
 
+        /// <summary>
+        /// Перевод комплексного числа в строковое представление
+        /// </summary>
+        /// <param name="formatProvider">Поставщик формата</param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string ToString(IFormatProvider formatProvider)
         {
             return ToString("G", formatProvider);
         }
 
+        /// <summary>
+        /// Перевод комплексного числа в строковое представление
+        /// </summary>
+        /// <param name="format">Строка форматирования</param>
+        /// <param name="formatProvider">Поставщик формата</param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string ToString(string format, IFormatProvider formatProvider)
         {
@@ -270,19 +369,143 @@ namespace Degree_Work.Mathematical_Sources.Complex
         /// <returns></returns>
         public static Complex Parse(string s)
         {
-            if (s == null)
+            return Parse(s, ComplexNumberFormatInfo.AlgebraicFormBigImagiaryOne);
+        }
+
+        /// <summary>
+        /// To be added
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="formatProvider"></param>
+        /// <returns></returns>
+        public static Complex Parse(string s, IFormatProvider formatProvider)
+        {
+            if (string.IsNullOrEmpty(s))
             {
                 throw new ArgumentNullException();
             }
-            s = s.Replace(" ", string.Empty);
-            if (s[0] == '+') { s.Remove(0, 1); }
-            if (s.Contains('+'))
+            s = s.Replace(" ", string.Empty).Replace("*", string.Empty);
+            if (formatProvider is ComplexNumberFormatInfo)
             {
+                var tmp = formatProvider as ComplexNumberFormatInfo;
+                switch (tmp.ComplexNumberFormat)
+                {
+                    case ComplexNumberFormatEnum.AlgebraicFormBigImagiaryOne:
+                        {
+                            StringBuilder firstPart = new StringBuilder();
+                            StringBuilder secondPart = new StringBuilder();
+                            int i = s.Length - 1;
+                            while (!(s[i] == '+' || s[i] == '-'))
+                            {
+                                secondPart.Append(s[i--]);
+                            }
+                            secondPart.Append(s[i]);
+                            firstPart.Append(s.Substring(0, i));
+                            string firstPartStr = firstPart.ToString();
+                            string secondPartStr = secondPart.ToString().Reverse();
+                            double re = 0, im = 0;
+                            if (firstPartStr.Contains('I'))
+                            {
+                                re = double.Parse(secondPartStr, CultureInfo.InvariantCulture);
+                                im = double.Parse(firstPartStr.Replace("I", string.Empty), CultureInfo.InvariantCulture);
+                            }
+                            else if (secondPartStr.Contains('I'))
+                            {
+                                im = double.Parse(secondPartStr.Replace("I", string.Empty), CultureInfo.InvariantCulture);
+                                re = double.Parse(firstPartStr, CultureInfo.InvariantCulture);
+                            }
+                            else
+                            {
+                                throw new FormatException("Didn't find imaginary one accordind to current format provider");
+                            }
+                            return new Complex(re, im);
+                        }
+                    case ComplexNumberFormatEnum.AlgebraicFormLittleImagiaryOne:
+                        {
+                            StringBuilder firstPart = new StringBuilder();
+                            StringBuilder secondPart = new StringBuilder();
+                            int i = s.Length - 1;
+                            while (!(s[i] == '+' || s[i] == '-'))
+                            {
+                                secondPart.Append(s[i--]);
+                            }
+                            secondPart.Append(s[i]);
+                            firstPart.Append(s.Substring(0, i));
+                            string firstPartStr = firstPart.ToString();
+                            string secondPartStr = secondPart.ToString().Reverse();
+                            double re = 0, im = 0;
+                            if (firstPartStr.Contains('i'))
+                            {
+                                re = double.Parse(secondPartStr, CultureInfo.InvariantCulture);
+                                im = double.Parse(firstPartStr.Replace("i", string.Empty), CultureInfo.InvariantCulture);
+                            }
+                            else if (secondPartStr.Contains('i'))
+                            {
+                                im = double.Parse(secondPartStr.Replace("i", string.Empty), CultureInfo.InvariantCulture);
+                                re = double.Parse(firstPartStr, CultureInfo.InvariantCulture);
+                            }
+                            else
+                            {
+                                throw new FormatException("Didn't find imaginary one accordind to current format provider");
+                            }
+                            return new Complex(re, im);
+                        }
+                    case ComplexNumberFormatEnum.ExponentialFormBigImagiaryOne:
+                        {
+                            string[] strArray = s.Split('[', '(');
+                            string rStr = strArray[0].Replace("Exp", string.Empty).Replace("exp", string.Empty);
+                            string phiStr = strArray[1].Replace("I", string.Empty).Replace(")", string.Empty).Replace("]", string.Empty);
+                            return
+                                ComplexNumberFromMagnitudeAndPhase
+                                (
+                                    double.Parse(rStr, CultureInfo.InvariantCulture),
+                                    double.Parse(phiStr, CultureInfo.InvariantCulture)
+                                );
+                        }
+                    case ComplexNumberFormatEnum.ExponentialFormLittleImagiaryOne:
+                        {
+                            string[] strArray = s.Split('[', '(');
+                            string rStr = strArray[0].Replace("Exp", string.Empty).Replace("exp", string.Empty);
+                            string phiStr = strArray[1].Replace("i", string.Empty).Replace(")", string.Empty).Replace("]", string.Empty);
+                            return
+                                ComplexNumberFromMagnitudeAndPhase
+                                (
+                                    double.Parse(rStr, CultureInfo.InvariantCulture),
+                                    double.Parse(phiStr, CultureInfo.InvariantCulture)
+                                );
+                        }
+                    case ComplexNumberFormatEnum.Parentheses:
+                        {
+                            string[] strArray = s.Split(',');
+                            string reStr = strArray[0].Replace("(", string.Empty);
+                            string imStr = strArray[1].Replace(")", string.Empty);
+                            return
+                                new Complex
+                                (
+                                    double.Parse(reStr, CultureInfo.InvariantCulture),
+                                    double.Parse(imStr, CultureInfo.InvariantCulture)
+                                );
+                        }
+                    case ComplexNumberFormatEnum.SquareBrackets:
+                        {
+                            string[] strArray = s.Split(',');
+                            string reStr = strArray[0].Replace("[", string.Empty);
+                            string imStr = strArray[1].Replace("]", string.Empty);
+                            return
+                                new Complex
+                                (
+                                    double.Parse(reStr, CultureInfo.InvariantCulture),
+                                    double.Parse(imStr, CultureInfo.InvariantCulture)
+                                );
+                        }
+                    default:
+                        throw new FormatException();
+                }
             }
-            else if (s.Contains('-'))
+            else
             {
+                return Parse(s, ComplexNumberFormatInfo.AlgebraicFormBigImagiaryOne);
             }
-            return new Complex();
         }
 
         /// <summary>
@@ -293,14 +516,14 @@ namespace Degree_Work.Mathematical_Sources.Complex
         /// <returns></returns>
         public static bool TryParse(string s, out Complex c)
         {
+            c = new Complex();
             try
             {
-                c = new Complex();
+                c = Parse(s);
                 return true;
             }
-            catch (Exception)
+            catch
             {
-                c = new Complex();
                 return false;
             }
         }
@@ -308,29 +531,46 @@ namespace Degree_Work.Mathematical_Sources.Complex
         /// <summary>
         /// To be added
         /// </summary>
+        /// <param name="s"></param>
+        /// <param name="c"></param>
+        /// <param name="formatProvider"></param>
+        /// <returns></returns>
+        public static bool TryParse(string s, out Complex c, IFormatProvider formatProvider)
+        {
+            c = new Complex();
+            try
+            {
+                c = Parse(s, formatProvider);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Complex ComplexNumberFromMagnitudeAndPhaseInRadians(double r, double phiRad)
+        public static Complex ComplexNumberFromMagnitudeAndPhaseInRadians(double r, double phiRad)
         {
             return new Complex(r * Math.Cos(phiRad), r * Math.Sin(phiRad));
         }
 
-        /// <summary>
-        /// To be added
-        /// </summary>
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Complex ComplexNumberFromMagnitudeAndPhaseInDegrees(double r, double phiDeg)
+        public static Complex ComplexNumberFromMagnitudeAndPhaseInDegrees(double r, double phiDeg)
         {
             return ComplexNumberFromMagnitudeAndPhaseInRadians(r, phiDeg * Math.PI / 180.0);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Complex ComplexNumberFromMagnitudeAndPhase(double r, double phi)
+        public static Complex ComplexNumberFromMagnitudeAndPhase(double r, double phi)
         {
             return ComplexNumberFromMagnitudeAndPhaseInRadians(r, phi);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Complex ComplexNumberFromMagnitudeAndPhase(double r, double phi, AngleMeasurement m)
+        public static Complex ComplexNumberFromMagnitudeAndPhase(double r, double phi, AngleMeasurement m)
         {
             switch (m)
             {
@@ -667,6 +907,18 @@ namespace Degree_Work.Mathematical_Sources.Complex
         public static bool operator !=(Complex c1, Complex c2)
         {
             return !c1.Equals(c2);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Complex operator --(Complex z)
+        {
+            return new Complex(z.Re - 1, z.Im);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Complex operator ++(Complex z)
+        {
+            return new Complex(z.Re + 1, z.Im);
         }
 
         #endregion

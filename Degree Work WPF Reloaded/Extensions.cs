@@ -53,6 +53,18 @@ namespace Degree_Work
         }
 
         /// <summary>
+        /// Обращение строки
+        /// </summary>
+        /// <param name="s">Строка, которую нужно обратить</param>
+        /// <returns>Обращенная строка</returns>
+        public static string Reverse(this string s)
+        {
+            char[] tmp = s.ToCharArray();
+            Array.Reverse(tmp);
+            return new string(tmp);
+        }
+
+        /// <summary>
         /// Выполняет проверку, завершено ли выполнение всех асинхронных делегатов, полученных в виде списка IAsyncResult
         /// </summary>
         /// <param name="l">Список возвращаемых методом BeginInvoke экземпляра делегата интерфейсных ссылок</param>
