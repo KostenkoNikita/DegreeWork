@@ -502,6 +502,22 @@ namespace Degree_Work
                             BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
                             PlotModel.Annotations.Add(BorderPolyBottom);
                             break;
+                        case "Number85":
+                            Hydrodynamics_Sources.Conformal_Maps.Number85 nc = s.W.f as Hydrodynamics_Sources.Conformal_Maps.Number85;
+                            BorderBottom = new PolygonAnnotation();
+                            BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
+                            BorderPolyBottom.Points.Add(new DataPoint(6, 0));
+                            BorderPolyBottom.Points.Add(new DataPoint(-6+ PolygonLineHalfWidth, 0));
+                            BorderPolyBottom.Points.Add(new DataPoint(-6+ PolygonLineHalfWidth, nc.H- PolygonLineHalfWidth));
+                            BorderPolyBottom.Points.Add(new DataPoint(nc.X, nc.H - PolygonLineHalfWidth));
+                            BorderPolyBottom.Points.Add(new DataPoint(nc.X, nc.H + PolygonLineHalfWidth));
+                            BorderPolyBottom.Points.Add(new DataPoint(-6 - PolygonLineHalfWidth, nc.H+ PolygonLineHalfWidth));
+                            BorderPolyBottom.Points.Add(new DataPoint(-6 - PolygonLineHalfWidth, -1));
+                            BorderPolyBottom.Points.Add(new DataPoint(6, -1));
+                            BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
+                            BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
+                            PlotModel.Annotations.Add(BorderPolyBottom);
+                            break;
                     }
                     BorderBottom.MouseDown += (sender, e) => { IsMouseClickedInPolygon = true; };
                     break;

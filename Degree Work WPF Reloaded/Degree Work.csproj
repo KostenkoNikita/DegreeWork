@@ -97,6 +97,7 @@
       <DependentUpon>CircleWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Hydrodynamics Sources\CircleSreamLinesBuilder.cs" />
+    <Compile Include="Hydrodynamics Sources\Conformal Maps\Number85.cs" />
     <Compile Include="Hydrodynamics Sources\Conformal Maps\Diffusor.cs" />
     <Compile Include="Hydrodynamics Sources\Conformal Maps\JoukowskiAirfoil.cs" />
     <Compile Include="Hydrodynamics Sources\Conformal Maps\Number89.cs" />

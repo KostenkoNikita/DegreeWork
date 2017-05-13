@@ -45,6 +45,7 @@ namespace Degree_Work
             mapsList.Items.Add("Треугольник 3");
             mapsList.Items.Add("Четырёхугольник 1");
             mapsList.Items.Add("Полуплоскость с\nвыброшенным\nравнобедренным\nтреугольником");
+            mapsList.Items.Add("Треугольник 4");
             mapsList.SelectedIndex = 0;
             viewModel.PlotModel.MouseMove += PlotModel_MouseMove;
             viewModel.PlotModel.MouseDown += PlotModel_MouseDown;
@@ -115,6 +116,10 @@ namespace Degree_Work
                     break;
                 case 6:
                     w.f = new Hydrodynamics_Sources.Conformal_Maps.Triangle(1, 1);
+                    s.Rebuild();
+                    break;
+                case 7:
+                    w.f = new Hydrodynamics_Sources.Conformal_Maps.Number85(1);
                     s.Rebuild();
                     break;
             }
@@ -220,6 +225,19 @@ namespace Degree_Work
                     paramBox1.TextChanged += paramBox1_TextChanged;
                     paramBox2.TextChanged += paramBox2_TextChanged;
                     break;
+                case 7:
+                    paramBox1.Text = "1";
+                    paramBox1.Visibility = Visibility.Visible;
+                    paramBox2.Text = (w.f as Hydrodynamics_Sources.Conformal_Maps.Number85).X.ToString("G6",System.Globalization.CultureInfo.InvariantCulture);
+                    paramBox2.Visibility = Visibility.Visible;
+                    param1.Visibility = Visibility.Visible;
+                    param1.Text = "h =";
+                    param2.Visibility = Visibility.Visible;
+                    param2.Text = "X =";
+                    paramBox1.IsReadOnly = false;
+                    paramBox2.IsReadOnly = true;
+                    paramBox1.TextChanged += paramBox1_TextChanged;
+                    break;
             }
         }
 
@@ -254,7 +272,7 @@ namespace Degree_Work
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(1));
-                    (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedSegment).X = tmp; s.Rebuild(); PlotRefresh(); 
+                    (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedSegment).X = tmp; s.Rebuild(); PlotRefresh();
                 }
                 catch
                 {
@@ -306,6 +324,24 @@ namespace Degree_Work
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(1));
                     (w.f as Hydrodynamics_Sources.Conformal_Maps.Triangle).h = tmp; s.Rebuild(); PlotRefresh();
+                }
+                catch
+                {
+                    return;
+                }
+                finally
+                {
+                    Mouse.OverrideCursor = null;
+                }
+            }
+            else if (w.f is Hydrodynamics_Sources.Conformal_Maps.Number85)
+            {
+                try
+                {
+                    Mouse.OverrideCursor = Cursors.Wait;
+                    double tmp = Convert.ToDouble(TemporaryString(1));
+                    (w.f as Hydrodynamics_Sources.Conformal_Maps.Number85).H = tmp; s.Rebuild(); PlotRefresh();
+                    paramBox2.Text = (w.f as Hydrodynamics_Sources.Conformal_Maps.Number85).X.ToString("G6",System.Globalization.CultureInfo.InvariantCulture);
                 }
                 catch
                 {
@@ -426,6 +462,8 @@ namespace Degree_Work
                     return (CursorPosition.Re < 0 && CursorPosition.Im <= 0) || (CursorPosition.Re > 0 && CursorPosition.Im <= ((Hydrodynamics_Sources.Conformal_Maps.Number89)w.f).h2);
                 case "Triangle":
                     return false;
+                case "Number85":
+                    return CursorPosition.Im<0;
                 default: return true;
             }
         }
