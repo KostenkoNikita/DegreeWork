@@ -96,6 +96,9 @@
     <Compile Include="CircleWindow.xaml.cs">
       <DependentUpon>CircleWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HeatMapWindow.xaml.cs">
+      <DependentUpon>HeatMapWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Hydrodynamics Sources\CircleSreamLinesBuilder.cs" />
     <Compile Include="Hydrodynamics Sources\Conformal Maps\Number85.cs" />
     <Compile Include="Hydrodynamics Sources\Conformal Maps\Diffusor.cs" />
@@ -140,6 +143,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="HalfPlaneWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HeatMapWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -262,7 +269,12 @@
   <ItemGroup>
     <Resource Include="Resources\mmfImage.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\menuPicHeatMap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\heatMapImage.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

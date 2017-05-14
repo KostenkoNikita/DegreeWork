@@ -26,9 +26,11 @@ namespace Degree_Work
         {
             switch ((sender as Image).Name)
             {
-                case "halfplaneImage": halfplaneContainer.Margin = new Thickness(0, 5, 0, 5); MenuItemImage.Source = Settings.HalfPlaneImageSource; MenuItemImageDescription.Text = Settings.HafPlaneDescription;  return;
-                case "zoneImage": zoneContainer.Margin = new Thickness(0, 5, 0, 5); MenuItemImage.Source = Settings.ZoneImageSource; MenuItemImageDescription.Text = Settings.ZoneDescription; return;
-                case "circleImage": circleContainer.Margin = new Thickness(0, 5, 0, 5); MenuItemImage.Source = Settings.CircleImageSource; MenuItemImageDescription.Text = Settings.CircleDescription; return;
+                case "halfplaneImage": halfplaneContainer.Margin = new Thickness(5,0,5,0); MenuItemImage.Source = Settings.HalfPlaneImageSource; MenuItemImageDescription.Text = Settings.HafPlaneDescription;  return;
+                case "zoneImage": zoneContainer.Margin = new Thickness(5, 0, 5, 0); MenuItemImage.Source = Settings.ZoneImageSource; MenuItemImageDescription.Text = Settings.ZoneDescription; return;
+                case "circleImage": circleContainer.Margin = new Thickness(5, 0, 5, 0); MenuItemImage.Source = Settings.CircleImageSource; MenuItemImageDescription.Text = Settings.CircleDescription; return;
+                case "heatMapImage": heatMapContainer.Margin = new Thickness(5, 0, 5, 0); MenuItemImage.Source = Settings.HeatMapImageSource; MenuItemImageDescription.Text = Settings.HeatMapDescription; return;
+                case "referenceImage": referenceContainer.Margin = new Thickness(3, 3, 3, 3); return;
                 case "exitImage": exitImage.Source = Settings.exitIcoSelectedSource; return;
                 default: throw new ArgumentException("undefined TextBlock name");
             }
@@ -40,9 +42,11 @@ namespace Degree_Work
             MenuItemImageDescription.Text = Settings.EmptyDescription;
             switch ((sender as Image).Name)
             {
-                case "halfplaneImage": halfplaneContainer.Margin = new Thickness(1, 10, 1, 10); return;
-                case "zoneImage": zoneContainer.Margin = new Thickness(1, 10, 1, 10); return;
-                case "circleImage": circleContainer.Margin = new Thickness(1, 10, 1, 10); return;
+                case "halfplaneImage": halfplaneContainer.Margin = new Thickness(10,5,10,5); return;
+                case "zoneImage": zoneContainer.Margin = new Thickness(10, 5, 10, 5); return;
+                case "circleImage": circleContainer.Margin = new Thickness(10, 5, 10, 5); return;
+                case "heatMapImage": heatMapContainer.Margin = new Thickness(10,5,10,5); return;
+                case "referenceImage": referenceContainer.Margin = new Thickness(6,6,6,6); return;
                 case "exitImage": exitImage.Source = Settings.exitIcoSource; return;
                 default: throw new ArgumentException("undefined TextBlock name");
             }
@@ -55,7 +59,9 @@ namespace Degree_Work
                 case "halfplaneImage": WindowsReferences.HalfPlainW = new HalfPlane(); WindowsReferences.HalfPlainW.Show(); Hide(); return;
                 case "zoneImage": WindowsReferences.ZoneW = new ZoneWindow(); WindowsReferences.ZoneW.Show(); Hide(); return;
                 case "circleImage": WindowsReferences.CircleW = new CircleWindow(); WindowsReferences.CircleW.Show(); Hide(); return;
-                case "exitImage": (Process.GetCurrentProcess()).Kill(); return;
+                case "heatMapImage": WindowsReferences.HMapW = new HeatMapWindow(); WindowsReferences.HMapW.Show(); Hide(); return;
+                case "referenceImage": WindowsReferences.RefW = new ReferenceWindow(this); WindowsReferences.RefW.Show(); return;
+                case "exitImage": Close(); return;
                 default: throw new ArgumentException("undefined TextBlock name");
             }
         }

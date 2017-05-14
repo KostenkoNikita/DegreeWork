@@ -11,44 +11,32 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.4*"/>
+            <ColumnDefinition Width="0.35*"/>
             <ColumnDefinition/>
+            <ColumnDefinition Width="0.35*"/>
         </Grid.ColumnDefinitions>
 
         <Grid Margin ="0,0,0,0" Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.15*"/>
-                <RowDefinition Height="0.2*"/>
-                <RowDefinition Height="0.2*"/>
-                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.4*"/>
+                <RowDefinition Height="0.4*"/>
                 <RowDefinition Height="0.2*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Меню" Grid.Row="0" Margin="1,1,1,1" TextAlignment="Center" VerticalAlignment="Center"  FontSize="60"/>
-
-            <Viewbox x:Name="halfplaneContainer" Margin="1,10,1,10" Grid.Row="1">
+            <Viewbox x:Name="halfplaneContainer" Margin="10,5,10,5" Grid.Row="0">
                 <Image x:Name ="halfplaneImage"  Source="Resources\menuPicHalfPlane.png" MouseEnter="Icon_MouseEnter" MouseLeave="Icon_MouseLeave" MouseDown="Icon_MouseDown"/>
             </Viewbox>
-            <Viewbox x:Name="zoneContainer" Margin="1,10,1,10" Grid.Row="2">
+            <Viewbox x:Name="zoneContainer" Margin="10,5,10,5" Grid.Row="1">
                 <Image x:Name ="zoneImage"  Source="Resources\menuPicZone.png" MouseEnter="Icon_MouseEnter" MouseLeave="Icon_MouseLeave" MouseDown="Icon_MouseDown"/>
             </Viewbox>
-            <Viewbox x:Name="circleContainer" Margin="1,10,1,10" Grid.Row="3">
-                <Image x:Name ="circleImage"  Source="Resources\menuPicCircle.png" MouseEnter="Icon_MouseEnter" MouseLeave="Icon_MouseLeave" MouseDown="Icon_MouseDown"/>
+            <Viewbox x:Name="referenceContainer" Margin="6,6,6,6" Grid.Row="2">
+                <Image x:Name ="referenceImage"  Source="Resources\referIco.png" MouseEnter="Icon_MouseEnter" MouseLeave="Icon_MouseLeave" MouseDown="Icon_MouseDown"/>
             </Viewbox>
-            <Viewbox x:Name="exitContainer" Margin="6,6,6,6" Grid.Row="4">
-                <Image x:Name ="exitImage"  Source="Resources\exitIco.bmp" MouseEnter="Icon_MouseEnter" MouseLeave="Icon_MouseLeave" MouseDown="Icon_MouseDown"/>
-            </Viewbox>
-
-
-
-
-
             <Border Grid.Row="0" BorderThickness="1" BorderBrush="Black"/>
-            <Border Grid.Row="1" Grid.RowSpan="3" BorderThickness="1" BorderBrush="Black"/>
-            <Border Grid.Row="4" BorderThickness="1" BorderBrush="Black"/>
-
+            <Border Grid.Row="1" BorderThickness="1" BorderBrush="Black"/>
+            <Border Grid.Row="2" BorderThickness="1" BorderBrush="Black"/>
         </Grid>
         <Grid Grid.Column="1" Margin="50,40,50,15" Height="Auto" Width="Auto">
             <Grid.RowDefinitions>
@@ -61,7 +49,29 @@
             <Viewbox x:Name="MenuItemImageContainer" Margin="1,1,1,1" Grid.Row="0">
                 <Image x:Name ="MenuItemImage" Source="Resources\Empty.png"/>
             </Viewbox>
-            <TextBlock x:Name="MenuItemImageDescription" Grid.Column="0" Grid.Row="3" Text="" Margin="0,42,0,0" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontFamily="Times New Roman" FontWeight="Bold"/>
+            <TextBlock x:Name="MenuItemImageDescription" Grid.Column="0" Grid.Row="3" Text="" Margin="0,10,0,0" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontFamily="Times New Roman" FontWeight="Bold"/>
+        </Grid>
+        <Grid Margin ="0,0,0,0" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.4*"/>
+                <RowDefinition Height="0.4*"/>
+                <RowDefinition Height="0.2*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Viewbox x:Name="circleContainer" Margin="10,5,10,5" Grid.Row="0">
+                <Image x:Name ="circleImage"  Source="Resources\menuPicCircle.png" MouseEnter="Icon_MouseEnter" MouseLeave="Icon_MouseLeave" MouseDown="Icon_MouseDown"/>
+            </Viewbox>
+            <Viewbox x:Name="heatMapContainer" Margin="10,5,10,5" Grid.Row="1">
+                <Image x:Name ="heatMapImage"  Source="Resources\menuPicHeatMap.png" MouseEnter="Icon_MouseEnter" MouseLeave="Icon_MouseLeave" MouseDown="Icon_MouseDown"/>
+            </Viewbox>
+            <Viewbox x:Name="exitContainer" Margin="6,6,6,6" Grid.Row="2">
+                <Image x:Name ="exitImage"  Source="Resources\exitIco.bmp" MouseEnter="Icon_MouseEnter" MouseLeave="Icon_MouseLeave" MouseDown="Icon_MouseDown"/>
+            </Viewbox>
+            <Border Grid.Row="0" BorderThickness="1" BorderBrush="Black"/>
+            <Border Grid.Row="1" BorderThickness="1" BorderBrush="Black"/>
+            <Border Grid.Row="2" BorderThickness="1" BorderBrush="Black"/>
         </Grid>
     </Grid>
 </Window>

@@ -9,7 +9,7 @@
         Title="Обтекание полуплоскости" Height="600" Width="900" MinHeight="600" MinWidth="900"
         x:Name="HalfPlaneWin" WindowStartupLocation="CenterScreen" WindowStyle="None" Icon="Resources/favicon.ico" WindowState="Maximized">
 
-    <Grid x:Name="grid" Margin="10,10,10,10">
+    <Grid Margin="10,10,10,10">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>

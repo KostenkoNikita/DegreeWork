@@ -40,7 +40,7 @@ namespace Degree_Work
             mapsList.SelectionChanged += MapsList_SelectionChanged;
             mapsList.Items.Add("Тождественное\nотображение");
             mapsList.Items.Add("Треугольник 1");
-            mapsList.Items.Add("Полуплоскость с\nвыброшенным отрезком");
+            mapsList.Items.Add("Полуплоскость с\nвыброшенным\nотрезком");
             mapsList.Items.Add("Треугольник 2");
             mapsList.Items.Add("Треугольник 3");
             mapsList.Items.Add("Четырёхугольник 1");

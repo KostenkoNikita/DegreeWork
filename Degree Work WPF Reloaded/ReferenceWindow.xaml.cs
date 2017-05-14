@@ -32,6 +32,7 @@ namespace Degree_Work
             TipsList.Items.Add("Обтекание полуплоскости");
             TipsList.Items.Add("Обтекание полосы -π..π");
             TipsList.Items.Add("Обтекание единичной\nокружности");
+            TipsList.Items.Add("Обтекание прямоугольника");
             TipsList.Items.Add("Настройка визуальных\nпараметров");
             TipsList.Items.Add("Сохранение полученных\nрезультатов");
             TipsList.SelectionChanged += TipsList_SelectionChanged;
@@ -46,6 +47,10 @@ namespace Degree_Work
             else if (from is CircleWindow)
             {
                 TipsList.SelectedIndex = 3;
+            }
+            else if (from is HeatMapWindow)
+            {
+                TipsList.SelectedIndex = 4;
             }
             else
             {
@@ -71,9 +76,12 @@ namespace Degree_Work
                     wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\CircleInfo.docx";
                     break;
                 case 4:
-                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\SettingsInfo.docx";
+                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\HeatMapInfo.docx";
                     break;
                 case 5:
+                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\SettingsInfo.docx";
+                    break;
+                case 6:
                     wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\SaveInfo.docx";
                     break;
             }
