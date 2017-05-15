@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Collections.Generic;
 using OxyPlot;
 using OxyPlot.Wpf;
 
@@ -16,10 +17,6 @@ namespace Degree_Work
     public partial class HeatMapWindow : Window
     {
         public double[,] Data { get; private set; }
-
-        public double AngleDegrees { get; set; }
-
-        public string AngleToString { get { return AngleDegrees.ToString(System.Globalization.CultureInfo.InvariantCulture); } private set { } }
 
         const double XMin = -5;
 
@@ -43,34 +40,61 @@ namespace Degree_Work
 
         const double dy = (YMax - YMin) / (M - 1);
 
-        DataPoint[] rectPoints;
+        public double RHeight { get; set; }
 
-        public double Height { get; set; }
+        public double RWidth { get; set; }
 
-        public double Width { get; set; }
+        public double AngleDegrees { get; set; }
+
+        public double Eps { get; set; }
 
         public HeatMapWindow()
         {
             InitializeComponent();
-            Height = 4;
-            Width = 4;
+            AngleDegrees = 0;
+            RHeight = 4;
+            RWidth = 4;
+            Eps = 0.001;
+            rectangle.Points = new List<DataPoint>()
+            {
+                    new DataPoint(RWidth/2.0,RHeight/2.0),
+                    new DataPoint(-RWidth/2.0,RHeight/2.0),
+                    new DataPoint(-RWidth/2.0,-RHeight/2.0),
+                    new DataPoint(RWidth/2.0,-RHeight/2.0)
+            };
             SetGradientStopsForReload();
-            FindRectangleDataPoints();
-            DrawReactangle();
-            AngleSlider.ValueChanged += AngleSlider_ValueChanged;
             DataContext = this;
+            AngleSlider.ValueChanged += Slider_ValueChanged;
+            EpsSlider.ValueChanged += Slider_ValueChanged;
+            HeightSlider.ValueChanged += HWSlider_ValueChanged;
+            WidthSlider.ValueChanged += HWSlider_ValueChanged;
+            plot.Controller = new PlotController();
+            plot.Controller.UnbindMouseDown(OxyMouseButton.Left);
         }
 
-        private void AngleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             SetGradientStopsForReload();
             heatMapSeries.Data = new double[N, M];
         }
 
+        private void HWSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            SetGradientStopsForReload();
+            heatMapSeries.Data = new double[N, M];
+            rectangle.Points = (new List<DataPoint>()
+            {
+                    new DataPoint(RWidth/2.0,RHeight/2.0),
+                    new DataPoint(-RWidth/2.0,RHeight/2.0),
+                    new DataPoint(-RWidth/2.0,-RHeight/2.0),
+                    new DataPoint(RWidth/2.0,-RHeight/2.0)
+            });
+        }
+
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
             SetGradientStopsForBuild();
-            heatMapSeries.Data = GenerateHeatMap(AngleDegrees*Math.PI/180.0, 0.001);
+            heatMapSeries.Data = GenerateHeatMap(AngleDegrees*Math.PI/180.0);
         }
 
         private void SetGradientStopsForBuild()
@@ -89,43 +113,17 @@ namespace Degree_Work
             linearColorAxis.GradientStops.Add(new GradientStop(Colors.White, 1.0));
         }
 
-        private void FindRectangleDataPoints()
-        {
-            rectPoints = new DataPoint[4]
-                {
-                    new DataPoint(Width/2.0,Height/2.0),
-                    new DataPoint(-Width/2.0,Height/2.0),
-                    new DataPoint(-Width/2.0,-Height/2.0),
-                    new DataPoint(Width/2.0,-Height/2.0)
-                };
-        }
-
-        private void DrawReactangle()
-        {
-            if (rectPoints == null) { FindRectangleDataPoints(); }
-            plot.Annotations.Clear();
-            PolygonAnnotation pa = new PolygonAnnotation();
-            pa.Points.Add(rectPoints[0]);
-            pa.Points.Add(rectPoints[1]);
-            pa.Points.Add(rectPoints[2]);
-            pa.Points.Add(rectPoints[3]);
-            pa.Fill = Colors.Gray;
-            pa.StrokeThickness = 1;
-            pa.Stroke = Colors.Black;
-            plot.Annotations.Add(pa);
-        }
-
-        private double[,] GenerateHeatMap(double angleRadians, double eps)
+        private double[,] GenerateHeatMap(double angleRadians)
         {
             double x;
             double y;
             double[,] res = new double[N, M];
             double Vx = Math.Sin(angleRadians);
             double Vy = Math.Cos(angleRadians);
-            int lowerI = iFromX(-Width/2.0);
-            int lowerJ = jFromY(-Height/2.0);
-            int higherI = iFromX(Width / 2.0);
-            int higherJ = jFromY(Height / 2.0);
+            int lowerI = iFromX(-RWidth/2.0);
+            int lowerJ = jFromY(-RHeight/2.0);
+            int higherI = iFromX(RWidth / 2.0);
+            int higherJ = jFromY(RHeight / 2.0);
             x = XMin;
             for (int i = 0; i < N; i++, x += dx)
             {
@@ -134,7 +132,7 @@ namespace Degree_Work
                 {
                     if (i >= lowerI && i <= higherI && j >= lowerJ && j <= higherJ)
                     {
-                        res[i, j] = 0;
+                        //res[i, j] = 0;
                         continue;
                     }
                     res[i, j] = Vy * y - Vx * x;
@@ -161,7 +159,7 @@ namespace Degree_Work
                         }
                     }
                 }
-            } while (dmax > eps);
+            } while (dmax > Eps);
             return res;
         }
 
@@ -184,30 +182,43 @@ namespace Degree_Work
                 case "referImage": referContainer.Margin = new Thickness(3, 3, 3, 3); return;
                 case "saveImage": saveContainer.Margin = new Thickness(4, 4, 4, 4); return;
                 case "menuImage": menuContainer.Margin = new Thickness(7, 7, 7, 7); return;
+                case "StartButtonImage": StartButtonContainer.Margin = new Thickness(3,3,3,3); return;
                 case "exitImage": exitImage.Source = Settings.exitIcoSelectedSource; return;
             }
         }
 
-        private void ico_MouseLeave(object sender, MouseEventArgs e)
+        private void Ico_MouseLeave(object sender, MouseEventArgs e)
         {
             switch ((sender as Image).Name)
             {
                 case "referImage": referContainer.Margin = new Thickness(7, 7, 7, 7); return;
                 case "saveImage": saveContainer.Margin = new Thickness(9, 9, 9, 9); return;
                 case "menuImage": menuContainer.Margin = new Thickness(13, 13, 13, 13); return;
+                case "StartButtonImage": StartButtonContainer.Margin = new Thickness(7,7,7,7); return;
                 case "exitImage": exitImage.Source = Settings.exitIcoSource; return;
             }
         }
 
-        private void ico_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Ico_MouseDown(object sender, MouseButtonEventArgs e)
         {
             switch ((sender as Image).Name)
             {
                 case "referImage": WindowsReferences.RefW = new ReferenceWindow(this); WindowsReferences.RefW.Show(); return;
                 case "saveImage": /*SaveWindow sw = new SaveWindow(viewModel); sw.Show();*/ return;
                 case "menuImage": WindowsReferences.MainW.Show(); Close(); return;
+                case "StartButtonImage": StartButton_Click(null, null);return;
                 case "exitImage": System.Diagnostics.Process.GetCurrentProcess().Kill(); return;
             }
+        }
+
+        private void StartButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+            StartButtonContainer.Margin = new Thickness(3, 3, 3, 3);
+        }
+
+        private void StartButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+            StartButtonContainer.Margin = new Thickness(7,7,7,7);
         }
     }
 }

@@ -275,6 +275,9 @@
   <ItemGroup>
     <Resource Include="Resources\heatMapImage.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\StartButtonIco.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

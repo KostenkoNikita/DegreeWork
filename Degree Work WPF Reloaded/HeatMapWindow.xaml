@@ -25,16 +25,16 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Viewbox x:Name="referContainer" Grid.Row="0" Margin="7,7,7,7">
-                <Image  x:Name="referImage" Source="Resources\referIco.png" MouseEnter="ico_MouseEnter" MouseLeave="ico_MouseLeave" MouseDown="ico_MouseDown"/>
+                <Image  x:Name="referImage" Source="Resources\referIco.png" MouseEnter="ico_MouseEnter" MouseLeave="Ico_MouseLeave" MouseDown="Ico_MouseDown"/>
             </Viewbox>
             <Viewbox x:Name="saveContainer" Grid.Row="1" Margin="9,9,9,9">
-                <Image  x:Name="saveImage" Source="Resources\saveIco2.png" MouseEnter="ico_MouseEnter" MouseLeave="ico_MouseLeave" MouseDown="ico_MouseDown"/>
+                <Image  x:Name="saveImage" Source="Resources\saveIco2.png" MouseEnter="ico_MouseEnter" MouseLeave="Ico_MouseLeave" MouseDown="Ico_MouseDown"/>
             </Viewbox>
             <Viewbox x:Name="menuContainer" Grid.Row="2" Margin="13,13,13,13">
-                <Image  x:Name="menuImage" Source="Resources\menuIco.png" MouseEnter="ico_MouseEnter" MouseLeave="ico_MouseLeave" MouseDown="ico_MouseDown"/>
+                <Image  x:Name="menuImage" Source="Resources\menuIco.png" MouseEnter="ico_MouseEnter" MouseLeave="Ico_MouseLeave" MouseDown="Ico_MouseDown"/>
             </Viewbox>
             <Viewbox x:Name="exitContainer" Grid.Row="3" Margin="7,7,0,7">
-                <Image x:Name ="exitImage"  Source="Resources\exitIco.bmp" MouseEnter="ico_MouseEnter" MouseLeave="ico_MouseLeave" MouseDown="ico_MouseDown"/>
+                <Image x:Name ="exitImage"  Source="Resources\exitIco.bmp" MouseEnter="ico_MouseEnter" MouseLeave="Ico_MouseLeave" MouseDown="Ico_MouseDown"/>
             </Viewbox>
             <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="0" />
             <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="1" />
@@ -44,11 +44,14 @@
         <Grid Grid.Column="1">
             <oxy:Plot x:Name="plot" Grid.Row="0">
                 <oxy:Plot.Axes>
-                    <oxy:LinearAxis Key="x" Position="Bottom" Minimum="-5" Maximum="5"/>
-                    <oxy:LinearAxis Key="y" Position="Left" Minimum="-5" Maximum="5" />
+                    <oxy:LinearAxis Key="x" Position="Bottom" Minimum="-5" Maximum="5" AbsoluteMaximum="5" AbsoluteMinimum="-5"/>
+                    <oxy:LinearAxis Key="y" Position="Left" Minimum="-5" Maximum="5" AbsoluteMaximum="5" AbsoluteMinimum="-5" />
                     <oxy:LinearColorAxis x:Name="linearColorAxis" Key="z" Position="None"  LowColor="LightCyan" HighColor="LightCyan" PaletteSize="100">
                     </oxy:LinearColorAxis>
                 </oxy:Plot.Axes>
+                <oxy:Plot.Annotations>
+                    <oxy:PolygonAnnotation x:Name="rectangle" Fill="Gray" Stroke="Black" StrokeThickness="2"/>
+                </oxy:Plot.Annotations>
                 <oxy:Plot.Series>
                     <oxy:HeatMapSeries x:Name="heatMapSeries" ColorAxisKey="Z" X0="-5" X1="5" Y0="-5" Y1="5"/>
                 </oxy:Plot.Series>
@@ -56,14 +59,50 @@
         </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="0.1*"></RowDefinition>
+                <RowDefinition Height="0.1*"></RowDefinition>
+                <RowDefinition Height="0.1*"></RowDefinition>
+                <RowDefinition Height="0.1*"></RowDefinition>
+                <RowDefinition Height="0.1*"></RowDefinition>
+                <RowDefinition Height="0.1*"></RowDefinition>
+                <RowDefinition Height="0.1*"></RowDefinition>
+                <RowDefinition Height="0.1*"></RowDefinition>
+                <RowDefinition Height="0.2*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Slider x:Name="AngleSlider" Grid.Row="0" VerticalAlignment="Center"  Minimum="-90" Maximum="90" Value="{Binding AngleDegrees}" SmallChange="1" LargeChange="10" IsSnapToTickEnabled="True" TickFrequency="1"/>
-            <TextBox x:Name="AngleBox" Grid.Row="1" FontSize="16" VerticalAlignment="Center" Text="{Binding ElementName=AngleSlider, Path=Value}"/>
-            <Button x:Name="StartButton" Grid.Row="2" Background="White" VerticalAlignment="Center" Content="Build" FontSize="32" BorderThickness="2" BorderBrush="Black" Click="StartButton_Click"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                <ColumnDefinition Width="0.6*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Ширина:" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Times New Roman" FontSize="20"/>
+            <TextBox x:Name="WidthBox" Grid.Row="0" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=WidthSlider, Path=Value}"/>
+            <Slider x:Name="WidthSlider" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="1" Maximum="8" Value="{Binding RWidth}" SmallChange="0.1" LargeChange="1" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+
+            <TextBlock Grid.Row="2" Text="Высота:" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Times New Roman" FontSize="20"/>
+            <TextBox x:Name="HeightBox" Grid.Row="2" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=HeightSlider, Path=Value}"/>
+            <Slider x:Name="HeightSlider" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="1" Maximum="8" Value="{Binding RHeight}" SmallChange="0.1" LargeChange="1" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+
+            <TextBlock Grid.Row="4" Text="α =" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Times New Roman" FontSize="28"/>
+            <TextBox x:Name="AngleBox" Grid.Row="4" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=AngleSlider, Path=Value}"/>
+            <Slider x:Name="AngleSlider" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="-90" Maximum="90" Value="{Binding AngleDegrees}" SmallChange="1" LargeChange="10" IsSnapToTickEnabled="True" TickFrequency="1"/>
+
+            <TextBlock Grid.Row="6" Text="ε =" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Times New Roman" FontSize="28"/>
+            <TextBox x:Name="EpsBox" Grid.Row="6" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=EpsSlider, Path=Value}"/>
+            <Slider x:Name="EpsSlider" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="0.0001" Maximum="0.01" Value="{Binding Eps}" SmallChange="0.0001" LargeChange="0.001" IsSnapToTickEnabled="True" TickFrequency="0.0001"/>
+
+            <Button x:Name="StartButton" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Background="White" BorderThickness="2" BorderBrush="Black" Click="StartButton_Click" MouseEnter="StartButton_MouseEnter" MouseLeave="StartButton_MouseLeave">
+                <Viewbox x:Name="StartButtonContainer" Grid.Row="3" Margin="7,7,7,7">
+                    <Image x:Name ="StartButtonImage"  Source="Resources\StartButtonIco.ico" MouseEnter="ico_MouseEnter" MouseLeave="Ico_MouseLeave" MouseDown="Ico_MouseDown"/>
+                </Viewbox>
+            </Button>
+
+            <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+            <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+            <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+            <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="6" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+            <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="8" Grid.ColumnSpan="2" Grid.RowSpan="1" />
+
         </Grid>
+        <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="0" Grid.Column="1"/>
     </Grid>
 </Window>
