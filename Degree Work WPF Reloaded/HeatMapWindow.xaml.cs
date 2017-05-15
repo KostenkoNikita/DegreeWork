@@ -1,6 +1,8 @@
 ﻿#pragma warning disable
 
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,6 +20,10 @@ namespace Degree_Work
     {
         public double[,] Data { get; private set; }
 
+        double[,] intermediateMap;
+
+        Thread LiebmannProcess;
+
         const double XMin = -5;
 
         const double XMax = 5;
@@ -25,6 +31,10 @@ namespace Degree_Work
         const double YMax = 5;
 
         const double YMin = -5;
+
+        const double ArrowR = 8;
+
+        const double ArrowCloserR = 4.242640687119286;
 
         /// <summary>
         /// Количество узлов по координате Х
@@ -46,6 +56,12 @@ namespace Degree_Work
 
         public double AngleDegrees { get; set; }
 
+        public double AngleRadians => AngleDegrees * Math.PI / 180.0;
+
+        public double ArrowAngleRadians => AngleRadians + Math.PI;
+
+        ArrowAnnotation arrow;
+
         public double Eps { get; set; }
 
         public HeatMapWindow()
@@ -55,6 +71,14 @@ namespace Degree_Work
             RHeight = 4;
             RWidth = 4;
             Eps = 0.001;
+            arrow = new ArrowAnnotation();
+            arrow.StartPoint = new DataPoint(ArrowR * Math.Cos(ArrowAngleRadians), ArrowR * Math.Sin(ArrowAngleRadians));
+            arrow.EndPoint = new DataPoint(ArrowCloserR * Math.Cos(ArrowAngleRadians), ArrowCloserR * Math.Sin(ArrowAngleRadians));
+            arrow.StrokeThickness = 4;
+            arrow.Color = Colors.DarkRed;
+            plot.Annotations.Add(arrow);
+            LiebmannProcess = new Thread(GenerateHeatMap) { Priority = ThreadPriority.BelowNormal };
+            LiebmannProcess.Start();
             rectangle.Points = new List<DataPoint>()
             {
                     new DataPoint(RWidth/2.0,RHeight/2.0),
@@ -64,23 +88,50 @@ namespace Degree_Work
             };
             SetGradientStopsForReload();
             DataContext = this;
-            AngleSlider.ValueChanged += Slider_ValueChanged;
-            EpsSlider.ValueChanged += Slider_ValueChanged;
+            AngleSlider.ValueChanged += AngleSlider_ValueChanged;
+            EpsSlider.ValueChanged += EpsSlider_ValueChanged;
             HeightSlider.ValueChanged += HWSlider_ValueChanged;
             WidthSlider.ValueChanged += HWSlider_ValueChanged;
             plot.Controller = new PlotController();
             plot.Controller.UnbindMouseDown(OxyMouseButton.Left);
         }
 
-        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void AngleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            LiebmannProcess.Abort();
             SetGradientStopsForReload();
+            if (!plot.Annotations.Contains(arrow))
+            {
+                plot.Annotations.Add(arrow);
+            }
+            arrow.StartPoint = new DataPoint(ArrowR * Math.Cos(ArrowAngleRadians), ArrowR * Math.Sin(ArrowAngleRadians));
+            arrow.EndPoint = new DataPoint(ArrowCloserR * Math.Cos(ArrowAngleRadians), ArrowCloserR * Math.Sin(ArrowAngleRadians));
             heatMapSeries.Data = new double[N, M];
+            LiebmannProcess = new Thread(GenerateHeatMap) { Priority = ThreadPriority.BelowNormal };
+            LiebmannProcess.Start();
+        }
+
+        private void EpsSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            LiebmannProcess.Abort();
+            SetGradientStopsForReload();
+            if (!plot.Annotations.Contains(arrow))
+            {
+                plot.Annotations.Add(arrow);
+            }
+            heatMapSeries.Data = new double[N, M];
+            LiebmannProcess = new Thread(GenerateHeatMap) { Priority = ThreadPriority.BelowNormal };
+            LiebmannProcess.Start();
         }
 
         private void HWSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            LiebmannProcess.Abort();
             SetGradientStopsForReload();
+            if (!plot.Annotations.Contains(arrow))
+            {
+                plot.Annotations.Add(arrow);
+            }
             heatMapSeries.Data = new double[N, M];
             rectangle.Points = (new List<DataPoint>()
             {
@@ -89,12 +140,21 @@ namespace Degree_Work
                     new DataPoint(-RWidth/2.0,-RHeight/2.0),
                     new DataPoint(RWidth/2.0,-RHeight/2.0)
             });
+            LiebmannProcess = new Thread(GenerateHeatMap) { Priority = ThreadPriority.BelowNormal };
+            LiebmannProcess.Start();
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            if (LiebmannProcess.ThreadState == ThreadState.Stopped) { return; }
+            Mouse.OverrideCursor = Cursors.Wait;
             SetGradientStopsForBuild();
-            heatMapSeries.Data = GenerateHeatMap(AngleDegrees*Math.PI/180.0);
+            while (LiebmannProcess.ThreadState == ThreadState.Running)
+            {
+            }
+            plot.Annotations.Remove(arrow);
+            heatMapSeries.Data = intermediateMap;
+            Mouse.OverrideCursor = Cursors.Arrow;
         }
 
         private void SetGradientStopsForBuild()
@@ -113,15 +173,15 @@ namespace Degree_Work
             linearColorAxis.GradientStops.Add(new GradientStop(Colors.White, 1.0));
         }
 
-        private double[,] GenerateHeatMap(double angleRadians)
+        private void GenerateHeatMap()
         {
             double x;
             double y;
-            double[,] res = new double[N, M];
-            double Vx = Math.Sin(angleRadians);
-            double Vy = Math.Cos(angleRadians);
-            int lowerI = iFromX(-RWidth/2.0);
-            int lowerJ = jFromY(-RHeight/2.0);
+            intermediateMap = new double[N, M];
+            double Vx = Math.Sin(AngleRadians);
+            double Vy = Math.Cos(AngleRadians);
+            int lowerI = iFromX(-RWidth / 2.0);
+            int lowerJ = jFromY(-RHeight / 2.0);
             int higherI = iFromX(RWidth / 2.0);
             int higherJ = jFromY(RHeight / 2.0);
             x = XMin;
@@ -132,10 +192,9 @@ namespace Degree_Work
                 {
                     if (i >= lowerI && i <= higherI && j >= lowerJ && j <= higherJ)
                     {
-                        //res[i, j] = 0;
                         continue;
                     }
-                    res[i, j] = Vy * y - Vx * x;
+                    intermediateMap[i, j] = Vy * y - Vx * x;
                 }
             }
             double dmax = 0;
@@ -150,9 +209,9 @@ namespace Degree_Work
                         {
                             continue;
                         }
-                        double temp = res[i, j];
-                        res[i, j] = (res[i + 1, j] + res[i - 1, j] + res[i, j + 1] + res[i, j - 1]) / 4.0;
-                        double dm = Math.Abs(temp - res[i, j]);
+                        double temp = intermediateMap[i, j];
+                        intermediateMap[i, j] = (intermediateMap[i + 1, j] + intermediateMap[i - 1, j] + intermediateMap[i, j + 1] + intermediateMap[i, j - 1]) / 4.0;
+                        double dm = Math.Abs(temp - intermediateMap[i, j]);
                         if (dmax < dm)
                         {
                             dmax = dm;
@@ -160,7 +219,6 @@ namespace Degree_Work
                     }
                 }
             } while (dmax > Eps);
-            return res;
         }
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -204,10 +262,10 @@ namespace Degree_Work
             switch ((sender as Image).Name)
             {
                 case "referImage": WindowsReferences.RefW = new ReferenceWindow(this); WindowsReferences.RefW.Show(); return;
-                case "saveImage": /*SaveWindow sw = new SaveWindow(viewModel); sw.Show();*/ return;
+                case "saveImage": StartButton_Click(null, null); SaveWindow sw = new SaveWindow(new PlotWindowModel(plot,this)); sw.Show(); return;
                 case "menuImage": WindowsReferences.MainW.Show(); Close(); return;
                 case "StartButtonImage": StartButton_Click(null, null);return;
-                case "exitImage": System.Diagnostics.Process.GetCurrentProcess().Kill(); return;
+                case "exitImage": LiebmannProcess.Abort(); System.Diagnostics.Process.GetCurrentProcess().Kill(); return;
             }
         }
 

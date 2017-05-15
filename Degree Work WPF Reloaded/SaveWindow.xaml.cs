@@ -76,7 +76,7 @@ namespace Degree_Work
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     viewModel.GetType().InvokeMember($"SavePlotTo{format.ToString()}", System.Reflection.BindingFlags.InvokeMethod, null, viewModel, new object[] { path + $"Plot[{DateTime.Now.ToString().Replace(':', '.').Replace(" ", " Time=")}].{format.ToString().ToLower()}", width, height });
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                     doneImage.Source = Settings.OKIcoSource;
                     doneImage.MouseEnter -= ico_MouseEnter;
                     doneImage.MouseLeave -= ico_MouseLeave;
@@ -87,7 +87,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                     Deactivated += OnWindowDeactivated;
                     viewModel.PlotModel.InvalidatePlot(true);
                 }

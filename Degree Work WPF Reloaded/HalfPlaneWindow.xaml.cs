@@ -124,7 +124,7 @@ namespace Degree_Work
                     break;
             }
             ChangeParamsConfiguration();
-            Mouse.OverrideCursor = null;
+            Mouse.OverrideCursor = Cursors.Arrow;
             PlotRefresh();
         }
 
@@ -263,7 +263,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
             else if (w.f is Hydrodynamics_Sources.Conformal_Maps.EjectedSegment)
@@ -280,7 +280,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
             else if (w.f is Hydrodynamics_Sources.Conformal_Maps.Number81)
@@ -297,7 +297,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
             else if (w.f is Hydrodynamics_Sources.Conformal_Maps.Number79)
@@ -314,7 +314,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
             else if (w.f is Hydrodynamics_Sources.Conformal_Maps.Triangle)
@@ -331,7 +331,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
             else if (w.f is Hydrodynamics_Sources.Conformal_Maps.Number85)
@@ -349,7 +349,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
         }
@@ -371,7 +371,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
             if (w.f is Hydrodynamics_Sources.Conformal_Maps.Triangle)
@@ -389,7 +389,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
         }
@@ -472,7 +472,7 @@ namespace Degree_Work
         {
             Mouse.OverrideCursor = Cursors.Wait;
             s?.ChangeParams(Settings.PlotGeomParams.XMin, Settings.PlotGeomParams.XMax, Settings.PlotGeomParams.YMax, Settings.PlotGeomParams.MRKh, Settings.PlotGeomParams.hVertical);
-            Mouse.OverrideCursor = null;
+            Mouse.OverrideCursor = Cursors.Arrow;
             PlotRefresh();
         }
 
@@ -480,7 +480,7 @@ namespace Degree_Work
         {
             Mouse.OverrideCursor = Cursors.Wait;
             viewModel.ReassignVisualParams();
-            Mouse.OverrideCursor = null;
+            Mouse.OverrideCursor = Cursors.Arrow;
             PlotRefresh();
         }
     }

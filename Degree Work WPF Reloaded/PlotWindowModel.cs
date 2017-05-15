@@ -1,4 +1,4 @@
-﻿#pragma warning disable 612
+﻿#pragma warning disable
 //#define HELP_FOR_GROUP_LEADER
 
 using System;
@@ -118,6 +118,22 @@ namespace Degree_Work
         public Complex GetComplexCursorPositionOnPlot(ScreenPoint pos)
         {
             return OxyPlot.Axes.Axis.InverseTransform(pos, X_Axis, Y_Axis).DataPointToComplex();
+        }
+
+        /// <summary>
+        /// Конструктор класса. Все графические пострения проходят через методы экземпляра этого класса
+        /// ВНИМАНИЕ. ВЫЗЫВАЕТСЯ ТОЛЬКО ИЗ ОКНА ДЛЯ ПОСТРОЕНИЯ ЛИНИЙ ТОКА ПРИ ОБТЕКАНИИ ПРЯМОУГОЛЬНИКА
+        /// </summary>
+        internal PlotWindowModel(OxyPlot.Wpf.Plot plot, System.Windows.Window callerWindow)
+        {
+            if (callerWindow is HeatMapWindow)
+            {
+                PlotModel = plot.ActualModel;
+            }
+            else
+            {
+                throw new InvalidOperationException("ВЫЗЫВАЕТСЯ ТОЛЬКО ИЗ ОКНА ДЛЯ ПОСТРОЕНИЯ ЛИНИЙ ТОКА ПРИ ОБТЕКАНИИ ПРЯМОУГОЛЬНИКА");
+            }
         }
 
         /// <summary>

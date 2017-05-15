@@ -75,24 +75,25 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Row="0" Text="Ширина:" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Times New Roman" FontSize="20"/>
-            <TextBox x:Name="WidthBox" Grid.Row="0" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=WidthSlider, Path=Value}"/>
-            <Slider x:Name="WidthSlider" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="1" Maximum="8" Value="{Binding RWidth}" SmallChange="0.1" LargeChange="1" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+            <TextBox x:Name="WidthBox" Grid.Row="0" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=WidthSlider, Path=Value}" IsReadOnly="True"/>
+            <Slider x:Name="WidthSlider" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="1" Maximum="6" Value="{Binding RWidth}" SmallChange="0.1" LargeChange="1" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
 
             <TextBlock Grid.Row="2" Text="Высота:" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Times New Roman" FontSize="20"/>
-            <TextBox x:Name="HeightBox" Grid.Row="2" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=HeightSlider, Path=Value}"/>
-            <Slider x:Name="HeightSlider" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="1" Maximum="8" Value="{Binding RHeight}" SmallChange="0.1" LargeChange="1" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+            <TextBox x:Name="HeightBox" Grid.Row="2" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=HeightSlider, Path=Value}"  IsReadOnly="True"/>
+            <Slider x:Name="HeightSlider" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="1" Maximum="6" Value="{Binding RHeight}" SmallChange="0.1" LargeChange="1" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
 
             <TextBlock Grid.Row="4" Text="α =" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Times New Roman" FontSize="28"/>
-            <TextBox x:Name="AngleBox" Grid.Row="4" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=AngleSlider, Path=Value}"/>
+            <TextBox x:Name="AngleBox" Grid.Row="4" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=AngleSlider, Path=Value}"  IsReadOnly="True"/>
             <Slider x:Name="AngleSlider" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="-90" Maximum="90" Value="{Binding AngleDegrees}" SmallChange="1" LargeChange="10" IsSnapToTickEnabled="True" TickFrequency="1"/>
 
             <TextBlock Grid.Row="6" Text="ε =" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Times New Roman" FontSize="28"/>
-            <TextBox x:Name="EpsBox" Grid.Row="6" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=EpsSlider, Path=Value}"/>
+            <TextBox x:Name="EpsBox" Grid.Row="6" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=EpsSlider, Path=Value}"  IsReadOnly="True"/>
             <Slider x:Name="EpsSlider" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="0.0001" Maximum="0.01" Value="{Binding Eps}" SmallChange="0.0001" LargeChange="0.001" IsSnapToTickEnabled="True" TickFrequency="0.0001"/>
 
             <Button x:Name="StartButton" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Background="White" BorderThickness="2" BorderBrush="Black" Click="StartButton_Click" MouseEnter="StartButton_MouseEnter" MouseLeave="StartButton_MouseLeave">
                 <Viewbox x:Name="StartButtonContainer" Grid.Row="3" Margin="7,7,7,7">
-                    <Image x:Name ="StartButtonImage"  Source="Resources\StartButtonIco.ico" MouseEnter="ico_MouseEnter" MouseLeave="Ico_MouseLeave" MouseDown="Ico_MouseDown"/>
+                    <Image x:Name ="StartButtonImage"  Source="Resources\StartButtonIco.ico" MouseEnter="ico_MouseEnter" MouseLeave="Ico_MouseLeave" MouseDown="Ico_MouseDown" RenderTransformOrigin=".5,.5">
+                    </Image>
                 </Viewbox>
             </Button>
 

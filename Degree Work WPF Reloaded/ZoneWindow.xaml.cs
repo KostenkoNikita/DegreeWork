@@ -177,7 +177,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
             if (w.f is Hydrodynamics_Sources.Conformal_Maps.Diffusor)
@@ -195,7 +195,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
         }
@@ -217,7 +217,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
             if (w.f is Hydrodynamics_Sources.Conformal_Maps.Diffusor)
@@ -241,7 +241,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
         }

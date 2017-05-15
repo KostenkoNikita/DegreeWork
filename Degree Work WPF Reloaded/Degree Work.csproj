@@ -278,6 +278,9 @@
   <ItemGroup>
     <Resource Include="Resources\StartButtonIco.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\clockIco.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

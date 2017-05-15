@@ -30,6 +30,9 @@ namespace Degree_Work
         internal static ImageSource saveIcoSelectedSource;
         internal static ImageSource OKIcoSource;
 
+        internal static ImageSource StartIcoSource;
+        internal static ImageSource ClockIcoSource;
+
         internal static ImageSource HalfPlaneImageSource;
         internal static ImageSource ZoneImageSource;
         internal static ImageSource CircleImageSource;
@@ -48,6 +51,9 @@ namespace Degree_Work
             saveIcoSource = new BitmapImage(new Uri(@"Resources/saveIco3.png", UriKind.Relative));
             saveIcoSelectedSource = new BitmapImage(new Uri(@"Resources/saveIco3Selected.png", UriKind.Relative));
             OKIcoSource = new BitmapImage(new Uri(@"Resources/okayIcon.png", UriKind.Relative));
+
+            StartIcoSource = new BitmapImage(new Uri(@"Resources/StartButtonIco.ico", UriKind.Relative));
+            ClockIcoSource = new BitmapImage(new Uri(@"Resources/clockIco.gif", UriKind.Relative));
 
             HalfPlaneImageSource = new BitmapImage(new Uri(@"Resources/HalfPlaneImage.png", UriKind.Relative));
             ZoneImageSource = new BitmapImage(new Uri(@"Resources/ZoneImage.png", UriKind.Relative));

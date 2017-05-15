@@ -122,7 +122,7 @@ namespace Degree_Work
             Mouse.OverrideCursor = Cursors.Wait;
             ChangeParamsConfiguration();
             s.Rebuild();
-            Mouse.OverrideCursor = null;
+            Mouse.OverrideCursor = Cursors.Arrow;
             PlotRefresh();
         }
 
@@ -250,7 +250,7 @@ namespace Degree_Work
             }
             finally
             {
-                Mouse.OverrideCursor = null;
+                Mouse.OverrideCursor = Cursors.Arrow;
             }
         }
         private void paramBox2_TextChanged(object sender, TextChangedEventArgs e)
@@ -270,7 +270,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
         }
@@ -291,7 +291,7 @@ namespace Degree_Work
                 }
                 finally
                 {
-                    Mouse.OverrideCursor = null;
+                    Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
         }
@@ -364,7 +364,7 @@ namespace Degree_Work
         {
             Mouse.OverrideCursor = Cursors.Wait;
             s?.ChangeParams(Settings.PlotGeomParams.XMin, Settings.PlotGeomParams.XMax, Settings.PlotGeomParams.YMax, Settings.PlotGeomParams.MRKh, Settings.PlotGeomParams.hVertical);
-            Mouse.OverrideCursor = null;
+            Mouse.OverrideCursor = Cursors.Arrow;
             PlotRefresh();
         }
 
@@ -372,7 +372,7 @@ namespace Degree_Work
         {
             Mouse.OverrideCursor = Cursors.Wait;
             viewModel.ReassignVisualParams();
-            Mouse.OverrideCursor = null;
+            Mouse.OverrideCursor = Cursors.Arrow;
             PlotRefresh();
         }
     }
