@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -146,7 +145,6 @@ namespace Degree_Work
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            if (LiebmannProcess.ThreadState == ThreadState.Stopped) { return; }
             Mouse.OverrideCursor = Cursors.Wait;
             SetGradientStopsForBuild();
             while (LiebmannProcess.ThreadState == ThreadState.Running)
@@ -177,6 +175,7 @@ namespace Degree_Work
         {
             double x;
             double y;
+            Dispatcher.Invoke(() => { StartButtonImage.Source = Settings.ClockIcoSource; });
             intermediateMap = new double[N, M];
             double Vx = Math.Sin(AngleRadians);
             double Vy = Math.Cos(AngleRadians);
@@ -219,6 +218,7 @@ namespace Degree_Work
                     }
                 }
             } while (dmax > Eps);
+            Dispatcher.Invoke(() => { StartButtonImage.Source = Settings.StartIcoSource; });
         }
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
