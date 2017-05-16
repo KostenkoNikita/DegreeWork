@@ -13,18 +13,33 @@ namespace Degree_Work.Mathematical_Sources.Functions
     /// </summary>
     public static class SpecialFunctions
     {
+        /// <summary>
+        /// Логарифм гамма-функции
+        /// </summary>
+        /// <param name="x">Число с плавающей точкой</param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double LnG(double x)
         {
             return RB(x);
         }
 
+        /// <summary>
+        /// Логарифм гамма-функции
+        /// </summary>
+        /// <param name="z">Комплексное число</param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex LnG(Complex z)
         {
             return SB(z);
         }
 
+        /// <summary>
+        /// Гамма-функция
+        /// </summary>
+        /// <param name="x">Число с плавающей точкой</param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Gamma(double x)
         {
@@ -43,6 +58,11 @@ namespace Degree_Work.Mathematical_Sources.Functions
             return double.NaN;
         }
 
+        /// <summary>
+        /// Гамма-функция
+        /// </summary>
+        /// <param name="z">Комплексное число</param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex Gamma(Complex z)
         {
@@ -111,7 +131,15 @@ namespace Degree_Work.Mathematical_Sources.Functions
             else if (z.Im == 0 && w.Im != 0) { return Gamma(z.Re) * Gamma(w) / (Gamma(z + w)); }
             else { return Gamma(z) * Gamma(w.Re) / (Gamma(z + w)); }
         }
-        
+
+        /// <summary>
+        /// Гипергеометрическая функция Гаусса
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="c"></param>
+        /// <param name="z"></param>
+        /// <returns></returns>
         public static Complex Hypergeometric2F1(double a, double b, double c, Complex z)
         {
             //с!=0,-1,-2,...
@@ -144,6 +172,8 @@ namespace Degree_Work.Mathematical_Sources.Functions
                 }
             }
         }
+
+        #region Additions
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static double SinPi(double x)
@@ -332,6 +362,8 @@ namespace Degree_Work.Mathematical_Sources.Functions
                 return double.PositiveInfinity;
             }
         }
+
+        #endregion
 
         #region Approximations
 

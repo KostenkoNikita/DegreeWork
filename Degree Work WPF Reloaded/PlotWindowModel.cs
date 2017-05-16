@@ -331,14 +331,10 @@ namespace Degree_Work
         /// <param name="domain">Вид канонической области</param>
         public void RedrawArrow(Complex start, Complex end, Complex V, CanonicalDomain domain)
         {
-            if (IsMouseClickedInPolygon)
+            if (IsMouseClickedInPolygon || Complex.IsNaN(V))
             {
                 DeleteArrow();
                 IsMouseClickedInPolygon = false;
-            }
-            else if (Complex.IsNaN(V))
-            {
-                DeleteArrow(); return;
             }
             else
             {
@@ -350,6 +346,48 @@ namespace Degree_Work
                 arrowText.TextPosition = (start + (V.Im>=0? -1: 0.2)*(domain == CanonicalDomain.HalfPlane ? 0.6 : 1.2) * Complex.I).ComplexToDataPoint();
             }
         }
+
+        #region Костыль
+
+        /// <summary>
+        /// Перемещение созданного вектора (и его создание, если таковой отсутствует) для области окружности
+        /// </summary>
+        /// <param name="start">Начало вектора</param>
+        /// <param name="end">Конец вектора</param>
+        /// <param name="V">Значение скорости</param>
+        /// <param name="domain">Вид канонической области</param>
+        /// <param name="w">Комплексный потенциал</param>
+        public void RedrawArrow(Complex start, Complex end, Complex V, CanonicalDomain domain, Hydrodynamics_Sources.Potential w)
+        {
+            if (IsMouseClickedInPolygon || Complex.IsNaN(V))
+            {
+                if (start.Abs<w.R || Complex.IsNaN(V))
+                {
+                    DeleteArrow();
+                    IsMouseClickedInPolygon = false;
+                }
+                else
+                {
+                    if (!HasArrow()) { CreateArrow(); }
+                    arrow.StartPoint = start.ComplexToDataPoint();
+                    arrow.EndPoint = end.ComplexToDataPoint();
+                    arrowText.Text = $"X: {start.Re.ToString(Settings.Format)}; Y: {start.Im.ToString(Settings.Format)};".Replace(',', '.') +
+                        $"\nVx: {V.Re.ToString(Settings.Format)}; Vy: {V.Im.ToString(Settings.Format)};".Replace(',', '.');
+                    arrowText.TextPosition = (start + (V.Im >= 0 ? -1 : 0.2) * 1.2 * Complex.I).ComplexToDataPoint();
+                }
+            }
+            else
+            {
+                if (!HasArrow()) { CreateArrow(); }
+                arrow.StartPoint = start.ComplexToDataPoint();
+                arrow.EndPoint = end.ComplexToDataPoint();
+                arrowText.Text = $"X: {start.Re.ToString(Settings.Format)}; Y: {start.Im.ToString(Settings.Format)};".Replace(',', '.') +
+                    $"\nVx: {V.Re.ToString(Settings.Format)}; Vy: {V.Im.ToString(Settings.Format)};".Replace(',', '.');
+                arrowText.TextPosition = (start + (V.Im >= 0 ? -1 : 0.2) * 1.2 * Complex.I).ComplexToDataPoint();
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Сохранение результирующего графика в формат JPG
@@ -535,7 +573,10 @@ namespace Degree_Work
                             PlotModel.Annotations.Add(BorderPolyBottom);
                             break;
                     }
-                    BorderBottom.MouseDown += (sender, e) => { IsMouseClickedInPolygon = true; };
+                    BorderBottom.MouseDown += (sender, e) =>
+                    {
+                        IsMouseClickedInPolygon = true;
+                    };
                     break;
                 case CanonicalDomain.Zone:
                     switch (s.W.f.ToString())

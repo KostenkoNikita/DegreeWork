@@ -67,7 +67,7 @@ namespace Degree_Work
 #if !HELP_FOR_GROUP_LEADER
             if (e.ChangedButton.ToString() == "Left" && w.f is Hydrodynamics_Sources.Conformal_Maps.IdentityTransform)
             {
-                viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.Abs, V, CanonicalDomain.Circular);
+                viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.Abs, V, CanonicalDomain.Circular,w);
                 PlotRefresh();
             }
 #endif

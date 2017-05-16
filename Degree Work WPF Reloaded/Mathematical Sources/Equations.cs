@@ -11,7 +11,12 @@ namespace Degree_Work.Mathematical_Sources
 {
     public static class Equations
     {
-        //уравнение вида f(z)=Z относительно z
+        /// <summary>
+        /// Решение уравнения вида f(z)=Z. Производная функции находится по симметричным формулам с использованием правила Рунге. Начальные приближение задается случайным образом.
+        /// </summary>
+        /// <param name="f">Обобщенный делегат Func, принимающий и возвращающий комплексное число, представляет собой левую часть уравнения</param>
+        /// <param name="Z">Комплексное число, правая часть уравнения</param>
+        /// <returns></returns>
         public static Complex.Complex Solve(Func<Complex.Complex, Complex.Complex> f, Complex.Complex Z)
         {
             Complex.Complex initial_approximation = Z, z, tmp;
@@ -41,6 +46,14 @@ namespace Degree_Work.Mathematical_Sources
             }
             return Complex.Complex.NaN;
         }
+
+        /// <summary>
+        /// Решение уравнения вида f(z)=Z. Начальные приближение задается случайным образом.
+        /// </summary>
+        /// <param name="f">Обобщенный делегат Func, принимающий и возвращающий комплексное число, представляет собой левую часть уравнения</param>
+        /// <param name="df">Производная функции левой части</param>
+        /// <param name="Z">Комплексное число, правая часть уравнения</param>
+        /// <returns></returns>
         public static Complex.Complex Solve(Func<Complex.Complex, Complex.Complex> f, Func<Complex.Complex, Complex.Complex> df, Complex.Complex Z)
         {
             Complex.Complex initial_approximation = Z, z, tmp;
@@ -70,6 +83,12 @@ namespace Degree_Work.Mathematical_Sources
             }
             return Complex.Complex.NaN;
         }
+
+        /// <summary>
+        /// Решение уравнения вида f(z)=0. Производная функции находится по симметричным формулам с использованием правила Рунге. Начальные приближение задается случайным образом.
+        /// </summary>
+        /// <param name="f">Обобщенный делегат Func, принимающий и возвращающий комплексное число, представляет собой левую часть уравнения</param>
+        /// <returns></returns>
         public static Complex.Complex Solve(Func<Complex.Complex, Complex.Complex> f)
         {
             Complex.Complex initial_approximation = 0, z, tmp;
@@ -99,6 +118,13 @@ namespace Degree_Work.Mathematical_Sources
             }
             return Complex.Complex.NaN;
         }
+
+        /// <summary>
+        /// Решение уравнения вида f(z)=0. Начальные приближение задается случайным образом.
+        /// </summary>
+        /// <param name="f">Обобщенный делегат Func, принимающий и возвращающий комплексное число, представляет собой левую часть уравнения</param>
+        /// <param name="df">Производная функции левой части</param>
+        /// <returns></returns>
         public static Complex.Complex Solve(Func<Complex.Complex, Complex.Complex> f, Func<Complex.Complex, Complex.Complex> df)
         {
             Complex.Complex initial_approximation = 0, z, tmp;
@@ -128,7 +154,12 @@ namespace Degree_Work.Mathematical_Sources
             }
             return Complex.Complex.NaN;
         }
-        //уравнение вида f(x)=0
+
+        /// <summary>
+        /// Решение уравнения вида f(х)=0. Производная функции находится по симметричным формулам с использованием правила Рунге. Начальные приближение задается случайным образом.
+        /// </summary>
+        /// <param name="f">Обобщенный делегат Func, принимающий и возвращающий число с плавающей точкой, представляет собой левую часть уравнения</param>
+        /// <returns></returns>
         public static double Solve(Func<double, double> f)
         {
             double initial_approximation = 0, x, tmp;
@@ -157,6 +188,8 @@ namespace Degree_Work.Mathematical_Sources
             }
             return double.NaN;
         }
+
+
         public static double Solve(Func<double, double> f, Func<double, double> dfdx)
         {
             double initial_approximation = 0, x, tmp;
@@ -184,6 +217,8 @@ namespace Degree_Work.Mathematical_Sources
             }
             return double.NaN;
         }
+
+
         public static double NSolve(Func<double, double> f, double initial_approximation)
         {
             double x = initial_approximation, tmp = x;
@@ -196,6 +231,8 @@ namespace Degree_Work.Mathematical_Sources
             }
             throw new ApplicationException("Can't solve an equation f(x)=0. Try to use another initial approximation.");
         }
+
+
         public static double NSolve(Func<double, double> f, Func<double, double> dfdx, double initial_approximation)
         {
             double x = initial_approximation, tmp = x;
@@ -207,6 +244,8 @@ namespace Degree_Work.Mathematical_Sources
             }
             throw new ApplicationException("Can't solve an equation f(x)=0. Try to use another initial approximation.");
         }
+
+
         public static bool TryNSolve(Func<double, double> f, double initial_approximation, out double x)
         {
             x = initial_approximation; double tmp = x;
@@ -219,6 +258,8 @@ namespace Degree_Work.Mathematical_Sources
             }
             return false;
         }
+
+
         public static bool TryNSolve(Func<double, double> f, Func<double, double> dfdx, double initial_approximation, out double x)
         {
             x = initial_approximation; double tmp = x;
@@ -230,10 +271,24 @@ namespace Degree_Work.Mathematical_Sources
             }
             return false;
         }
+
+        /// <summary>
+        /// Первая производная функции комплексного аргумента
+        /// </summary>
+        /// <param name="f">Функция комплексного аргумента</param>
+        /// <param name="z">Комплексный аргумент</param>
+        /// <returns></returns>
         private static Complex.Complex FirstDerivative(Func<Complex.Complex, Complex.Complex> f, Complex.Complex z)
         {
             return (f(z + Settings.Eps) - f(z - Settings.Eps)) / (2 * Settings.Eps) + ((f(z + Settings.Eps) - f(z - Settings.Eps)) / (2 * Settings.Eps) - (f(z + Settings.Eps) - f(z - Settings.Eps)) / (2 * 2 * Settings.Eps)) / 3;
         }
+
+        /// <summary>
+        /// Первая производная функции действительного аргумента
+        /// </summary>
+        /// <param name="f">Функция действительного аргумента</param>
+        /// <param name="z">Действительный аргумент</param>
+        /// <returns></returns>
         private static double FirstDerivative(Func<double, double> f, double x)
         {
             return (f(x + Settings.Eps) - f(x - Settings.Eps)) / (2 * Settings.Eps) + ((f(x + Settings.Eps) - f(x - Settings.Eps)) / (2 * Settings.Eps) - (f(x + Settings.Eps) - f(x - Settings.Eps)) / (2 * 2 * Settings.Eps)) / 3;
