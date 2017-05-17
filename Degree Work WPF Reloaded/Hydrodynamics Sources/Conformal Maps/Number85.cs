@@ -38,7 +38,7 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint dzeta(DataPoint Z)
         {
-            return dzeta(Z.DataPointToComplex()).ComplexToDataPoint();
+            return dzeta((Degree_Work.Mathematical_Sources.Complex.Complex)Z);
         }
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -50,7 +50,7 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint dz_ddzeta(DataPoint dzeta)
         {
-            return dz_ddzeta(dzeta.DataPointToComplex()).ComplexToDataPoint();
+            return dz_ddzeta((Degree_Work.Mathematical_Sources.Complex.Complex)dzeta);
         }
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -62,7 +62,7 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint z(DataPoint dzeta)
         {
-            return z(dzeta.DataPointToComplex()).ComplexToDataPoint();
+            return z((Degree_Work.Mathematical_Sources.Complex.Complex)dzeta);
         }
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]

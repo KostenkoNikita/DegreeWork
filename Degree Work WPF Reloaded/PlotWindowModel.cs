@@ -117,7 +117,7 @@ namespace Degree_Work
         /// <returns></returns>
         public Complex GetComplexCursorPositionOnPlot(ScreenPoint pos)
         {
-            return OxyPlot.Axes.Axis.InverseTransform(pos, X_Axis, Y_Axis).DataPointToComplex();
+            return (Degree_Work.Mathematical_Sources.Complex.Complex)OxyPlot.Axes.Axis.InverseTransform(pos, X_Axis, Y_Axis);
         }
 
         /// <summary>
@@ -339,11 +339,11 @@ namespace Degree_Work
             else
             {
                 if (!HasArrow()) { CreateArrow(); }
-                arrow.StartPoint = start.ComplexToDataPoint();
-                arrow.EndPoint = end.ComplexToDataPoint();
+                arrow.StartPoint = start;
+                arrow.EndPoint = end;
                 arrowText.Text = $"X: {start.Re.ToString(Settings.Format)}; Y: {start.Im.ToString(Settings.Format)};".Replace(',', '.') +
                     $"\nVx: {V.Re.ToString(Settings.Format)}; Vy: {V.Im.ToString(Settings.Format)};".Replace(',', '.');
-                arrowText.TextPosition = (start + (V.Im>=0? -1: 0.2)*(domain == CanonicalDomain.HalfPlane ? 0.6 : 1.2) * Complex.I).ComplexToDataPoint();
+                arrowText.TextPosition = (start + (V.Im>=0? -1: 0.2)*(domain == CanonicalDomain.HalfPlane ? 0.6 : 1.2) * Complex.I);
             }
         }
 
@@ -369,21 +369,21 @@ namespace Degree_Work
                 else
                 {
                     if (!HasArrow()) { CreateArrow(); }
-                    arrow.StartPoint = start.ComplexToDataPoint();
-                    arrow.EndPoint = end.ComplexToDataPoint();
+                    arrow.StartPoint = start;
+                    arrow.EndPoint = end;
                     arrowText.Text = $"X: {start.Re.ToString(Settings.Format)}; Y: {start.Im.ToString(Settings.Format)};".Replace(',', '.') +
                         $"\nVx: {V.Re.ToString(Settings.Format)}; Vy: {V.Im.ToString(Settings.Format)};".Replace(',', '.');
-                    arrowText.TextPosition = (start + (V.Im >= 0 ? -1 : 0.2) * 1.2 * Complex.I).ComplexToDataPoint();
+                    arrowText.TextPosition = (start + (V.Im >= 0 ? -1 : 0.2) * 1.2 * Complex.I);
                 }
             }
             else
             {
                 if (!HasArrow()) { CreateArrow(); }
-                arrow.StartPoint = start.ComplexToDataPoint();
-                arrow.EndPoint = end.ComplexToDataPoint();
+                arrow.StartPoint = start;
+                arrow.EndPoint = end;
                 arrowText.Text = $"X: {start.Re.ToString(Settings.Format)}; Y: {start.Im.ToString(Settings.Format)};".Replace(',', '.') +
                     $"\nVx: {V.Re.ToString(Settings.Format)}; Vy: {V.Im.ToString(Settings.Format)};".Replace(',', '.');
-                arrowText.TextPosition = (start + (V.Im >= 0 ? -1 : 0.2) * 1.2 * Complex.I).ComplexToDataPoint();
+                arrowText.TextPosition = (start + (V.Im >= 0 ? -1 : 0.2) * 1.2 * Complex.I);
             }
         }
 
@@ -702,7 +702,7 @@ namespace Degree_Work
                             BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
                             for (double theta = 0; theta < 2*Math.PI; theta += 0.001)
                             {
-                                BorderPolyBottom.Points.Add(s.W.f.z(s.W.R * Exp(Complex.I * theta)).ComplexToDataPoint());
+                                BorderPolyBottom.Points.Add(s.W.f.z(s.W.R * Exp(Complex.I * theta)));
                             }
                             BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
                             BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;

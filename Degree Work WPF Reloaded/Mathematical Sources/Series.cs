@@ -1,15 +1,17 @@
-﻿#pragma warning disable
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace Degree_Work.Mathematical_Sources
 {
+    /// <summary>
+    /// Статический класс, предоставляющий методы для работы с последовательностями чисел
+    /// </summary>
     public static class Series
     {
+        /// <summary>
+        /// Число Бернулли заданного номера
+        /// </summary>
+        /// <param name="n">Номер требуемого числа Бернулли</param>
+        /// <returns></returns>
         public static double BernulliNumber(int n)
         {
             double[] B = new double[n + 1]; B[0] = 1;
@@ -25,6 +27,12 @@ namespace Degree_Work.Mathematical_Sources
             }
             return B[B.Length - 1];
         }
+
+        /// <summary>
+        /// Число Фибоначчи заданого номера
+        /// </summary>
+        /// <param name="n">Номер требуемого числа Фибоначчи</param>
+        /// <returns></returns>
         public static int FibonacciNumber(int n)
         {
             bool isNegative = false;
@@ -41,6 +49,12 @@ namespace Degree_Work.Mathematical_Sources
                 return isNegative ? f[n] * (int)Math.Pow(-1, n + 1) : f[n];
             }
         }
+
+        /// <summary>
+        /// Последовательность чисек Фибоначчи
+        /// </summary>
+        /// <param name="n">Верхний индекс последовательности</param>
+        /// <returns>Массив целочисленных значений</returns>
         public static int[] FibonacciNumbers(int n)
         {
             if (n == 0) { return new int[1] { 0 }; }
@@ -56,6 +70,13 @@ namespace Degree_Work.Mathematical_Sources
                 return f;
             }
         }
+
+        /// <summary>
+        /// Биноминальный коэффициент
+        /// </summary>
+        /// <param name="k">Размер подмножества</param>
+        /// <param name="n">Количество элементов в множестве</param>
+        /// <returns></returns>
         public static double BinomialCoefficient(int k, int n)
         {
             if (n >= k)
@@ -64,6 +85,12 @@ namespace Degree_Work.Mathematical_Sources
             }
             else { return 0; }
         }
+
+        /// <summary>
+        /// Факториал числа
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
         public static double Factorial(int n)
         {
             if (n > 0)
@@ -75,6 +102,12 @@ namespace Degree_Work.Mathematical_Sources
             else if (n == 0) { return 1; }
             else { throw new ArgumentException(); }
         }
+
+        /// <summary>
+        /// Двойной факториал числа
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
         public static double DoubleFactorial(int n)
         {
             if (n == 0) { return 1; }

@@ -684,6 +684,12 @@ namespace Degree_Work.Mathematical_Sources.Complex
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator OxyPlot.DataPoint(Complex z)
+        {
+            return new OxyPlot.DataPoint(z.Re, z.Im);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator SByte(Complex c)
         {
             return (sbyte)c.Re;
@@ -765,6 +771,12 @@ namespace Degree_Work.Mathematical_Sources.Complex
         public static explicit operator Tuple<double, double>(Complex c)
         {
             return new Tuple<double, double>(c.Re, c.Im);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static explicit operator Complex(OxyPlot.DataPoint p)
+        {
+            return new Complex(p.X, p.Y);
         }
 
         #endregion

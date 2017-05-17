@@ -14,6 +14,8 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
     {
         public Complex this[Complex dzeta] => z(dzeta);
 
+        public DataPoint this[DataPoint dzeta] => z(dzeta);
+
         double _h;
 
         double _eps;
@@ -27,8 +29,6 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
         public double h { get => _h; set => _h = value; }
 
         public double eps { get => _eps; set => _eps = value; }
-
-        public DataPoint this[DataPoint dzeta] => z(dzeta);
 
         public JoukowskiAirfoil(double h, double eps)
         {
@@ -45,7 +45,7 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint dzeta(DataPoint Z)
         {
-            return dzeta(Z.DataPointToComplex()).ComplexToDataPoint();
+            return dzeta((Degree_Work.Mathematical_Sources.Complex.Complex)Z);
         }
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -57,7 +57,7 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint dz_ddzeta(DataPoint dzeta)
         {
-            return dz_ddzeta(dzeta.DataPointToComplex()).ComplexToDataPoint();
+            return dz_ddzeta((Degree_Work.Mathematical_Sources.Complex.Complex)dzeta);
         }
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -82,7 +82,7 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint z(DataPoint dzeta)
         {
-            return z(dzeta.DataPointToComplex()).ComplexToDataPoint();
+            return z((Degree_Work.Mathematical_Sources.Complex.Complex)dzeta);
         }
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]

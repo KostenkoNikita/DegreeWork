@@ -44,18 +44,18 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
         public Complex dzeta(Complex Z) => Mathematical_Sources.Equations.Solve(z, dz_ddzeta, Z);
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public DataPoint dzeta(DataPoint Z) => dzeta(Z.DataPointToComplex()).ComplexToDataPoint();
+        public DataPoint dzeta(DataPoint Z) => dzeta((Degree_Work.Mathematical_Sources.Complex.Complex)Z);
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public Complex dz_ddzeta(Complex dzeta) => Pow(1 - 1.0 / (dzeta * dzeta), -1 + a);
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public DataPoint dz_ddzeta(DataPoint dzeta) => dz_ddzeta(dzeta.DataPointToComplex()).ComplexToDataPoint();
+        public DataPoint dz_ddzeta(DataPoint dzeta) => dz_ddzeta((Degree_Work.Mathematical_Sources.Complex.Complex)dzeta);
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public Complex z(Complex dzeta)=> C * (dzeta * Hypergeometric2F1(-0.5, 1 - a, 0.5, 1.0 / (dzeta * dzeta)) + (Complex.I * Sqrt(Math.PI) * Gamma(a) * Math.Tan(a * Math.PI)) / Gamma(-0.5 + a)) + Complex.I * h;
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public DataPoint z(DataPoint dzeta) => z(dzeta.DataPointToComplex()).ComplexToDataPoint();
+        public DataPoint z(DataPoint dzeta) => z((Degree_Work.Mathematical_Sources.Complex.Complex)dzeta);
     }
 }

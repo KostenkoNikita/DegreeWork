@@ -1,14 +1,10 @@
-﻿#pragma warning disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Degree_Work.Mathematical_Sources.Complex;
-using Degree_Work.Mathematical_Sources.Functions;
+﻿using System;
 
 namespace Degree_Work.Mathematical_Sources
 {
+    /// <summary>
+    /// Статический класс, предоставляющий методы для решения нелинейных уравнений
+    /// </summary>
     public static class Equations
     {
         /// <summary>
@@ -189,7 +185,12 @@ namespace Degree_Work.Mathematical_Sources
             return double.NaN;
         }
 
-
+        /// <summary>
+        /// Решение уравнения вида f(х)=0. Начальные приближение задается случайным образом.
+        /// </summary>
+        /// <param name="f">Обобщенный делегат Func, принимающий и возвращающий число с плавающей точкой, представляет собой левую часть уравнения</param>
+        /// <param name="dfdx">Производная функции левой части</param>
+        /// <returns></returns>
         public static double Solve(Func<double, double> f, Func<double, double> dfdx)
         {
             double initial_approximation = 0, x, tmp;
@@ -218,7 +219,12 @@ namespace Degree_Work.Mathematical_Sources
             return double.NaN;
         }
 
-
+        /// <summary>
+        /// Решение уравнения вида f(х)=0. Производная функции находится по симметричным формулам с использованием правила Рунге.
+        /// </summary>
+        /// <param name="f">Обобщенный делегат Func, принимающий и возвращающий число с плавающей точкой, представляет собой левую часть уравнения</param>
+        /// <param name="initial_approximation">Начальное приближение</param>
+        /// <returns></returns>
         public static double NSolve(Func<double, double> f, double initial_approximation)
         {
             double x = initial_approximation, tmp = x;
@@ -232,7 +238,13 @@ namespace Degree_Work.Mathematical_Sources
             throw new ApplicationException("Can't solve an equation f(x)=0. Try to use another initial approximation.");
         }
 
-
+        /// <summary>
+        /// Решение уравнения вида f(х)=0.
+        /// </summary>
+        /// <param name="f">Обобщенный делегат Func, принимающий и возвращающий число с плавающей точкой, представляет собой левую часть уравнения</param>
+        /// <param name="dfdx">Производная функции левой части</param>
+        /// <param name="initial_approximation">Начальное приближение</param>
+        /// <returns></returns>
         public static double NSolve(Func<double, double> f, Func<double, double> dfdx, double initial_approximation)
         {
             double x = initial_approximation, tmp = x;
@@ -245,7 +257,14 @@ namespace Degree_Work.Mathematical_Sources
             throw new ApplicationException("Can't solve an equation f(x)=0. Try to use another initial approximation.");
         }
 
-
+        /// <summary>
+        /// Решение уравнения вида f(х)=0. Производная функции находится по симметричным формулам с использованием правила Рунге.
+        /// Не генерирует исключения.
+        /// </summary>
+        /// <param name="f">Обобщенный делегат Func, принимающий и возвращающий число с плавающей точкой, представляет собой левую часть уравнения</param>
+        /// <param name="initial_approximation">Начальное приближение</param>
+        /// <param name="x">Корень уравнение, передается из метода по ссылке</param>
+        /// <returns>Успешно ли найден корень</returns>
         public static bool TryNSolve(Func<double, double> f, double initial_approximation, out double x)
         {
             x = initial_approximation; double tmp = x;
@@ -259,7 +278,15 @@ namespace Degree_Work.Mathematical_Sources
             return false;
         }
 
-
+        /// <summary>
+        /// Решение уравнения вида f(х)=0.
+        /// Не генерирует исключения.
+        /// </summary>
+        /// <param name="f">Обобщенный делегат Func, принимающий и возвращающий число с плавающей точкой, представляет собой левую часть уравнения</param>
+        /// <param name="dfdx">Производная функции левой части</param>
+        /// <param name="initial_approximation">Начальное приближение</param>
+        /// <param name="x">Корень уравнение, передается из метода по ссылке</param>
+        /// <returns>Успешно ли найден корень</returns>
         public static bool TryNSolve(Func<double, double> f, Func<double, double> dfdx, double initial_approximation, out double x)
         {
             x = initial_approximation; double tmp = x;
@@ -287,7 +314,7 @@ namespace Degree_Work.Mathematical_Sources
         /// Первая производная функции действительного аргумента
         /// </summary>
         /// <param name="f">Функция действительного аргумента</param>
-        /// <param name="z">Действительный аргумент</param>
+        /// <param name="x">Действительный аргумент</param>
         /// <returns></returns>
         private static double FirstDerivative(Func<double, double> f, double x)
         {

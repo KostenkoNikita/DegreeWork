@@ -233,7 +233,7 @@ namespace Degree_Work.Hydrodynamics_Sources
             DataPoint tmp;
             foreach (DataPoint bp in b)
             {
-                tmp = w.f.z((bp.DataPointToComplex()* angleMult).ComplexToDataPoint());
+                tmp = w.f.z((((Complex)bp)* angleMult));
                 if (tmp.Abs() < 20) { l.Add(tmp); }
             }
             g.DrawCurve(l);
@@ -252,9 +252,9 @@ namespace Degree_Work.Hydrodynamics_Sources
                 MRK_loop(ref x_new, ref y_new);
                 bp.Add(new DataPoint(x_new, y_new));
                 bm.Add(new DataPoint(x_new, -y_new));
-                tmp = w.f.z((bp[bp.Count - 1].DataPointToComplex() * angleMult).ComplexToDataPoint());
+                tmp = w.f.z((((Complex)bp[bp.Count - 1]) * angleMult));
                 if (tmp.Abs() < 20) { lp.Add(tmp); }
-                tmp = w.f.z((bm[bm.Count - 1].DataPointToComplex() * angleMult).ComplexToDataPoint());
+                tmp = w.f.z((((Complex)bm[bm.Count - 1]) * angleMult));
                 if (tmp.Abs() < 20) { lm.Add(tmp); }
             }
             g.DrawCurve(lp);

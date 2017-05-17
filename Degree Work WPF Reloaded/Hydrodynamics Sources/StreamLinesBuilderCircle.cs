@@ -16,10 +16,10 @@ namespace Degree_Work.Hydrodynamics_Sources
         protected Complex RightStagnationPointBase;
         protected List<DataPoint> LeftSpecialStreamLineBase;
         protected List<DataPoint> RightSpecialStreamLineBase;
-        protected DataPoint LeftStagnationPointDP => LeftStagnationPoint.ComplexToDataPoint();
-        protected DataPoint RightStagnationPointDP => LeftStagnationPoint.ComplexToDataPoint();
-        protected DataPoint LeftStagnationPointBaseDP => LeftStagnationPointBase.ComplexToDataPoint();
-        protected DataPoint RightStagnationPointBaseDP => LeftStagnationPointBase.ComplexToDataPoint();
+        protected DataPoint LeftStagnationPointDP => LeftStagnationPoint;
+        protected DataPoint RightStagnationPointDP => LeftStagnationPoint;
+        protected DataPoint LeftStagnationPointBaseDP => LeftStagnationPointBase;
+        protected DataPoint RightStagnationPointBaseDP => LeftStagnationPointBase;
         protected double f(double X, double Y) => w.V_eta(new Complex(X, Y)) / w.V_ksi(new Complex(X, Y));
         double[,] ReflectionMatrix()
         {

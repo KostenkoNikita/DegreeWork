@@ -11,18 +11,11 @@ using static Degree_Work.Mathematical_Sources.Functions.SpecialFunctions;
 
 namespace Degree_Work
 {
+    /// <summary>
+    /// Методы расширения
+    /// </summary>
     static class Extensions
     {
-        /// <summary>
-        /// Перевод комплексного числа в точку
-        /// </summary>
-        /// <param name="c">Комплексное число</param>
-        /// <returns>Тока</returns>
-        public static DataPoint ComplexToDataPoint(this Complex c)
-        {
-            return new DataPoint(c.Re, c.Im);
-        }
-
         /// <summary>
         /// Выполнение операции комплексного сопряжения над точкой как над комплексным числом
         /// </summary>
@@ -42,16 +35,6 @@ namespace Degree_Work
         public static double Abs(this DataPoint p)
         {
             return Math.Sqrt(p.X * p.X + p.Y * p.Y);
-        }
-
-        /// <summary>
-        /// Перевод точки в комплексное число
-        /// </summary>
-        /// <param name="p">Точка</param>
-        /// <returns>Комплексное число</returns>
-        public static Complex DataPointToComplex(this DataPoint p)
-        {
-            return new Complex(p.X, p.Y);
         }
 
         /// <summary>
@@ -91,6 +74,7 @@ namespace Degree_Work
             encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
             bmp.GetBitmap().Save(filename, GetEncoder(System.Drawing.Imaging.ImageFormat.Jpeg), encoderParameters);
         }
+        
         /// <summary>
         /// Получение объекта Bitmap из BitmapSource
         /// </summary>
