@@ -91,7 +91,7 @@
             <Slider x:Name="EpsSlider" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="0.0001" Maximum="0.01" Value="{Binding Eps}" SmallChange="0.0001" LargeChange="0.001" IsSnapToTickEnabled="True" TickFrequency="0.0001"/>
 
             <Button x:Name="StartButton" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Background="White" BorderThickness="2" BorderBrush="Black" Click="StartButton_Click" MouseEnter="StartButton_MouseEnter" MouseLeave="StartButton_MouseLeave">
-                <Viewbox x:Name="StartButtonContainer" Grid.Row="3" Margin="7,7,7,7">
+                <Viewbox x:Name="StartButtonContainer" Grid.Row="3" Margin="20,20,20,20">
                     <Image x:Name ="StartButtonImage"  Source="Resources\StartButtonIco.ico" MouseEnter="ico_MouseEnter" MouseLeave="Ico_MouseLeave" MouseDown="Ico_MouseDown" RenderTransformOrigin=".5,.5">
                     </Image>
                 </Viewbox>

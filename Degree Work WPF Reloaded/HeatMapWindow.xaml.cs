@@ -23,6 +23,8 @@ namespace Degree_Work
 
         Thread LiebmannProcess;
 
+        Thread ClockRotation;
+
         const double XMin = -5;
 
         const double XMax = 5;
@@ -76,8 +78,6 @@ namespace Degree_Work
             arrow.StrokeThickness = 4;
             arrow.Color = Colors.DarkRed;
             plot.Annotations.Add(arrow);
-            LiebmannProcess = new Thread(GenerateHeatMap) { Priority = ThreadPriority.BelowNormal };
-            LiebmannProcess.Start();
             rectangle.Points = new List<DataPoint>()
             {
                     new DataPoint(RWidth/2.0,RHeight/2.0),
@@ -97,7 +97,9 @@ namespace Degree_Work
 
         private void AngleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            LiebmannProcess.Abort();
+            LiebmannProcess?.Abort();
+            ClockRotation?.Abort();
+            StartButtonImage.RenderTransform = new RotateTransform(0);
             SetGradientStopsForReload();
             if (!plot.Annotations.Contains(arrow))
             {
@@ -112,7 +114,9 @@ namespace Degree_Work
 
         private void EpsSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            LiebmannProcess.Abort();
+            LiebmannProcess?.Abort();
+            ClockRotation?.Abort();
+            StartButtonImage.RenderTransform = new RotateTransform(0);
             SetGradientStopsForReload();
             if (!plot.Annotations.Contains(arrow))
             {
@@ -125,7 +129,9 @@ namespace Degree_Work
 
         private void HWSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            LiebmannProcess.Abort();
+            LiebmannProcess?.Abort();
+            ClockRotation?.Abort();
+            StartButtonImage.RenderTransform = new RotateTransform(0);
             SetGradientStopsForReload();
             if (!plot.Annotations.Contains(arrow))
             {
@@ -176,6 +182,29 @@ namespace Degree_Work
             double x;
             double y;
             Dispatcher.Invoke(() => { StartButtonImage.Source = Settings.ClockIcoSource; });
+            ClockRotation = new Thread(()=> 
+            {
+                int angle = 0;
+                Action act = new Action(() => { StartButtonImage.RenderTransform = new RotateTransform(angle); });
+                Thread.Sleep(1000);
+                while (true)
+                {
+                    angle++;
+                    Dispatcher.Invoke(act);
+                    if (angle == 180)
+                    {
+                        Thread.Sleep(150);
+                        angle = 0;
+                        Dispatcher.Invoke(act);
+                        Thread.Sleep(150);
+                    }
+                    else
+                    {
+                        Thread.Sleep(4);
+                    }
+                }
+            });
+            ClockRotation.Start();
             intermediateMap = new double[N, M];
             double Vx = Math.Sin(AngleRadians);
             double Vy = Math.Cos(AngleRadians);
@@ -218,7 +247,8 @@ namespace Degree_Work
                     }
                 }
             } while (dmax > Eps);
-            Dispatcher.Invoke(() => { StartButtonImage.Source = Settings.StartIcoSource; });
+            ClockRotation.Abort();
+            Dispatcher.Invoke(() => { StartButtonImage.RenderTransform = new RotateTransform(0); StartButtonImage.Source = Settings.StartIcoSource; });
         }
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -240,7 +270,7 @@ namespace Degree_Work
                 case "referImage": referContainer.Margin = new Thickness(3, 3, 3, 3); return;
                 case "saveImage": saveContainer.Margin = new Thickness(4, 4, 4, 4); return;
                 case "menuImage": menuContainer.Margin = new Thickness(7, 7, 7, 7); return;
-                case "StartButtonImage": StartButtonContainer.Margin = new Thickness(3,3,3,3); return;
+                case "StartButtonImage": StartButtonContainer.Margin = new Thickness(15,15,15,15); return;
                 case "exitImage": exitImage.Source = Settings.exitIcoSelectedSource; return;
             }
         }
@@ -252,7 +282,7 @@ namespace Degree_Work
                 case "referImage": referContainer.Margin = new Thickness(7, 7, 7, 7); return;
                 case "saveImage": saveContainer.Margin = new Thickness(9, 9, 9, 9); return;
                 case "menuImage": menuContainer.Margin = new Thickness(13, 13, 13, 13); return;
-                case "StartButtonImage": StartButtonContainer.Margin = new Thickness(7,7,7,7); return;
+                case "StartButtonImage": StartButtonContainer.Margin = new Thickness(20,20,20,20); return;
                 case "exitImage": exitImage.Source = Settings.exitIcoSource; return;
             }
         }
@@ -271,12 +301,12 @@ namespace Degree_Work
 
         private void StartButton_MouseEnter(object sender, MouseEventArgs e)
         {
-            StartButtonContainer.Margin = new Thickness(3, 3, 3, 3);
+            StartButtonContainer.Margin = new Thickness(15,15,15,15);
         }
 
         private void StartButton_MouseLeave(object sender, MouseEventArgs e)
         {
-            StartButtonContainer.Margin = new Thickness(7,7,7,7);
+            StartButtonContainer.Margin = new Thickness(20,20,20,20);
         }
     }
 }
