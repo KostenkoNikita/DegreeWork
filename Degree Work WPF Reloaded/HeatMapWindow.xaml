@@ -44,8 +44,8 @@
         <Grid Grid.Column="1">
             <oxy:Plot x:Name="plot" Grid.Row="0">
                 <oxy:Plot.Axes>
-                    <oxy:LinearAxis Key="x" Position="Bottom" Minimum="-5" Maximum="5" AbsoluteMaximum="5" AbsoluteMinimum="-5"/>
-                    <oxy:LinearAxis Key="y" Position="Left" Minimum="-5" Maximum="5" AbsoluteMaximum="5" AbsoluteMinimum="-5" />
+                    <oxy:LinearAxis Key="x" Position="Bottom" Minimum="-5" Maximum="5" AbsoluteMaximum="5" AbsoluteMinimum="-5" Title="X"/>
+                    <oxy:LinearAxis Key="y" Position="Left" Minimum="-5" Maximum="5" AbsoluteMaximum="5" AbsoluteMinimum="-5" Title="Y"/>
                     <oxy:LinearColorAxis x:Name="linearColorAxis" Key="z" Position="None"  LowColor="LightCyan" HighColor="LightCyan" PaletteSize="100">
                     </oxy:LinearColorAxis>
                 </oxy:Plot.Axes>
@@ -59,15 +59,16 @@
         </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.1*"></RowDefinition>
-                <RowDefinition Height="0.1*"></RowDefinition>
-                <RowDefinition Height="0.1*"></RowDefinition>
-                <RowDefinition Height="0.1*"></RowDefinition>
-                <RowDefinition Height="0.1*"></RowDefinition>
-                <RowDefinition Height="0.1*"></RowDefinition>
-                <RowDefinition Height="0.1*"></RowDefinition>
-                <RowDefinition Height="0.1*"></RowDefinition>
-                <RowDefinition Height="0.2*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.4*"></ColumnDefinition>
@@ -96,13 +97,13 @@
                     </Image>
                 </Viewbox>
             </Button>
-
+            <ProgressBar x:Name="LiebmannBar" Grid.Row="9" Grid.ColumnSpan="2" Minimum="0" Value="0" Background="White"/>
             <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" />
             <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2" />
             <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="2" />
             <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="6" Grid.ColumnSpan="2" Grid.RowSpan="2" />
             <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="8" Grid.ColumnSpan="2" Grid.RowSpan="1" />
-
+            <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="9" Grid.ColumnSpan="2" Grid.RowSpan="1" />
         </Grid>
         <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="0" Grid.Column="1"/>
     </Grid>

@@ -657,23 +657,12 @@ namespace Degree_Work.Mathematical_Sources.Complex
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator Complex(string s)
         {
-            try
-            {
                 return Parse(s);
-            }
-            catch
-            {
-                throw new FormatException();
-            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator Complex(double[] dArray)
         {
-            if (dArray.Length != 2)
-            {
-                throw new ArgumentException();
-            }
             return new Complex(dArray[0], dArray[1]);
         }
 

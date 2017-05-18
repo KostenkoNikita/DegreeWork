@@ -40,12 +40,12 @@ namespace Degree_Work
         /// <summary>
         /// Количество узлов по координате Х
         /// </summary>
-        const int N = 301;
+        const int N = 501;
 
         /// <summary>
         /// Количество узлов по координате У
         /// </summary>
-        const int M = 301;
+        const int M = 501;
 
         const double dx = (XMax - XMin) / (N - 1);
 
@@ -100,6 +100,7 @@ namespace Degree_Work
             LiebmannProcess?.Abort();
             ClockRotation?.Abort();
             StartButtonImage.RenderTransform = new RotateTransform(0);
+            LiebmannBar.Value = 0;
             SetGradientStopsForReload();
             if (!plot.Annotations.Contains(arrow))
             {
@@ -117,6 +118,9 @@ namespace Degree_Work
             LiebmannProcess?.Abort();
             ClockRotation?.Abort();
             StartButtonImage.RenderTransform = new RotateTransform(0);
+            LiebmannBar.Value = 0;
+            LiebmannBar.Maximum = 1.0 / Eps;
+            StartButtonImage.RenderTransform = new RotateTransform(0);
             SetGradientStopsForReload();
             if (!plot.Annotations.Contains(arrow))
             {
@@ -132,6 +136,7 @@ namespace Degree_Work
             LiebmannProcess?.Abort();
             ClockRotation?.Abort();
             StartButtonImage.RenderTransform = new RotateTransform(0);
+            LiebmannBar.Value = 0;
             SetGradientStopsForReload();
             if (!plot.Annotations.Contains(arrow))
             {
@@ -159,6 +164,7 @@ namespace Degree_Work
             plot.Annotations.Remove(arrow);
             heatMapSeries.Data = intermediateMap;
             Mouse.OverrideCursor = Cursors.Arrow;
+            LiebmannBar.Value = 0;
         }
 
         private void SetGradientStopsForBuild()
@@ -177,7 +183,7 @@ namespace Degree_Work
             linearColorAxis.GradientStops.Add(new GradientStop(Colors.White, 1.0));
         }
 
-        private void GenerateHeatMap()
+        unsafe private void GenerateHeatMap()
         {
             double x;
             double y;
@@ -212,20 +218,29 @@ namespace Degree_Work
             int lowerJ = jFromY(-RHeight / 2.0);
             int higherI = iFromX(RWidth / 2.0);
             int higherJ = jFromY(RHeight / 2.0);
-            x = XMin;
-            for (int i = 0; i < N; i++, x += dx)
+
+            fixed (double* d = intermediateMap)
             {
-                y = YMin;
-                for (int j = 0; j < M; j++, y += dy)
+                double* pointer = d;
+                x = XMin;
+                for (int i = 0; i < N; i++, x += dx)
                 {
-                    if (i >= lowerI && i <= higherI && j >= lowerJ && j <= higherJ)
+                    y = YMin;
+                    for (int j = 0; j < M; j++, y += dy)
                     {
-                        continue;
+                        if (i >= lowerI && i <= higherI && j >= lowerJ && j <= higherJ)
+                        {
+                            pointer++;
+                        }
+                        else
+                        {
+                            *pointer++ += Vy * y - Vx * x;
+                        }
                     }
-                    intermediateMap[i, j] = Vy * y - Vx * x;
                 }
             }
             double dmax = 0;
+            Action ProgressBarEvolve = () => { LiebmannBar.Value = 1.0 / dmax; };
             do
             {
                 dmax = 0;
@@ -246,6 +261,7 @@ namespace Degree_Work
                         }
                     }
                 }
+                Dispatcher.Invoke(ProgressBarEvolve);
             } while (dmax > Eps);
             ClockRotation.Abort();
             Dispatcher.Invoke(() => { StartButtonImage.RenderTransform = new RotateTransform(0); StartButtonImage.Source = Settings.StartIcoSource; });

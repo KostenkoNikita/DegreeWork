@@ -168,7 +168,7 @@ namespace Degree_Work
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(1));
-                    if (tmp > 0 && tmp<180) { (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedRays).l = tmp; s.Rebuild(); PlotRefresh(); }
+                    if (tmp > 0) { (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedRays).l = tmp; s.Rebuild(); PlotRefresh(); }
                     else { throw new FormatException(); }
                 }
                 catch
@@ -208,7 +208,7 @@ namespace Degree_Work
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(2));
-                    if (tmp >= 0 && tmp <= 180) { (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedRays).a = tmp / 180.0; s.Rebuild(); PlotRefresh(); }
+                    if (tmp >= 90 && tmp <= 180) { (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedRays).a = tmp / 180.0; s.Rebuild(); PlotRefresh(); }
                     else { throw new FormatException(); }
                 }
                 catch
