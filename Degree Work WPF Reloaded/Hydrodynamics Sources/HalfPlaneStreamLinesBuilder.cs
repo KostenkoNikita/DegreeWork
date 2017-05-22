@@ -1,6 +1,8 @@
 ﻿//#define HELP_FOR_GROUP_LEADER
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
 using OxyPlot;
 
 namespace Degree_Work.Hydrodynamics_Sources
@@ -105,12 +107,13 @@ namespace Degree_Work.Hydrodynamics_Sources
             switch (domain)
             {
                 case CanonicalDomain.HalfPlane:
-                    DataPoint tmp;
-                    foreach (DataPoint bp in b)
-                    {
-                        tmp = w.f.z(bp);
-                        if (tmp.Abs() < 20) { l.Add(tmp); }
-                    }
+                    //DataPoint tmp;
+                    //foreach (DataPoint bp in b)
+                    //{
+                    //    tmp = w.f.z(bp);
+                    //    if (tmp.Abs() < 20) { l.Add(tmp); }
+                    //}
+                    l = b.Select(p => w.f.z(p)).Where(d => d.Abs() < 20).ToList();
                     g.DrawCurve(l);
                     return;
                 case CanonicalDomain.Zone:

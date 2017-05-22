@@ -7,6 +7,7 @@ using static Degree_Work.Mathematical_Sources.Complex.Complex;
 using static Degree_Work.Mathematical_Sources.Functions.ElementaryFunctions;
 using static Degree_Work.Mathematical_Sources.MathematicalConstants;
 using static Degree_Work.Mathematical_Sources.Functions.SpecialFunctions;
+using System.Linq;
 using OxyPlot;
 using Degree_Work.Mathematical_Sources.Complex;
 
@@ -233,7 +234,7 @@ namespace Degree_Work.Hydrodynamics_Sources
             DataPoint tmp;
             foreach (DataPoint bp in b)
             {
-                tmp = w.f.z((((Complex)bp)* angleMult));
+                tmp = w.f.z((((Complex)bp) * angleMult));
                 if (tmp.Abs() < 20) { l.Add(tmp); }
             }
             g.DrawCurve(l);
