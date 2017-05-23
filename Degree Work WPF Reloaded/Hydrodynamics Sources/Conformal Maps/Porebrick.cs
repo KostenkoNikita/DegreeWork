@@ -11,11 +11,23 @@ using Degree_Work.Mathematical_Sources.Complex;
 
 namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
 {
-    class Porebrick : IConformalMapFunction
+    class Porebrick : IConformalMapFunction, IEquatable<Porebrick>
     {
         public DataPoint this[DataPoint dzeta] => z(dzeta);
 
-        public double h { get; set; }
+        double h;
+
+        public double H
+        {
+            get
+            {
+                return h;
+            }
+            set
+            {
+                h = value;
+            }
+        }
 
         public Porebrick(double h)
         {
@@ -26,10 +38,10 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
         public override bool Equals(object obj) => obj.GetType() == typeof(Porebrick) ? Equals((Porebrick)obj) : false;
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        bool Equals(Porebrick other) => h == other.h;
+        public bool Equals(Porebrick other) => H == other.H;
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public override int GetHashCode() => h.GetHashCode() ^ (typeof(Porebrick)).GetHashCode();
+        public override int GetHashCode() => h.GetHashCode();
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public override string ToString() => "Porebrick";
@@ -43,24 +55,24 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public Complex dz_ddzeta(Complex dzeta)
         {
-            Complex tmp = I * h + (h / Math.PI) * (Sqrt(dzeta * dzeta - 1) - Arch(dzeta));
+            Complex tmp = I * H + (H / Math.PI) * (Sqrt(dzeta * dzeta - 1) - Arch(dzeta));
             if (tmp.Im < 0)
             {
-                return -(h / Math.PI) * ((dzeta - 1) / (Sqrt(dzeta * dzeta - 1)));
+                return -(H / Math.PI) * ((dzeta - 1) / (Sqrt(dzeta * dzeta - 1)));
             }
             else
             {
-                return (h / Math.PI) * ((dzeta - 1) / (Sqrt(dzeta * dzeta - 1)));
+                return (H / Math.PI) * ((dzeta - 1) / (Sqrt(dzeta * dzeta - 1)));
             }
         }
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public Complex z(Complex dzeta)
         {
-            Complex tmp = I * h + (h / Math.PI) * (Sqrt(dzeta * dzeta - 1.0) - Arch(dzeta));
+            Complex tmp = I * H + (H / Math.PI) * (Sqrt(dzeta * dzeta - 1.0) - Arch(dzeta));
             if (tmp.Im < 0)
             {
-                return -I * h - (h / Math.PI) * (Sqrt(dzeta * dzeta - 1.0) - Arch(dzeta));
+                return -I * H - (H / Math.PI) * (Sqrt(dzeta * dzeta - 1.0) - Arch(dzeta));
             }
             else
             {
@@ -83,7 +95,7 @@ namespace Degree_Work.Hydrodynamics_Sources.Conformal_Maps
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public DataPoint dzeta(DataPoint Z)
         {
-            return dzeta((Degree_Work.Mathematical_Sources.Complex.Complex)Z);
+            return dzeta((Complex)Z);
         }
     }
 }

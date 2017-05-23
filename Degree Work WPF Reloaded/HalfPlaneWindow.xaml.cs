@@ -254,7 +254,7 @@ namespace Degree_Work
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(1));
-                    if (tmp > 0) { (w.f as Hydrodynamics_Sources.Conformal_Maps.Porebrick).h = tmp; s.Rebuild(); PlotRefresh(); }
+                    if (tmp > 0) { (w.f as Hydrodynamics_Sources.Conformal_Maps.Porebrick).H = tmp; s.Rebuild(); PlotRefresh(); }
                     else { throw new FormatException(); }
                 }
                 catch
@@ -451,7 +451,7 @@ namespace Degree_Work
                 case "IdentityTransform":
                     return CursorPosition.Im < 0;
                 case "Porebrick":
-                    return (CursorPosition.Re <= 0 && CursorPosition.Im<0) || (CursorPosition.Re > 0 && CursorPosition.Im < (w.f as Hydrodynamics_Sources.Conformal_Maps.Porebrick).h);
+                    return (CursorPosition.Re <= 0 && CursorPosition.Im<0) || (CursorPosition.Re > 0 && CursorPosition.Im < (w.f as Hydrodynamics_Sources.Conformal_Maps.Porebrick).H);
                 case "EjectedSegment":
                     return CursorPosition.Im < 0;
                 case "Number81":

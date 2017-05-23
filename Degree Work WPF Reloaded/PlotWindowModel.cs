@@ -455,7 +455,7 @@ namespace Degree_Work
                     switch (s.W.f.ToString())
                     {
                         case "Porebrick":
-                            double h = (s.W.f as Hydrodynamics_Sources.Conformal_Maps.Porebrick).h;
+                            double h = (s.W.f as Hydrodynamics_Sources.Conformal_Maps.Porebrick).H;
                             BorderBottom = new PolygonAnnotation();
                             BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
                             BorderPolyBottom.Points.Add(new DataPoint(-6, 0));
@@ -624,20 +624,20 @@ namespace Degree_Work
                             break;
                         case "Diffusor":
                             Hydrodynamics_Sources.Conformal_Maps.Diffusor db = s.W.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor;
-                            if (db.angleDegrees == 90)
+                            if (db.AngleDegrees == 90)
                             {
                                 BorderBottom = new PolygonAnnotation();
                                 BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
-                                BorderPolyBottom.Points.Add(new DataPoint(-6,-db.h));
-                                BorderPolyBottom.Points.Add(new DataPoint(0, -db.h));
+                                BorderPolyBottom.Points.Add(new DataPoint(-6,-db.H));
+                                BorderPolyBottom.Points.Add(new DataPoint(0, -db.H));
                                 BorderPolyBottom.Points.Add(new DataPoint(0, -5));
                                 BorderPolyBottom.Points.Add(new DataPoint(-6, -5));
                                 BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
                                 BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
                                 BorderTop = new PolygonAnnotation();
                                 BorderPolyTop.Fill = Settings.PlotVisualParams.BorderFillColor;
-                                BorderPolyTop.Points.Add(new DataPoint(-6, db.h));
-                                BorderPolyTop.Points.Add(new DataPoint(0, db.h));
+                                BorderPolyTop.Points.Add(new DataPoint(-6, db.H));
+                                BorderPolyTop.Points.Add(new DataPoint(0, db.H));
                                 BorderPolyTop.Points.Add(new DataPoint(0, 5));
                                 BorderPolyTop.Points.Add(new DataPoint(-6, 5));
                                 BorderPolyTop.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
@@ -647,20 +647,20 @@ namespace Degree_Work
                             }
                             else
                             {
-                                double angle = db.angleDegrees * Math.PI / 180;
+                                double angle = db.AngleDegrees * Math.PI / 180;
                                 BorderBottom = new PolygonAnnotation();
                                 BorderPolyBottom.Fill = Settings.PlotVisualParams.BorderFillColor;
-                                BorderPolyBottom.Points.Add(new DataPoint(-6, -db.h));
-                                BorderPolyBottom.Points.Add(new DataPoint(0, -db.h));
-                                BorderPolyBottom.Points.Add(new DataPoint(20, -db.h - 20* Math.Tan(angle)));
+                                BorderPolyBottom.Points.Add(new DataPoint(-6, -db.H));
+                                BorderPolyBottom.Points.Add(new DataPoint(0, -db.H));
+                                BorderPolyBottom.Points.Add(new DataPoint(20, -db.H - 20* Math.Tan(angle)));
                                 BorderPolyBottom.Points.Add(new DataPoint(-6, -5));
                                 BorderPolyBottom.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
                                 BorderPolyBottom.Stroke = Settings.PlotVisualParams.BorderStrokeColor;
                                 BorderTop = new PolygonAnnotation();
                                 BorderPolyTop.Fill = Settings.PlotVisualParams.BorderFillColor;
-                                BorderPolyTop.Points.Add(new DataPoint(-6, db.h));
-                                BorderPolyTop.Points.Add(new DataPoint(0, db.h));
-                                BorderPolyTop.Points.Add(new DataPoint(20, db.h + 20 * Math.Tan(angle)));
+                                BorderPolyTop.Points.Add(new DataPoint(-6, db.H));
+                                BorderPolyTop.Points.Add(new DataPoint(0, db.H));
+                                BorderPolyTop.Points.Add(new DataPoint(20, db.H + 20 * Math.Tan(angle)));
                                 BorderPolyTop.Points.Add(new DataPoint(-6, 5));
                                 BorderPolyTop.StrokeThickness = Settings.PlotVisualParams.BorderStrokeThickness;
                                 BorderPolyTop.Stroke = Settings.PlotVisualParams.BorderStrokeColor;

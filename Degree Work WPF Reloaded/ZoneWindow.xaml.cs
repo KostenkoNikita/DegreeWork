@@ -186,7 +186,7 @@ namespace Degree_Work
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(1));
-                    if (tmp > 0) { (w.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor).h = tmp; s.Rebuild(); PlotRefresh(); }
+                    if (tmp > 0) { (w.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor).H = tmp; s.Rebuild(); PlotRefresh(); }
                     else { throw new FormatException(); }
                 }
                 catch
@@ -229,7 +229,7 @@ namespace Degree_Work
                     if (tmp >= 0 && tmp <= 90)
                     {
                         Hydrodynamics_Sources.Conformal_Maps.Diffusor d = w.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor;
-                        d.angleDegrees = tmp;
+                        d.AngleDegrees = tmp;
                         s.Rebuild();
                         PlotRefresh();
                     }
@@ -319,8 +319,8 @@ namespace Degree_Work
                 case "EjectedRays":
                     return false;
                 case "Diffusor":
-                    return (CursorPosition.Re <0 && Math.Abs(CursorPosition.Im)>=(w.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor).h) 
-                        || (CursorPosition.Re >0 && Math.Abs(CursorPosition.Im) >= (w.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor).h+ CursorPosition.Re* Math.Tan((w.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor).angleDegrees*Math.PI/180.0));
+                    return (CursorPosition.Re <0 && Math.Abs(CursorPosition.Im)>=(w.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor).H) 
+                        || (CursorPosition.Re >0 && Math.Abs(CursorPosition.Im) >= (w.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor).H+ CursorPosition.Re* Math.Tan((w.f as Hydrodynamics_Sources.Conformal_Maps.Diffusor).AngleDegrees*Math.PI/180.0));
                 default: return true;
             }
         }
