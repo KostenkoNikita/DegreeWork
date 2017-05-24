@@ -122,6 +122,8 @@ namespace Degree_Work
                     w.f = new Hydrodynamics_Sources.Conformal_Maps.Number85(1);
                     s.Rebuild();
                     break;
+                default:
+                    return;
             }
             ChangeParamsConfiguration();
             Mouse.OverrideCursor = Cursors.Arrow;
@@ -238,6 +240,8 @@ namespace Degree_Work
                     paramBox2.IsReadOnly = true;
                     paramBox1.TextChanged += paramBox1_TextChanged;
                     break;
+                default:
+                    return;
             }
         }
 
@@ -255,7 +259,7 @@ namespace Degree_Work
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(1));
                     if (tmp > 0) { (w.f as Hydrodynamics_Sources.Conformal_Maps.Porebrick).H = tmp; s.Rebuild(); PlotRefresh(); }
-                    else { throw new FormatException(); }
+                    else { return; }
                 }
                 catch
                 {
@@ -289,7 +293,16 @@ namespace Degree_Work
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(1));
-                    (w.f as Hydrodynamics_Sources.Conformal_Maps.Number81).h = tmp; s.Rebuild(); PlotRefresh();
+                    if (tmp > 0)
+                    {
+                        (w.f as Hydrodynamics_Sources.Conformal_Maps.Number81).h = tmp;
+                        s.Rebuild();
+                        PlotRefresh();
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
                 catch
                 {
@@ -306,7 +319,16 @@ namespace Degree_Work
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(1));
-                    (w.f as Hydrodynamics_Sources.Conformal_Maps.Number79).h = tmp; s.Rebuild(); PlotRefresh();
+                    if (tmp > 0)
+                    {
+                        (w.f as Hydrodynamics_Sources.Conformal_Maps.Number79).h = tmp;
+                        s.Rebuild();
+                        PlotRefresh();
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
                 catch
                 {
@@ -340,8 +362,17 @@ namespace Degree_Work
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(1));
-                    (w.f as Hydrodynamics_Sources.Conformal_Maps.Number85).H = tmp; s.Rebuild(); PlotRefresh();
-                    paramBox2.Text = (w.f as Hydrodynamics_Sources.Conformal_Maps.Number85).X.ToString("G6",System.Globalization.CultureInfo.InvariantCulture);
+                    if (tmp > 0)
+                    {
+                        (w.f as Hydrodynamics_Sources.Conformal_Maps.Number85).H = tmp;
+                        s.Rebuild();
+                        PlotRefresh();
+                        paramBox2.Text = (w.f as Hydrodynamics_Sources.Conformal_Maps.Number85).X.ToString("G6", System.Globalization.CultureInfo.InvariantCulture);
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
                 catch
                 {
@@ -351,6 +382,10 @@ namespace Degree_Work
                 {
                     Mouse.OverrideCursor = Cursors.Arrow;
                 }
+            }
+            else
+            {
+                throw new InvalidOperationException("undefined conformal map");
             }
         }
 
@@ -362,8 +397,16 @@ namespace Degree_Work
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(2));
-                    if (tmp > 0) { (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedSegment).Y = tmp; s.Rebuild(); PlotRefresh(); }
-                    else { throw new FormatException(); }
+                    if (tmp > 0)
+                    {
+                        (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedSegment).Y = tmp;
+                        s.Rebuild();
+                        PlotRefresh();
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
                 catch
                 {
@@ -374,14 +417,22 @@ namespace Degree_Work
                     Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
-            if (w.f is Hydrodynamics_Sources.Conformal_Maps.Triangle)
+            else if (w.f is Hydrodynamics_Sources.Conformal_Maps.Triangle)
             {
                 try
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(2));
-                    if (tmp > 0) { (w.f as Hydrodynamics_Sources.Conformal_Maps.Triangle).A = tmp; s.Rebuild(); PlotRefresh(); }
-                    else { throw new FormatException(); }
+                    if (tmp > 0)
+                    {
+                        (w.f as Hydrodynamics_Sources.Conformal_Maps.Triangle).A = tmp;
+                        s.Rebuild();
+                        PlotRefresh();
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
                 catch
                 {
@@ -391,6 +442,10 @@ namespace Degree_Work
                 {
                     Mouse.OverrideCursor = Cursors.Arrow;
                 }
+            }
+            else
+            {
+                throw new InvalidOperationException("undefined conformal map");
             }
         }
 

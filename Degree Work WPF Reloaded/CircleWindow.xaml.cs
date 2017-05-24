@@ -112,7 +112,6 @@ namespace Degree_Work
                 case 1: w.f = new Hydrodynamics_Sources.Conformal_Maps.Plate(); break;
                 case 2:
                     w.f = new Hydrodynamics_Sources.Conformal_Maps.JoukowskiAirfoil(0, 0.05);
-                    //чуть позже назначить G
                     break; 
                 
 #else
@@ -234,15 +233,31 @@ namespace Degree_Work
             {
                 Mouse.OverrideCursor = Cursors.Wait;
                 double tmp = Convert.ToDouble(TemporaryString(1));
+                angleSlider.ValueChanged -= angleSlider_ValueChanged;
                 if ((w.f is Hydrodynamics_Sources.Conformal_Maps.IdentityTransform || w.f is Hydrodynamics_Sources.Conformal_Maps.Plate))
                 {
-                    if (tmp >= -90 && tmp <= 90) { w.AlphaDegrees = tmp; s.Rebuild(); PlotRefresh(); }
+                    if (tmp >= -90 && tmp <= 90)
+                    {
+                        w.AlphaDegrees = tmp;
+                        s.Rebuild();
+                        PlotRefresh();
+                        angleSlider.Value = tmp;
+                    }
                 }
                 else if (w.f is Hydrodynamics_Sources.Conformal_Maps.JoukowskiAirfoil)
                 {
-                    if (tmp >= -15 && tmp <= 15) { w.AlphaDegrees = tmp; s.Rebuild(); PlotRefresh(); }
+                    if (tmp >= -15 && tmp <= 15)
+                    {
+                        w.AlphaDegrees = tmp;
+                        s.Rebuild();
+                        PlotRefresh();
+                        angleSlider.Value = tmp;
+                    }
                 }
-                else { throw new FormatException(); }
+                else
+                {
+                    throw new InvalidOperationException("undefined conformal map");
+                }
             }
             catch
             {
@@ -250,6 +265,7 @@ namespace Degree_Work
             }
             finally
             {
+                angleSlider.ValueChanged += angleSlider_ValueChanged;
                 Mouse.OverrideCursor = Cursors.Arrow;
             }
         }
@@ -272,6 +288,10 @@ namespace Degree_Work
                 {
                     Mouse.OverrideCursor = Cursors.Arrow;
                 }
+            }
+            else
+            {
+                throw new InvalidOperationException("undefined conformal map");
             }
         }
         private void paramBox3_TextChanged(object sender, TextChangedEventArgs e)

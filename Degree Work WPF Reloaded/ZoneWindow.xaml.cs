@@ -118,6 +118,7 @@ namespace Degree_Work
                     paramBox1.Visibility = Visibility.Hidden;
                     paramBox2.Text = String.Empty;
                     paramBox2.Visibility = Visibility.Hidden;
+                    paramBox2.IsReadOnly = false;
                     param1.Visibility = Visibility.Hidden;
                     param2.Visibility = Visibility.Hidden;
                     angleSlider.Visibility = Visibility.Hidden;
@@ -127,6 +128,7 @@ namespace Degree_Work
                     paramBox1.Visibility = Visibility.Visible;
                     paramBox2.Text = "90";
                     paramBox2.Visibility = Visibility.Visible;
+                    paramBox2.IsReadOnly = false;
                     param1.Visibility = Visibility.Visible;
                     param2.Visibility = Visibility.Visible;
                     angleSlider.Visibility = Visibility.Visible;
@@ -142,6 +144,7 @@ namespace Degree_Work
                     paramBox1.Visibility = Visibility.Visible;
                     paramBox2.Text = "90";
                     paramBox2.Visibility = Visibility.Visible;
+                    paramBox2.IsReadOnly = true;
                     param1.Visibility = Visibility.Visible;
                     param2.Visibility = Visibility.Visible;
                     angleSlider.Visibility = Visibility.Visible;
@@ -204,11 +207,12 @@ namespace Degree_Work
         {
             if (w.f is Hydrodynamics_Sources.Conformal_Maps.EjectedRays)
             {
+                angleSlider.ValueChanged -= angleSlider_ValueChanged;
                 try
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     double tmp = Convert.ToDouble(TemporaryString(2));
-                    if (tmp >= 90 && tmp <= 180) { (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedRays).a = tmp / 180.0; s.Rebuild(); PlotRefresh(); }
+                    if (tmp >= 90 && tmp <= 180) { (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedRays).a = tmp / 180.0; s.Rebuild(); PlotRefresh(); angleSlider.Value = tmp; }
                     else { throw new FormatException(); }
                 }
                 catch
@@ -217,6 +221,7 @@ namespace Degree_Work
                 }
                 finally
                 {
+                    angleSlider.ValueChanged += angleSlider_ValueChanged;
                     Mouse.OverrideCursor = Cursors.Arrow;
                 }
             }
