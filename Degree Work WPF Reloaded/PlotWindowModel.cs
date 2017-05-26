@@ -199,6 +199,7 @@ namespace Degree_Work
         /// Безопасная в отношении потоков отрисовка кривой
         /// </summary>
         /// <param name="l">Список точек DataPoint, для которых рисуется кривая</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public void DrawCurve(List<DataPoint> l)
         {
             lock (locker)
@@ -222,6 +223,7 @@ namespace Degree_Work
         /// <param name="l">Список точек DataPoint, для которых рисуется кривая</param>
         /// <param name="thickness">Толщина линии</param>
         /// <param name="color">Цвет линии</param>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public void DrawCurve(List<DataPoint> l, double thickness, OxyColor color)
         {
             lock (locker)
@@ -563,8 +565,8 @@ namespace Degree_Work
                             BorderPolyBottom.Points.Add(new DataPoint(6, 0));
                             BorderPolyBottom.Points.Add(new DataPoint(-6+ PolygonLineHalfWidth, 0));
                             BorderPolyBottom.Points.Add(new DataPoint(-6+ PolygonLineHalfWidth, nc.H- PolygonLineHalfWidth));
-                            BorderPolyBottom.Points.Add(new DataPoint(nc.X, nc.H - PolygonLineHalfWidth));
-                            BorderPolyBottom.Points.Add(new DataPoint(nc.X, nc.H + PolygonLineHalfWidth));
+                            BorderPolyBottom.Points.Add(new DataPoint(0, nc.H - PolygonLineHalfWidth));
+                            BorderPolyBottom.Points.Add(new DataPoint(0, nc.H + PolygonLineHalfWidth));
                             BorderPolyBottom.Points.Add(new DataPoint(-6 - PolygonLineHalfWidth, nc.H+ PolygonLineHalfWidth));
                             BorderPolyBottom.Points.Add(new DataPoint(-6 - PolygonLineHalfWidth, -1));
                             BorderPolyBottom.Points.Add(new DataPoint(6, -1));

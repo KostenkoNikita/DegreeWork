@@ -101,18 +101,23 @@ namespace Degree_Work.Hydrodynamics_Sources
             {
                 b.Add(new DataPoint(x, y));
             }
+            //////////////////////////////////////////////////////////////
+            //double x_new, y_new;
+            //x_new = x_min;
+            //y_new = y;
+            //b.Add(new DataPoint(x_new, y_new));
+            //while (x_new < x_max)
+            //{
+            //    MRK_loop(ref x_new, ref y_new);
+            //    b.Add(new DataPoint(x_new, y_new));
+            //}
+            //////////////////////////////////////////////////////////////
         }
         void AsyncTransform(List<DataPoint> b, List<DataPoint> l)
         {
             switch (domain)
             {
                 case CanonicalDomain.HalfPlane:
-                    //DataPoint tmp;
-                    //foreach (DataPoint bp in b)
-                    //{
-                    //    tmp = w.f.z(bp);
-                    //    if (tmp.Abs() < 20) { l.Add(tmp); }
-                    //}
                     l = b.Select(p => w.f.z(p)).Where(d => d.Abs() < 20).ToList();
                     g.DrawCurve(l);
                     return;
@@ -142,6 +147,19 @@ namespace Degree_Work.Hydrodynamics_Sources
                         tmp = w.f.z(b[b.Count - 1]);
                         if (tmp.Abs() < 20) { l.Add(tmp); }
                     }
+                    //////////////////////////////////////////////////////////////
+                    //double x_new, y_new;
+                    //x_new = x_min;
+                    //y_new = y;
+                    //b.Add(new DataPoint(x_new, y_new));
+                    //while (x_new < x_max)
+                    //{
+                    //    MRK_loop(ref x_new, ref y_new);
+                    //    b.Add(new DataPoint(x_new, y_new));
+                    //    tmp = w.f.z(b[b.Count - 1]);
+                    //    if (tmp.Abs() < 20) { l.Add(tmp); }
+                    //}
+                    //////////////////////////////////////////////////////////////
                     g.DrawCurve(l);
                     return;
                 case CanonicalDomain.Zone:

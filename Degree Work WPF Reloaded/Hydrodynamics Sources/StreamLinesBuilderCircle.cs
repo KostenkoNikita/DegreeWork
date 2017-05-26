@@ -20,7 +20,6 @@ namespace Degree_Work.Hydrodynamics_Sources
         protected DataPoint RightStagnationPointDP => LeftStagnationPoint;
         protected DataPoint LeftStagnationPointBaseDP => LeftStagnationPointBase;
         protected DataPoint RightStagnationPointBaseDP => LeftStagnationPointBase;
-        protected double f(double X, double Y) => w.V_eta(new Complex(X, Y)) / w.V_ksi(new Complex(X, Y));
         double[,] ReflectionMatrix()
         {
             return new double[2, 2] {
@@ -56,16 +55,6 @@ namespace Degree_Work.Hydrodynamics_Sources
 #if !HELP_FOR_GROUP_LEADER
         protected StreamLinesBuilderCircle(Potential w, PlotWindowModel g, CanonicalDomain domain) : base(w,g,domain)
         {
-        }
-        protected void MRK_loop(ref double x_new, ref double y_new)
-        {
-            double k1, k2, k3, k4;
-            k1 = f(x_new, y_new);
-            k2 = f(x_new + h_mrk / 2, y_new + (h_mrk * k1) / 2);
-            k3 = f(x_new + h_mrk / 2, y_new + (h_mrk * k2) / 2);
-            k4 = f(x_new + h_mrk, y_new + (h_mrk * k3));
-            y_new = y_new + (h_mrk / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
-            x_new = x_new + h_mrk;
         }
 #endif
     }

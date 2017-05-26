@@ -230,12 +230,10 @@ namespace Degree_Work
                 case 7:
                     paramBox1.Text = "1";
                     paramBox1.Visibility = Visibility.Visible;
-                    paramBox2.Text = (w.f as Hydrodynamics_Sources.Conformal_Maps.Number85).X.ToString("G6",System.Globalization.CultureInfo.InvariantCulture);
-                    paramBox2.Visibility = Visibility.Visible;
+                    paramBox2.Visibility = Visibility.Hidden;
                     param1.Visibility = Visibility.Visible;
                     param1.Text = "h =";
-                    param2.Visibility = Visibility.Visible;
-                    param2.Text = "X =";
+                    param2.Visibility = Visibility.Hidden;
                     paramBox1.IsReadOnly = false;
                     paramBox2.IsReadOnly = true;
                     paramBox1.TextChanged += paramBox1_TextChanged;
@@ -367,7 +365,6 @@ namespace Degree_Work
                         (w.f as Hydrodynamics_Sources.Conformal_Maps.Number85).H = tmp;
                         s.Rebuild();
                         PlotRefresh();
-                        paramBox2.Text = (w.f as Hydrodynamics_Sources.Conformal_Maps.Number85).X.ToString("G6", System.Globalization.CultureInfo.InvariantCulture);
                     }
                     else
                     {
