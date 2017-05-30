@@ -9,18 +9,18 @@ using System.Text;
 namespace Degree_Work.Mathematical_Sources.Complex
 {
     /// <summary>
-    /// Структура, представляющая собой комплексное число
+    /// Структура, що являє собою комплексне число
     /// </summary>
     [Serializable]
     public struct Complex : IEquatable<Complex>, IFormattable
     {
         /// <summary>
-        /// Действительная часть комплексного числа
+        /// Дійсна частина комплексного числа
         /// </summary>
         public readonly double Re;
 
         /// <summary>
-        /// Мнимая часть комплексного числа
+        /// Уявна частина комплексного числа
         /// </summary>
         public readonly double Im;
 
@@ -30,56 +30,56 @@ namespace Degree_Work.Mathematical_Sources.Complex
         public double Abs => Math.Sqrt(Re * Re + Im * Im);
 
         /// <summary>
-        /// Аргумент комплексного числа в радианах
+        /// Аргумент комплексного числа (радіани)
         /// </summary>
         public double ArgRadians => getArg();
 
         /// <summary>
-        /// Аргумент комплексного числа в градусах
+        /// Аргумент комплексного числа (градуси)
         /// </summary>
         public double ArgDegrees => getArg() * 180.0 / Math.PI;
 
         /// <summary>
-        /// Сопряженное комплексное число
+        /// Спряжене комплексне число
         /// </summary>
         public Complex Conjugate => new Complex(Re, -Im);
 
         /// <summary>
-        /// Операция сопряжения
+        /// Операція спряження
         /// </summary>
         /// <param name="z">Комплексное число, сопряженное к которому возвращает метод</param>
         /// <returns></returns>
         public static Complex ComplexConjugate(Complex z) => z.Conjugate;
 
         /// <summary>
-        /// Мнимая единица
+        /// Мнима одиниця
         /// </summary>
         public static Complex I => new Complex(0, 1);
 
         /// <summary>
-        /// Ноль
+        /// Нуль
         /// </summary>
         public static Complex Zero => new Complex();
 
         /// <summary>
-        /// Бесконечность
+        /// Нескінченно віддалена
         /// </summary>
         public static Complex Infinity => new Complex(double.PositiveInfinity, double.PositiveInfinity);
 
         /// <summary>
-        /// Не-число
+        /// НЕ-число
         /// </summary>
         public static Complex NaN => new Complex(double.NaN, double.NaN);
 
         /// <summary>
-        /// Комплексное число, действительная и мнимая части представляют собой очень малые числа
+        /// Комплексне число, дійсна та уявна частини яких є дуже малими величинами
         /// </summary>
         public static Complex Epsilon => new Complex(double.Epsilon, double.Epsilon);
 
         /// <summary>
         /// Аргумент комплексного числа
         /// </summary>
-        /// <param name="m">Тип измерения угла</param>
+        /// <param name="m">Спосіб вимірювання кута (градуси чи радіани)</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double GetArgument(AngleMeasurement m)
@@ -162,10 +162,10 @@ namespace Degree_Work.Mathematical_Sources.Complex
         }
 
         /// <summary>
-        /// Конструктор экземпляра типа
+        /// Конструктор комплексного числа
         /// </summary>
-        /// <param name="Re">Действительная часть</param>
-        /// <param name="Im">Мнимая часть</param>
+        /// <param name="Re">Дійсна частина</param>
+        /// <param name="Im">Уявна частина</param>
         public Complex(double Re, double Im)
         {
             this.Re = Re;
@@ -183,7 +183,7 @@ namespace Degree_Work.Mathematical_Sources.Complex
         }
 
         /// <summary>
-        /// Проверка на равенство
+        /// Перевірка на рівність
         /// </summary>
         /// <param name="obj">Объект произвольного типа для сравнения</param>
         /// <returns></returns>
@@ -194,7 +194,7 @@ namespace Degree_Work.Mathematical_Sources.Complex
         }
 
         /// <summary>
-        /// Проверка на равенство
+        /// Перевірка на рівність
         /// </summary>
         /// <param name="other">Другое комплексное число</param>
         /// <returns></returns>
@@ -205,7 +205,7 @@ namespace Degree_Work.Mathematical_Sources.Complex
         }
 
         /// <summary>
-        /// Получение хэш-кода комплексного числа
+        /// Отримання хеш-коду комплексного числа
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -215,7 +215,7 @@ namespace Degree_Work.Mathematical_Sources.Complex
         }
 
         /// <summary>
-        /// Перевод комплексного числа в строковое представление
+        /// Строкове представлення комплексного числа
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -225,7 +225,7 @@ namespace Degree_Work.Mathematical_Sources.Complex
         }
 
         /// <summary>
-        /// Перевод комплексного числа в строковое представление
+        /// Строкове представлення комплексного числа
         /// </summary>
         /// <param name="formatProvider">Поставщик формата</param>
         /// <returns></returns>
@@ -236,7 +236,7 @@ namespace Degree_Work.Mathematical_Sources.Complex
         }
 
         /// <summary>
-        /// Перевод комплексного числа в строковое представление
+        /// Строкове представлення комплексного числа
         /// </summary>
         /// <param name="format">Строка форматирования</param>
         /// <param name="formatProvider">Поставщик формата</param>
@@ -366,7 +366,7 @@ namespace Degree_Work.Mathematical_Sources.Complex
         }
 
         /// <summary>
-        /// To be added
+        /// Отримання комплексного числа з строки
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
@@ -376,7 +376,7 @@ namespace Degree_Work.Mathematical_Sources.Complex
         }
 
         /// <summary>
-        /// To be added
+        /// Отримання комплексного числа з строки
         /// </summary>
         /// <param name="s"></param>
         /// <param name="formatProvider"></param>
@@ -512,7 +512,7 @@ namespace Degree_Work.Mathematical_Sources.Complex
         }
 
         /// <summary>
-        /// To be added
+        /// Отримання комплексного числа з строки
         /// </summary>
         /// <param name="s"></param>
         /// <param name="c"></param>
@@ -532,7 +532,7 @@ namespace Degree_Work.Mathematical_Sources.Complex
         }
 
         /// <summary>
-        /// To be added
+        /// Отримання комплексного числа з строки
         /// </summary>
         /// <param name="s"></param>
         /// <param name="c"></param>
@@ -551,15 +551,25 @@ namespace Degree_Work.Mathematical_Sources.Complex
                 return false;
             }
         }
-
-        
+       
+        /// <summary>
+        /// Комплексне число, отримане по значенню модуля та аргумента у радіанах
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="phiRad"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex ComplexNumberFromMagnitudeAndPhaseInRadians(double r, double phiRad)
         {
             return new Complex(r * Math.Cos(phiRad), r * Math.Sin(phiRad));
         }
 
-        
+        /// <summary>
+        /// Комплексне число, отримане по значенню модуля та аргумента у градусах
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="phiDeg"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex ComplexNumberFromMagnitudeAndPhaseInDegrees(double r, double phiDeg)
         {
@@ -772,60 +782,118 @@ namespace Degree_Work.Mathematical_Sources.Complex
 
         #region MathOperators
 
+        /// <summary>
+        /// Сума двох комплексних чисел
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator +(Complex c1, Complex c2)
         {
             return new Complex(c1.Re + c2.Re, c1.Im + c2.Im);
         }
 
+        /// <summary>
+        /// Сума комплексного та дійсного числа
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator +(double d, Complex c)
         {
             return new Complex(d + c.Re, c.Im);
         }
 
+        /// <summary>
+        /// Сума комплексного та дійсного числа
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="d"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator +(Complex c, double d)
         {
             return new Complex(c.Re + d, c.Im);
         }
 
+        /// <summary>
+        /// Унарний плюс
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator +(Complex c)
         {
             return new Complex(+c.Re, +c.Im);
         }
 
+        /// <summary>
+        /// Різниця двох комплексних чисел
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator -(Complex c1, Complex c2)
         {
             return new Complex(c1.Re - c2.Re, c1.Im - c2.Im);
         }
 
+        /// <summary>
+        /// Різниця дійсного та комплексного числа
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator -(double d, Complex c)
         {
             return new Complex(d - c.Re, -c.Im);
         }
 
+        /// <summary>
+        /// Різниця комплексного та дійсного числа
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="d"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator -(Complex c, double d)
         {
             return new Complex(c.Re - d, c.Im);
         }
 
+        /// <summary>
+        /// Унарний мінус
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator -(Complex c)
         {
             return new Complex(-c.Re, -c.Im);
         }
 
+        /// <summary>
+        /// Добуток двох комплексних чисел
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator *(Complex c1, Complex c2)
         {
             return new Complex(c1.Re * c2.Re - c1.Im * c2.Im, c1.Re * c2.Im + c1.Im * c2.Re);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator *(double d, Complex c)
         {

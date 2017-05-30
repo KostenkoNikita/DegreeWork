@@ -13,46 +13,51 @@ using Degree_Work.Mathematical_Sources.Complex;
 
 namespace Degree_Work.Hydrodynamics_Sources
 {
+    /// <summary>
+    /// Клас, що інкапсулює функціонал комплексного потенціалу течії
+    /// Спадкує інтерфейс, що має подію, яка повідомлює про зміну 
+    /// параметрів комплексного потенціалу
+    /// </summary>
     class Potential : INotifyPropertyChanged
     {
         /// <summary>
-        /// Индексатор, возвращающий значение потенциала в точке
+        /// Індексатор, що повертає значення комплексного потенціалу в точці
         /// </summary>
-        /// <param name="dzeta">Комплексное число, представляющее собой точку, значение потенциала в которой нужно определить</param>
+        /// <param name="dzeta">Комплексне число, що являє собою точку, в якій шукається значення потенціалу</param>
         /// <returns></returns>
         public Complex this[Complex dzeta] { get { return W(dzeta); } }
 
         /// <summary>
-        /// Скорость потока на бесконечности
+        /// Швидкість потоку в нескінченності
         /// </summary>
         double _V_inf;
 
         /// <summary>
-        /// Угол атаки
+        /// Кут атаки
         /// </summary>
         double _alpha;
 
         /// <summary>
-        /// Радиус обтекаемого цилиндра
+        /// Радіус циліндра, що обтікається
         /// </summary>
         double _R;
 
         /// <summary>
-        /// Циркуляция
+        /// Циркуляція
         /// </summary>
         double _G;
 
         /// <summary>
-        /// Интерфейсная ссылка, представляющая собой функцию конформного отображения.
-        /// Функция представляет собой тип данных, реализующий интерфейс IConformalMapFunction.
-        /// Такой подход позволяет использовать полиморфизм в коде программы, имея один класс,
-        /// представляющий собой комплексный потенциал, и полиморфную ссылку, к которой будут
-        /// неявно приводиться любые типы, реализующие нужный интерфейс
+        /// Інтерфейсне посилання, що являє собою функцію конформного відображення.
+        /// Функція являє собою тип даних, який реалізує інтерфейс IConformalMapFunction.
+        /// Такий підхід дозволяє використовувати поліморфізм в коді програми, маючи один клас,
+        /// що представляє собою комплексний потенціал, і поліморфне посилання, до якого будуть
+        /// неявно зводитися будь-які типи, які реалізують потрібний інтерфейс
         /// </summary>
         IConformalMapFunction _f;
 
         /// <summary>
-        /// Скорость на бесконечности
+        /// Швидкість на нескінченності
         /// </summary>
         public double V_inf
         {
@@ -62,9 +67,10 @@ namespace Degree_Work.Hydrodynamics_Sources
             }
             set
             {
-                if (value > 0) { _V_inf = value; }
-                else if (value < 0) { _V_inf = -value; }
-                else { throw new ArgumentException(); }
+                //Не може бути нульовою ао від'ємною
+                _V_inf = value == 0 ? throw new ArgumentException() : Abs(value);
+                //Виконання метода з подією повідомлення (не використовується)
+                //в данній реалізації
                 OnPropertyChanged();
             }
         }
@@ -80,13 +86,16 @@ namespace Degree_Work.Hydrodynamics_Sources
             }
             set
             {
+                //Не може бути нульовим ао від'ємним (якщо не задається в конструкторі)
                 _R = value == 0 ? throw new ArgumentException() : Abs(value);
+                //Виконання метода з подією повідомлення (не використовується)
+                //в данній реалізації
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Циркуляция потока
+        /// Циркуляція потоку
         /// </summary>
         public double G
         {
@@ -97,12 +106,14 @@ namespace Degree_Work.Hydrodynamics_Sources
             set
             {
                 _G = value;
+                //Виконання метода з подією повідомлення (не використовується)
+                //в данній реалізації
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Угол атаки в радианах
+        /// Кут атаки в радіанах
         /// </summary>
         public double AlphaRadians
         {
@@ -113,12 +124,14 @@ namespace Degree_Work.Hydrodynamics_Sources
             set
             {
                 _alpha = value;
+                //Виконання метода з подією повідомлення (не використовується)
+                //в данній реалізації
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Угол атаки в градусах
+        /// Кут атаки в градусах
         /// </summary>
         public double AlphaDegrees
         {
@@ -129,16 +142,18 @@ namespace Degree_Work.Hydrodynamics_Sources
             set
             {
                 _alpha = value * Math.PI / 180.0;
+                //Виконання метода з подією повідомлення (не використовується)
+                //в данній реалізації
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Интерфейсная ссылка, представляющая собой функцию конформного отображения.
-        /// Функция представляет собой тип данных, реализующий интерфейс IConformalMapFunction.
-        /// Такой подход позволяет использовать полиморфизм в коде программы, имея один класс,
-        /// представляющий собой комплексный потенциал, и полиморфную ссылку, к которой будут
-        /// неявно приводиться любые типы, реализующие нужный интерфейс
+        /// Інтерфейсне посилання, що являє собою функцію конформного відображення.
+        /// Функція являє собою тип даних, який реалізує інтерфейс IConformalMapFunction.
+        /// Такий підхід дозволяє використовувати поліморфізм в коді програми, маючи один клас,
+        /// що представляє собою комплексний потенціал, і поліморфне посилання, до якого будуть
+        /// неявно зводитися будь-які типи, які реалізують потрібний інтерфейс
         /// </summary>
         public IConformalMapFunction f
         {
@@ -146,28 +161,30 @@ namespace Degree_Work.Hydrodynamics_Sources
             set
             {
                 _f = value;
+                //Виконання метода з подією повідомлення (не використовується)
+                //в данній реалізації
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Временная переменная, используется для вичисления скорости в физической плоскости
+        /// Термінова змінна
         /// </summary>
         Complex tmp;
 
         /// <summary>
-        /// Событие, которое выполняется при изменении какого-то свойства
+        /// Подія, яка виконується при зміні якогост параметра
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Конструктор экземпляра класса, инкапсулирующего функционал комплексного потенциала течения
+        /// Конструктор екземпляра класа, що інкапсулює функціонал комплексного потенціалу течії
         /// </summary>
-        /// <param name="V_inf">Скорость течения на бесконечности</param>
-        /// <param name="alpha">Угол атаки в радианах. Должен быть равен нулю в случае обтекания полосы или полуплоскости</param>
-        /// <param name="R">Радиус обтекаемого цилинда. Должен быть равен нулю в случае обтекания полосы или полуплоскости</param>
-        /// <param name="G">Циркуляция. Должна быть равна нулю в случае обтекания полосы или полуплоскости</param>
-        /// <param name="f">Функция конформного отображения (реализует интерфейс IConformalMapFunction)</param>
+        /// <param name = "V_inf"> Швидкість течії у нескінченності </param>
+        /// <param name = "alpha"> Кут атаки в радіанах. Повинен дорівнювати нулю в разі обтікання смуги або півплощини </param>
+        /// <param name = "R"> Радіус циліндра, що обтікається. Повинен дорівнювати нулю в разі обтікання смуги або півплощини </param>
+        /// <param name = "G"> Циркуляція. Повинна дорівнювати нулю в разі обтікання смуги або півплощини </param>
+        /// <param name = "f"> Функція конформного відображення (реалізує інтерфейс IConformalMapFunction) </param>
         public Potential(double V_inf, double alpha, double R, double G, IConformalMapFunction f)
         {
             this.f = f;
@@ -178,9 +195,9 @@ namespace Degree_Work.Hydrodynamics_Sources
         }
 
         /// <summary>
-        /// Потенциальная функция
+        /// Потенціальна функція
         /// </summary>
-        /// <param name="z">Точка, в которой ищется значение потенциальной функции</param>
+        /// <param name="z">Точка, в якій шукається значення потенціальної функції</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double phi(Complex z)
@@ -189,9 +206,9 @@ namespace Degree_Work.Hydrodynamics_Sources
         }
 
         /// <summary>
-        /// Функция тока
+        /// Функція струму
         /// </summary>
-        /// <param name="z">Точка, в которой ищется значение функции тока</param>
+        /// <param name="z">Точка, в якій шукається значення функції струму</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double psi(Complex z)
@@ -200,9 +217,9 @@ namespace Degree_Work.Hydrodynamics_Sources
         }
 
         /// <summary>
-        /// Скорость во вспомогательной плоскости в виде комплексного числа
+        /// Швидкість у допоміжній площині у вигляді комплексного числа
         /// </summary>
-        /// <param name="dzeta">Точка, в которой ищется значение скорости</param>
+        /// <param name="dzeta">Точка, в якій шукається значення швидкості</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Complex V(Complex dzeta)
@@ -211,15 +228,19 @@ namespace Degree_Work.Hydrodynamics_Sources
         }
 
         /// <summary>
-        /// Скорость в физической плоскости в виде комплексного числа
+        /// Швидкість у фізичній площині у вигляді комплексного числа
         /// </summary>
-        /// <param name="z">Точка, в которой ищется значение скорости</param>
+        /// <param name="z">Точка, в якій шукається значення швидкості</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Complex V_physical_plane(Complex z)
         {
             try
             {
+                //Знаходимо значення оберної функції конформного відображення в точці.
+                //У випадку будь-якої помилки повертаємо НЕ-число (NaN).
+                //В іншому випадку знаходимо швижкість (за правилом дифереціювання
+                //складної функції)
                 tmp = f.dzeta(z);
                 return IsNaN(tmp) ? NaN : (dW_ddzeta(z) / f.dz_ddzeta(tmp)).Conjugate;
             }
@@ -227,9 +248,9 @@ namespace Degree_Work.Hydrodynamics_Sources
         }
 
         /// <summary>
-        /// Горизонтальная компонента скорости во вспомогательной плоскости
+        /// Горизонтальна компонента швидкості у допоміжній площині
         /// </summary>
-        /// <param name="dzeta">Точка, в которой ищется значение горозонтальной компоненты скорости</param>
+        /// <param name="dzeta">Точка, в якій шукається значення горизонтальної компоненти швидкості</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double V_ksi(Complex dzeta)
@@ -238,9 +259,9 @@ namespace Degree_Work.Hydrodynamics_Sources
         }
 
         /// <summary>
-        /// Вертикальная компонента скорости во вспомогательной плоскости
+        /// Вертикальна компонента швидкості у допоміжній площині
         /// </summary>
-        /// <param name="dzeta">Точка, в которой ищется значение горозонтальной компоненты скорости</param>
+        /// <param name="dzeta">Точка, в якій шукається значення вертикальної компоненти швидкості</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double V_eta(Complex dzeta)
@@ -249,7 +270,7 @@ namespace Degree_Work.Hydrodynamics_Sources
         }
 
         /// <summary>
-        /// Значение комплексного потенциала в точке
+        /// Значення комплексного потенціала в точці
         /// </summary>
         /// <param name="dzeta">Комплексное число, представляющее собой точку, в которой ищется значение комплексного потенциала</param>
         /// <returns></returns>
@@ -260,18 +281,19 @@ namespace Degree_Work.Hydrodynamics_Sources
         }
 
         /// <summary>
-        /// Значение производной комплексного потенциала по комплексной координате в точке
+        /// Значення похідної від функції комплексного потенціала в точці
         /// </summary>
-        /// <param name="dzeta">Комплексное число, представляющее собой точку, в которой ищется значение производной комплексного потенциала по комплексной координате</param>
+        /// <param name="dzeta">Точка, в якій шукається значення комплексного потенцалу</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Complex dW_ddzeta(Complex dzeta)
         {
+            //Комплексний потенціал заданий у загальному вигляді для 
             return _V_inf * Exp(-I * this._alpha) - (_R * _R * _V_inf * Exp(I * this._alpha)) / (dzeta * dzeta) + this._G / (2 * Math.PI * I * dzeta);
         }
 
         /// <summary>
-        /// Переопределенный метод класс Object, возвращающий строковое представление экземпляра класса комплексного потенциала
+        /// Строкове представлення комплексного потенціала
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -281,7 +303,7 @@ namespace Degree_Work.Hydrodynamics_Sources
         }
 
         /// <summary>
-        /// Метод, в аргументы которого передается имя вызывающего компонента в рамках выполнения события PropertyChanged
+        /// Метод, що визивається при виконанні події PropertyChanged
         /// </summary>
         /// <param name="propertyName"></param>
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
