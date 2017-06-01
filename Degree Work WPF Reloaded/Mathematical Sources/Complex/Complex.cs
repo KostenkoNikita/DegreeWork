@@ -889,7 +889,7 @@ namespace Degree_Work.Mathematical_Sources.Complex
         }
 
         /// <summary>
-        /// 
+        /// Добуток війсного та комплексного числа
         /// </summary>
         /// <param name="d"></param>
         /// <param name="c"></param>
@@ -900,12 +900,24 @@ namespace Degree_Work.Mathematical_Sources.Complex
             return new Complex(c.Re * d, c.Im * d);
         }
 
+        /// <summary>
+        /// Добуток комплексного та дійсного числа
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="d"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator *(Complex c, double d)
         {
             return new Complex(c.Re * d, c.Im * d);
         }
 
+        /// <summary>
+        /// Ділення одного комплексного числа на інше
+        /// </summary>
+        /// <param name="z1"></param>
+        /// <param name="z2"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator /(Complex z1, Complex z2)
         {
@@ -927,6 +939,12 @@ namespace Degree_Work.Mathematical_Sources.Complex
             }
         }
 
+        /// <summary>
+        /// Ділення дійсного числа на комплексне
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="z2"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator /(double d, Complex z2)
         {
@@ -948,6 +966,12 @@ namespace Degree_Work.Mathematical_Sources.Complex
             }
         }
 
+        /// <summary>
+        /// Ділення комплексного числа на дійсне
+        /// </summary>
+        /// <param name="z1"></param>
+        /// <param name="d"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator /(Complex z1, double d)
         {
@@ -969,24 +993,46 @@ namespace Degree_Work.Mathematical_Sources.Complex
             }
         }
 
+        /// <summary>
+        /// Перевірка на рівність двох комплексних чисел
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator ==(Complex c1, Complex c2)
         {
             return c1.Equals(c2);
         }
 
+        /// <summary>
+        /// Перевірка на нерівність двох комплексних чисел
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator !=(Complex c1, Complex c2)
         {
             return !c1.Equals(c2);
         }
 
+        /// <summary>
+        /// Декремент (діє тільки на дійну частину)
+        /// </summary>
+        /// <param name="z"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator --(Complex z)
         {
             return new Complex(z.Re - 1, z.Im);
         }
 
+        /// <summary>
+        /// Інкремент (діє тільки на дійсну частину)
+        /// </summary>
+        /// <param name="z"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Complex operator ++(Complex z)
         {

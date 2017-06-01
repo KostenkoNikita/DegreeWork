@@ -52,31 +52,47 @@ namespace Degree_Work.Mathematical_Sources
         /// <returns></returns>
         public static Complex.Complex Solve(Func<Complex.Complex, Complex.Complex> f, Func<Complex.Complex, Complex.Complex> df, Complex.Complex Z)
         {
+            //Початкове наближення спочатку є правою частиною
             Complex.Complex initial_approximation = Z, z, tmp;
+            //кількість невдач при розрахунках та кількість розрахунків
             int fails = 0, iters;
             Func<Complex.Complex, Complex.Complex> F = (c) => { return f(c) - Z; }, dFdz = (c) => { return df(c); };
+            //Екземпляр класу, призначений для работи с псеводовипадковими величинами
             Random rnd = new Random(DateTime.Now.Millisecond);
 
+            //Точка початку ітераційного процесу при невдачі
             fail_mark:
-            initial_approximation += (rnd.NextDouble() + Complex.Complex.I * rnd.NextDouble());
+
+            //До початкового наближення додаємо псевдовипадкове комплексне число
+            initial_approximation += (new Complex.Complex(rnd.NextDouble(), rnd.NextDouble()));
             z = initial_approximation;
             tmp = z;
             iters = 0;
             while (fails < 50)
             {
                 iters++;
+                //Процес метода Ньютона
                 z = z - F(z) / dFdz(z);
+                //Якщо досягнута точність
                 if ((z - tmp).Abs <= Settings.Eps)
                 {
+                    //Перевіряємо, чи буде знайдена точка, при дії на неё вказаної
+                    //функції конформного відображення правою частиною
                     if ((f(z) - Z).Abs <= Settings.Eps) { return z; }
+                    //Якщо ні, то інкрементуємо кількість невдач та переходимо 
+                    //в початок ітераційного процесу
                     else { fails++; goto fail_mark; }
                 }
+                //Якщо результат НЕ-число, нескінченно віддалена точка або кількість розрахунків 
+                //стала більною за 100, то інкрементуємо кількість невдач та переходимо 
+                //в початок ітераційного процесу
                 if (Complex.Complex.IsNaN(z) || Complex.Complex.IsInfinity(z) || iters > 100)
                 {
                     fails++; goto fail_mark;
                 }
                 tmp = z;
             }
+            //Якщо кількість невдач стала большою за 49, то повертаємо НЕ-число
             return Complex.Complex.NaN;
         }
 
@@ -129,7 +145,8 @@ namespace Degree_Work.Mathematical_Sources
             Random rnd = new Random(DateTime.Now.Millisecond);
 
             fail_mark:
-            initial_approximation += (rnd.NextDouble() + Complex.Complex.I * rnd.NextDouble());
+
+            initial_approximation += (new Complex.Complex(rnd.NextDouble(), rnd.NextDouble()));
             z = initial_approximation;
             tmp = z;
             iters = 0;
