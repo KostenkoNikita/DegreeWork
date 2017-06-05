@@ -6,6 +6,11 @@
     public static class MathematicalConstants
     {
         /// <summary>
+        /// Пи на два
+        /// </summary>
+        public const double PiDividedOnTwo = System.Math.PI / 2.0;
+
+        /// <summary>
         /// Число пи
         /// </summary>
         public const double Pi = System.Math.PI;

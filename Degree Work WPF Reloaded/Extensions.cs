@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Runtime.CompilerServices;
 using Degree_Work.Mathematical_Sources.Complex;
 using static Degree_Work.Mathematical_Sources.Functions.ElementaryFunctions;
 using static Degree_Work.Mathematical_Sources.Functions.SpecialFunctions;
@@ -21,6 +22,7 @@ namespace Degree_Work
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DataPoint Conjugate(this DataPoint p)
         {
             p.Y = -p.Y;
@@ -32,6 +34,7 @@ namespace Degree_Work
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Abs(this DataPoint p)
         {
             return Math.Sqrt(p.X * p.X + p.Y * p.Y);
@@ -42,6 +45,7 @@ namespace Degree_Work
         /// </summary>
         /// <param name="s">Строка, которую нужно обратить</param>
         /// <returns>Обращенная строка</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Reverse(this string s)
         {
             char[] tmp = s.ToCharArray();
@@ -54,6 +58,7 @@ namespace Degree_Work
         /// </summary>
         /// <param name="l">Список возвращаемых методом BeginInvoke экземпляра делегата интерфейсных ссылок</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsAllThreadsCompleted(this List<IAsyncResult> l)
         {
             foreach (IAsyncResult i in l)
@@ -68,18 +73,20 @@ namespace Degree_Work
         /// </summary>
         /// <param name="bmp">Объект BitmapSource</param>
         /// <param name="filename">Имя конечного файла</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SaveJPG100(this BitmapSource bmp, string filename)
         {
             EncoderParameters encoderParameters = new EncoderParameters(1);
             encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
             bmp.GetBitmap().Save(filename, GetEncoder(System.Drawing.Imaging.ImageFormat.Jpeg), encoderParameters);
         }
-        
+
         /// <summary>
         /// Получение объекта Bitmap из BitmapSource
         /// </summary>
         /// <param name="source">Объект BitmapSource</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Bitmap GetBitmap(this BitmapSource source)
         {
             Bitmap bmp = new Bitmap(
@@ -99,6 +106,7 @@ namespace Degree_Work
             return bmp;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static ImageCodecInfo GetEncoder(System.Drawing.Imaging.ImageFormat format)
         {
             ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();

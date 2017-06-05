@@ -57,8 +57,17 @@ namespace Degree_Work
         {
             if (e.ChangedButton.ToString()=="Left")
             {
-                viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.Abs, V, CanonicalDomain.HalfPlane);
-                PlotRefresh();
+                if (!IsCursorInBorder())
+                {
+                    viewModel.RedrawArrow(CursorPosition, CursorPosition + 2 * V / V.Abs, V, CanonicalDomain.HalfPlane);
+                    PlotRefresh();
+                }
+                else
+                {
+                    viewModel.DeleteArrow();
+                    viewModel.IsMouseClickedInPolygon = false;
+                    PlotRefresh();
+                }
             }
         }
 
@@ -515,7 +524,7 @@ namespace Degree_Work
                 case "Triangle":
                     return false;
                 case "Number85":
-                    return CursorPosition.Im<0;
+                    return (CursorPosition.Im<0 && CursorPosition.Re > 0) || (CursorPosition.Im < (w.f as Hydrodynamics_Sources.Conformal_Maps.Number85).H && CursorPosition.Re < 0);
                 default: return true;
             }
         }

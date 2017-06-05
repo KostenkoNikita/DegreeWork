@@ -75,6 +75,10 @@ namespace Degree_Work
             {
                 V = -V;
             }
+            if (w.f is Hydrodynamics_Sources.Conformal_Maps.EjectedRays && CursorPosition.Re < 0 && (w.f as Hydrodynamics_Sources.Conformal_Maps.EjectedRays).Angle == Mathematical_Sources.MathematicalConstants.PiDividedOnTwo)
+            {
+                V = -V;
+            }
             if (Complex.IsNaN(V) || IsCursorInBorder())
             {
                 ClearTextBoxes();

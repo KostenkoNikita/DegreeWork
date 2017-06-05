@@ -27,7 +27,7 @@ namespace Degree_Work
         public ReferenceWindow(System.Windows.Window from)
         {
             InitializeComponent();
-            docViewer.Zoom = 125;
+            docViewer.Zoom = 95;
             TipsList.Items.Add("Общие сведения");
             TipsList.Items.Add("Обтекание полуплоскости");
             TipsList.Items.Add("Обтекание полосы -π..π");

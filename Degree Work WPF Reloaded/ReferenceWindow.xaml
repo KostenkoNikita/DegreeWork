@@ -18,13 +18,13 @@
             <Grid.ColumnDefinitions>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.7*"></RowDefinition>
-                <RowDefinition Height="0.3*"></RowDefinition>
+                <RowDefinition Height="0.75*"></RowDefinition>
+                <RowDefinition Height="0.25*"></RowDefinition>
             </Grid.RowDefinitions>
             
             <ListBox x:Name="TipsList" Grid.Column="1" Grid.Row="0" FontSize="25" FontFamily="Times New Roman"/>
 
-            <Viewbox x:Name="exitContainer" Grid.Row="2" Margin="7,7,0,7">
+            <Viewbox x:Name="exitContainer" Grid.Row="2" Margin="20,20,0,20">
                 <Image x:Name ="exitImage"  Source="Resources\exitIco.bmp" MouseEnter="ico_MouseEnter" MouseLeave="ico_MouseLeave" MouseDown="ico_MouseDown"/>
             </Viewbox>
             <Border BorderBrush="Black"  BorderThickness="1" Grid.Row="0"/>

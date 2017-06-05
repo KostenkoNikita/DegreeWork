@@ -74,7 +74,7 @@ namespace Degree_Work
         /// <summary>
         /// Нажата ли левая кнопка мыши на границе области
         /// </summary>
-        bool IsMouseClickedInPolygon;
+        internal bool IsMouseClickedInPolygon;
 
         object locker = new object();
 
@@ -312,7 +312,7 @@ namespace Degree_Work
         /// <summary>
         /// Удаление вектора скорости и сопутсвующего текста, если таковые присутствуют
         /// </summary>
-        void DeleteArrow()
+        internal void DeleteArrow()
         {
             if (arrow != null)
             {
