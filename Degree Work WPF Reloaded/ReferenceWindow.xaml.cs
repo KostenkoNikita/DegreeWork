@@ -64,53 +64,25 @@ namespace Degree_Work
             switch (TipsList.SelectedIndex)
             {
                 case 0:
-                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\GeneralInfo.docx";
-                    if (!File.Exists(wordDocument))
-                    {
-                        wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Release", string.Empty) + "Resources\\Documents\\GeneralInfo.docx";
-                    }
+                    wordDocument = Directory.GetCurrentDirectory().ToString() + "\\Documents\\GeneralInfo.docx";
                     break;
                 case 1:
-                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\HalfPlaneInfo.docx";
-                    if (!File.Exists(wordDocument))
-                    {
-                        wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Release", string.Empty) + "Resources\\Documents\\HalfPlaneInfo.docx";
-                    }
+                    wordDocument = Directory.GetCurrentDirectory().ToString() + "\\Documents\\HalfPlaneInfo.docx";
                     break;
                 case 2:
-                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\ZoneInfo.docx";
-                    if (!File.Exists(wordDocument))
-                    {
-                        wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Release", string.Empty) + "Resources\\Documents\\ZoneInfo.docx";
-                    }
+                    wordDocument = Directory.GetCurrentDirectory().ToString() + "\\Documents\\ZoneInfo.docx";
                     break;
                 case 3:
-                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\CircleInfo.docx";
-                    if (!File.Exists(wordDocument))
-                    {
-                        wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Release", string.Empty) + "Resources\\Documents\\CircleInfo.docx";
-                    }
+                    wordDocument = Directory.GetCurrentDirectory().ToString() + "\\Documents\\CircleInfo.docx";
                     break;
                 case 4:
-                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\HeatMapInfo.docx";
-                    if (!File.Exists(wordDocument))
-                    {
-                        wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Release", string.Empty) + "Resources\\Documents\\HeatMapInfo.docx";
-                    }
+                    wordDocument = Directory.GetCurrentDirectory().ToString() + "\\Documents\\HeatMapInfo.docx";
                     break;
                 case 5:
-                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\SettingsInfo.docx";
-                    if (!File.Exists(wordDocument))
-                    {
-                        wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Release", string.Empty) + "Resources\\Documents\\SettingsInfo.docx";
-                    }
+                    wordDocument = Directory.GetCurrentDirectory().ToString() + "\\Documents\\SettingsInfo.docx";
                     break;
                 case 6:
-                    wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Debug", string.Empty) + "Resources\\Documents\\SaveInfo.docx";
-                    if (!File.Exists(wordDocument))
-                    {
-                        wordDocument = Directory.GetCurrentDirectory().ToString().Replace("bin\\Release", string.Empty) + "Resources\\Documents\\SaveInfo.docx";
-                    }
+                    wordDocument = Directory.GetCurrentDirectory().ToString() + "\\Documents\\SaveInfo.docx";
                     break;
             }
             if (string.IsNullOrEmpty(wordDocument) || !File.Exists(wordDocument))
