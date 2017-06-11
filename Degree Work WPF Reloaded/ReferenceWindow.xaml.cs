@@ -64,30 +64,30 @@ namespace Degree_Work
             switch (TipsList.SelectedIndex)
             {
                 case 0:
-                    wordDocument = Directory.GetCurrentDirectory().ToString() + "\\Documents\\GeneralInfo.docx";
+                    wordDocument = AppDomain.CurrentDomain.BaseDirectory + "\\Documents\\GeneralInfo.docx";
                     break;
                 case 1:
-                    wordDocument = Directory.GetCurrentDirectory().ToString() + "\\Documents\\HalfPlaneInfo.docx";
+                    wordDocument = AppDomain.CurrentDomain.BaseDirectory + "\\Documents\\HalfPlaneInfo.docx";
                     break;
                 case 2:
-                    wordDocument = Directory.GetCurrentDirectory().ToString() + "\\Documents\\ZoneInfo.docx";
+                    wordDocument = AppDomain.CurrentDomain.BaseDirectory + "\\Documents\\ZoneInfo.docx";
                     break;
                 case 3:
-                    wordDocument = Directory.GetCurrentDirectory().ToString() + "\\Documents\\CircleInfo.docx";
+                    wordDocument = AppDomain.CurrentDomain.BaseDirectory + "\\Documents\\CircleInfo.docx";
                     break;
                 case 4:
-                    wordDocument = Directory.GetCurrentDirectory().ToString() + "\\Documents\\HeatMapInfo.docx";
+                    wordDocument = AppDomain.CurrentDomain.BaseDirectory + "\\Documents\\HeatMapInfo.docx";
                     break;
                 case 5:
-                    wordDocument = Directory.GetCurrentDirectory().ToString() + "\\Documents\\SettingsInfo.docx";
+                    wordDocument = AppDomain.CurrentDomain.BaseDirectory + "\\Documents\\SettingsInfo.docx";
                     break;
                 case 6:
-                    wordDocument = Directory.GetCurrentDirectory().ToString() + "\\Documents\\SaveInfo.docx";
+                    wordDocument = AppDomain.CurrentDomain.BaseDirectory + "\\Documents\\SaveInfo.docx";
                     break;
             }
             if (string.IsNullOrEmpty(wordDocument) || !File.Exists(wordDocument))
             {
-                MessageBox.Show("Файл документации отсутствует.");
+                MessageBox.Show("Файл документации отсутствует." + wordDocument);
             }
             else
             {

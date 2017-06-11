@@ -9,7 +9,7 @@
         WindowState="Maximized"
         WindowStyle="None"
         Title="MainWindow" Height="500" Width="700">
-    <Grid ShowGridLines="True">
+    <Grid ShowGridLines="False">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.96*"></RowDefinition>
             <RowDefinition Height="0.04*"></RowDefinition>
@@ -18,8 +18,9 @@
             <ColumnDefinition Width="1*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Viewbox x:Name="SlidersBox" Grid.Row="0">
-            <Image x:Name="Sliders" Source="D:\Programming\GITHUB\DegreeWork\Presentation\bin\Release\slides\0.bmp"/>
+            <Image x:Name="Sliders"/>
         </Viewbox>
-        <TextBox x:Name="Console" Grid.Row="1" FontFamily="Consolas" FontSize="16" Background="Black" Foreground="White"/>
+        <TextBox x:Name="Console" Grid.Row="1" FontFamily="Consolas" FontSize="16" Background="White" Foreground="Black"/>
+        <Border Grid.Row="1" BorderThickness="2" BorderBrush="Black"></Border>
     </Grid>
 </Window>

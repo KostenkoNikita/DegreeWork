@@ -27,7 +27,7 @@ namespace Degree_Work
             heightSlider.Minimum = heightSlider.Value = vm.PlotModel.Height;           
             formatList.SelectionChanged += FormatList_SelectionChanged;
             formatList.SelectedIndex = 0;
-            path = pathTextBox.Text = Directory.GetCurrentDirectory() + @"\Saved Plots\";
+            path = pathTextBox.Text = AppDomain.CurrentDomain.BaseDirectory + @"\Saved Plots\";
             pathTextBox.TextChanged += (sender, e) => { path = pathTextBox.Text; };
         }
 
