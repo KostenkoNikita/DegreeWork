@@ -77,11 +77,11 @@
 
             <TextBlock Grid.Row="0" Text="Ширина:" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Times New Roman" FontSize="18"/>
             <TextBox x:Name="WidthBox" Grid.Row="0" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=WidthSlider, Path=Value}" IsReadOnly="True"/>
-            <Slider x:Name="WidthSlider" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="1" Maximum="6" Value="{Binding RWidth}" SmallChange="0.1" LargeChange="1" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+            <Slider x:Name="WidthSlider" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="0.1" Maximum="6" Value="{Binding RWidth}" SmallChange="0.1" LargeChange="1" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
 
             <TextBlock Grid.Row="2" Text="Высота:" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Times New Roman" FontSize="18"/>
             <TextBox x:Name="HeightBox" Grid.Row="2" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=HeightSlider, Path=Value}"  IsReadOnly="True"/>
-            <Slider x:Name="HeightSlider" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="1" Maximum="6" Value="{Binding RHeight}" SmallChange="0.1" LargeChange="1" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+            <Slider x:Name="HeightSlider" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"  Minimum="0.1" Maximum="6" Value="{Binding RHeight}" SmallChange="0.1" LargeChange="1" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
 
             <TextBlock Grid.Row="4" Text="α =" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Times New Roman" FontSize="28"/>
             <TextBox x:Name="AngleBox" Grid.Row="4" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Text="{Binding ElementName=AngleSlider, Path=Value}"  IsReadOnly="True"/>

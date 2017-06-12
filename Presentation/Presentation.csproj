@@ -29,7 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -112,6 +112,18 @@
     <Resource Include="Slides\6.bmp" />
     <Resource Include="Slides\7.bmp" />
     <Resource Include="Slides\8.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Slides\10.bmp" />
+    <Resource Include="Slides\11.bmp" />
+    <Resource Include="Slides\12.bmp" />
+    <Resource Include="Slides\13.bmp" />
+    <Resource Include="Slides\9.bmp" />
+    <Resource Include="Slides\help.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Slides\14.bmp" />
+    <Resource Include="Slides\15.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

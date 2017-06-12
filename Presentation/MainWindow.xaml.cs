@@ -34,7 +34,15 @@ namespace Presentation
             new BitmapImage(new Uri(@"Slides\5.bmp",UriKind.Relative)),
             new BitmapImage(new Uri(@"Slides\6.bmp",UriKind.Relative)),
             new BitmapImage(new Uri(@"Slides\7.bmp",UriKind.Relative)),
-            new BitmapImage(new Uri(@"Slides\8.bmp",UriKind.Relative))
+            new BitmapImage(new Uri(@"Slides\8.bmp",UriKind.Relative)),
+            new BitmapImage(new Uri(@"Slides\9.bmp",UriKind.Relative)),
+            new BitmapImage(new Uri(@"Slides\10.bmp",UriKind.Relative)),
+            new BitmapImage(new Uri(@"Slides\11.bmp",UriKind.Relative)),
+            new BitmapImage(new Uri(@"Slides\12.bmp",UriKind.Relative)),
+            new BitmapImage(new Uri(@"Slides\13.bmp",UriKind.Relative)),
+            new BitmapImage(new Uri(@"Slides\14.bmp",UriKind.Relative)),
+            new BitmapImage(new Uri(@"Slides\15.bmp",UriKind.Relative)),
+            new BitmapImage(new Uri(@"Slides\help.bmp",UriKind.Relative))
         };
 
         readonly Dictionary<string, Action> ExecutableCommands;
@@ -50,6 +58,8 @@ namespace Presentation
         int CurrentSlider;
 
         bool WasAppStartedFromSlides = false;
+
+        bool WasHelpCommandLast = false;
 
         public MainWindow()
         {
@@ -69,6 +79,15 @@ namespace Presentation
             ExecutableCommands["slide6"] = new Action(() => { Console.Text = string.Empty; Sliders.Source = imageList[6]; CurrentSlider = 6; Focus(); });
             ExecutableCommands["slide7"] = new Action(() => { Console.Text = string.Empty; Sliders.Source = imageList[7]; CurrentSlider = 7; Focus(); });
             ExecutableCommands["slide8"] = new Action(() => { Console.Text = string.Empty; Sliders.Source = imageList[8]; CurrentSlider = 8; Focus(); });
+            ExecutableCommands["euler"] = new Action(()=> { Sliders.Source = imageList[9]; WasHelpCommandLast = true; });
+            ExecutableCommands["conteq"] = new Action(() => { Sliders.Source = imageList[10]; WasHelpCommandLast = true; });
+            ExecutableCommands["bern"] = new Action(() => { Sliders.Source = imageList[11]; WasHelpCommandLast = true; });
+            ExecutableCommands["dir"] = new Action(() => { Sliders.Source = imageList[12]; WasHelpCommandLast = true; });
+            ExecutableCommands["lieb"] = new Action(() => { Sliders.Source = imageList[13]; WasHelpCommandLast = true; });
+            ExecutableCommands["shw"] = new Action(() => { Sliders.Source = imageList[14]; WasHelpCommandLast = true; });
+            ExecutableCommands["gen"] = new Action(() => { Sliders.Source = imageList[15]; WasHelpCommandLast = true; });
+            ExecutableCommands["help"] = new Action(() => { Sliders.Source = imageList[16]; WasHelpCommandLast = true; });
+            ExecutableCommands["ret"] = new Action(() => { return; });
             KeyDown += MainWindow_KeyDown;
             Console.Focusable = false;
         }
@@ -128,12 +147,41 @@ namespace Presentation
         {
             if (e.Key == Key.Return)
             {
-                Console.TextChanged -= Console_TextChanged;
-                Console.KeyDown -= Console_KeyDown;
-                Console.Focusable = false;
-                Console.CaretBrush = Console.Background;
-                KeyDown += MainWindow_KeyDown;
-                ExecuteCommand();
+                if (WasHelpCommandLast)
+                {
+                    if (WrittenCommand == "ret" || WrittenCommand == "exit")
+                    {
+                        ////////На случай выхода////////
+                        ExecuteCommand();
+                        ////////////////////////////////
+                        Console.TextChanged -= Console_TextChanged;
+                        Console.KeyDown -= Console_KeyDown;
+                        Console.Focusable = false;
+                        Console.CaretBrush = Console.Background;
+                        KeyDown += MainWindow_KeyDown;
+                        WasHelpCommandLast = false;
+                        Console.Text = string.Empty;
+                        Sliders.Source = imageList[CurrentSlider];
+                        Focus();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    if (WrittenCommand == "ret")
+                    {
+                        return;
+                    }
+                    Console.TextChanged -= Console_TextChanged;
+                    Console.KeyDown -= Console_KeyDown;
+                    Console.Focusable = false;
+                    Console.CaretBrush = Console.Background;
+                    KeyDown += MainWindow_KeyDown;
+                    ExecuteCommand();
+                }
             }
         }
 
@@ -147,6 +195,17 @@ namespace Presentation
             if (ExecutableCommands.ContainsKey(WrittenCommand))
             {
                 ExecutableCommands[WrittenCommand].Invoke();
+                if (WasHelpCommandLast)
+                {
+                    Console.Text = "/";
+                    Console.CaretIndex = 1;
+                    Console.Focusable = true;
+                    Console.CaretBrush = Console.Foreground;
+                    Console.Focus();
+                    Console.TextChanged += Console_TextChanged;
+                    Console.KeyDown += Console_KeyDown;
+                    KeyDown -= MainWindow_KeyDown;
+                }
             }
             else
             {
