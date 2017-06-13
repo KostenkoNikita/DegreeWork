@@ -24,6 +24,8 @@ namespace Presentation
             FileName = @"D:\Programming\GITHUB\DegreeWork\Degree Work WPF Reloaded\bin\Release\Degree Work.exe", UseShellExecute = false
         };
 
+        int handlers = 0;
+
         readonly List<ImageSource> imageList = new List<ImageSource>()
         {
             new BitmapImage(new Uri(@"Slides\0.bmp",UriKind.Relative)),
@@ -42,6 +44,7 @@ namespace Presentation
             new BitmapImage(new Uri(@"Slides\13.bmp",UriKind.Relative)),
             new BitmapImage(new Uri(@"Slides\14.bmp",UriKind.Relative)),
             new BitmapImage(new Uri(@"Slides\15.bmp",UriKind.Relative)),
+            new BitmapImage(new Uri(@"Slides\16.bmp",UriKind.Relative)),
             new BitmapImage(new Uri(@"Slides\help.bmp",UriKind.Relative))
         };
 
@@ -86,9 +89,10 @@ namespace Presentation
             ExecutableCommands["lieb"] = new Action(() => { Sliders.Source = imageList[13]; WasHelpCommandLast = true; });
             ExecutableCommands["shw"] = new Action(() => { Sliders.Source = imageList[14]; WasHelpCommandLast = true; });
             ExecutableCommands["gen"] = new Action(() => { Sliders.Source = imageList[15]; WasHelpCommandLast = true; });
-            ExecutableCommands["help"] = new Action(() => { Sliders.Source = imageList[16]; WasHelpCommandLast = true; });
+            ExecutableCommands["my"] = new Action(() => { Sliders.Source = imageList[16]; WasHelpCommandLast = true; });
+            ExecutableCommands["help"] = new Action(() => { Sliders.Source = imageList[17]; WasHelpCommandLast = true; });
             ExecutableCommands["ret"] = new Action(() => { return; });
-            KeyDown += MainWindow_KeyDown;
+            KeyDown += MainWindow_KeyDown; handlers++;
             Console.Focusable = false;
         }
 
@@ -135,7 +139,10 @@ namespace Presentation
                         Console.Focus();
                         Console.TextChanged += Console_TextChanged;
                         Console.KeyDown += Console_KeyDown;
-                        KeyDown -= MainWindow_KeyDown;
+                        if (handlers == 1)
+                        {
+                            KeyDown -= MainWindow_KeyDown; handlers--;
+                        }
                         break;
                     }
                 default:
@@ -158,7 +165,10 @@ namespace Presentation
                         Console.KeyDown -= Console_KeyDown;
                         Console.Focusable = false;
                         Console.CaretBrush = Console.Background;
-                        KeyDown += MainWindow_KeyDown;
+                        if (handlers == 0)
+                        {
+                            KeyDown += MainWindow_KeyDown; handlers++;
+                        }
                         WasHelpCommandLast = false;
                         Console.Text = string.Empty;
                         Sliders.Source = imageList[CurrentSlider];
@@ -179,7 +189,10 @@ namespace Presentation
                     Console.KeyDown -= Console_KeyDown;
                     Console.Focusable = false;
                     Console.CaretBrush = Console.Background;
-                    KeyDown += MainWindow_KeyDown;
+                    if (handlers == 0)
+                    {
+                        KeyDown += MainWindow_KeyDown; handlers++;
+                    }
                     ExecuteCommand();
                 }
             }
@@ -204,7 +217,10 @@ namespace Presentation
                     Console.Focus();
                     Console.TextChanged += Console_TextChanged;
                     Console.KeyDown += Console_KeyDown;
-                    KeyDown -= MainWindow_KeyDown;
+                    if (handlers == 1)
+                    {
+                        KeyDown -= MainWindow_KeyDown; handlers--;
+                    }
                 }
             }
             else
@@ -217,7 +233,10 @@ namespace Presentation
                 Console.Focus();
                 Console.TextChanged += Console_TextChanged;
                 Console.KeyDown += Console_KeyDown;
-                KeyDown -= MainWindow_KeyDown;
+                if (handlers == 1)
+                {
+                    KeyDown -= MainWindow_KeyDown; handlers--;
+                }
             }
         }
 

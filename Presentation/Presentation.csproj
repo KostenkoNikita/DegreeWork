@@ -125,5 +125,8 @@
     <Resource Include="Slides\14.bmp" />
     <Resource Include="Slides\15.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Slides\16.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
